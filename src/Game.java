@@ -16,9 +16,16 @@ public class Game{
 		System.out.println("");
 		board.printBoardToConsole();
 		//////////////////////////
-		
+
+		/**
+		 * I've begun the text Panel and command prompt just
+		 * testing if git pull push works
+		 */
+		TextPanel textPanel = new TextPanel();
+		textPanel.setVisible(true);
+
 		//TODO: Call a method to initially display board
 		//TODO: Have a loop which waits for commands from the user input
-		
+
 	}
 }
