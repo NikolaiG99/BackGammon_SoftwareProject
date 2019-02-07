@@ -3,5 +3,13 @@
  * the game logic.
  */
 public class GameLogicPip{
-	//TODO
+	PipColour colour;
+	
+	GameLogicPip(PipColour colour){
+		this.colour = colour;
+	}
+}
+
+enum PipColour{
+	BLACK, RED
 }

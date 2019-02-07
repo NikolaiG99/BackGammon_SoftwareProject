@@ -11,11 +11,44 @@ public class BoardDataStructure{
 	private List<Stack<GameLogicPip>> board;
 	
 	//Initialize list of stacks, then initialize each stack.
+	
+	//Stacks in positions 1-24 are the points, while  positions 0 & 25 are 
+	//the bear off position for black and red. 
 	public BoardDataStructure() {
-		board = new ArrayList<Stack<GameLogicPip>>(24);
+		board = new ArrayList<Stack<GameLogicPip>>(26);
 		
-		for(int i = 0; i < 24; i++) {
+		for(int i = 0; i < 26; i++) {
 			board.add(new Stack<GameLogicPip>());
 		}
+	}
+	
+	//Get backgammon point number i, where the points are numbered from 1-24 inclusive
+	public Stack<GameLogicPip> getPoint(int i){
+		return board.get(i);
+	}
+	
+	//Method which checks if the board is empty
+	public boolean boardIsEmpty() {
+		
+		for(int i = 0; i < 26; i++) {
+			if(board.get(i).empty() == false)
+				return false;
+		}
+		
+		return true;
+	}
+	
+	//Helper method which empties all the stacks of pips
+	public void emptyBoard(){
+		Stack<GameLogicPip> s;
+		
+		for(int i = 0; i < 26; i++) {
+			s = board.get(i);
+			while(s.empty() == false){
+				s.pop();
+			}
+		}
+		
+		return;
 	}
 }

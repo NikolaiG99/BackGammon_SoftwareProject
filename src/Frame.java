@@ -1,5 +1,3 @@
-package zbackgammon;
-
 import java.awt.Graphics;
 import java.awt.Image;
 import java.io.File;
@@ -33,7 +31,7 @@ public static void main(String[] args) throws IOException{
     frame.setSize(600, 450);
     frame.setTitle("Backgammon");
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    Frame component = new Frame("src/image/Screen Shot 2019-02-05 at 21.04.05.png");
+    Frame component = new Frame("src/Screen Shot 2019-02-05 at 21.04.05.png");
     frame.add(component);
     frame.setVisible(true);
 }
