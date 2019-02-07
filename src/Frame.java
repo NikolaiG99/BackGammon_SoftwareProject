@@ -1,5 +1,6 @@
 package zbackgammon;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -11,7 +12,10 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SpringLayout;
 
 public class Frame extends JPanel {
 
@@ -155,11 +159,30 @@ public class Frame extends JPanel {
 	
 public static void main(String[] args) throws IOException{
 	JFrame frame = new JFrame();
-    frame.setSize(600, 450);
+    frame.setSize(950, 500);
     frame.setTitle("Backgammon");
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     Frame component = new Frame("src/image/Screen Shot 2019-02-05 at 21.04.05.png");
     frame.add(component);
+    
+    
+    // Text field to enter in move
+    JLabel move = new JLabel("Enter your move:");
+    JTextField field = new JTextField(20);
+    move.setLabelFor(field);
+
+    // Create panel for text field
+    JPanel panel = new JPanel();
+    
+    // set panel size
+    panel.setSize(5,5);
+    
+    // add text field to panel
+    panel.add(move);
+    panel.add(field);
+    
+    // add panel to frame
+    frame.add(panel, BorderLayout.EAST);
     
     frame.setVisible(true);
 }
