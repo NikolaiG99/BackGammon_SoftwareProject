@@ -14,7 +14,7 @@ public class TextPanel extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int result = JOptionPane.showConfirmDialog(InputButton,
-                        "Do you wish to quit?,"
+                        "Do you wish to quit?,",
                                 "Confirm Quit", JOptionPane.YES_NO_CANCEL_OPTION);
                 if (result == JOptionPane.YES_OPTION){
                     System.exit(0);
