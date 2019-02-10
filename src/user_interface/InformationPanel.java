@@ -4,6 +4,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+/**
+ * This class is responsible for the information panel in the game,
+ * and associated methods.
+ */
 @SuppressWarnings("serial")
 public class InformationPanel extends JPanel{
 	private JTextArea text;

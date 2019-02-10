@@ -13,8 +13,8 @@ import user_interface.CommandPanel;
 import user_interface.InformationPanel;
 
 /**
- * Provisionally, this is the "main" class of our program,
- * it contains the main method which runs our Backgammon yoke. 
+ * This class connects the different aspects of the game, and the main class
+ * runs the actual game. 
  */
 public class Game{
 	private GameLogicBoard gameBoard;
@@ -35,7 +35,7 @@ public class Game{
 	    gameFrame.setResizable(false);
 	    
 	    //Initialize and attach the board display panel
-	    boardPanel = new BoardPanel("src/graphical_display/Screen Shot 2019-02-05 at 21.04.05.png");
+	    boardPanel = new BoardPanel("resources/Screen Shot 2019-02-05 at 21.04.05.png");
 	    gameFrame.add(boardPanel, BorderLayout.CENTER);
 	    
 	    //Initialize information and command panels
@@ -59,6 +59,7 @@ public class Game{
 		//Display initial positions of all pips
 		game.drawAllPips();
 
+		//Demonstrate functionality for Sprint 1
 		game.Sprint1_MovePipFromPointToBearOff(6);
 		game.Sprint1_MovePipFromPointToBearOff(12);
 		game.Sprint1_MovePipFromPointToBar(13);
@@ -66,6 +67,10 @@ public class Game{
 
 	}
 	
+	/**
+	 * Method scans through the logical representation of the board,
+	 * and draw's each pip it finds in the appropriate position
+	 */
 	void drawAllPips() {
 		int[][] positions = gameBoard.getPipPositions();
 		for(int i = 0; i < 26; i++) {
@@ -82,6 +87,13 @@ public class Game{
 		}
 	}
 	
+	/**
+	 * Method moves a pip on a given point by a given number of spots,
+	 * where the bottom right points is point #1, and the top right is #24
+	 * 
+	 * @param pointNum: Which point to move the top pip from
+	 * @param numSteps: How many steps to move the top pip by
+	 */
 	void movePipFromPointByNPoints(int pointNum, int numSteps){
 		int pipId = gameBoard.getTopPipIdOnPoint(pointNum);
 		
@@ -118,25 +130,42 @@ public class Game{
 				newYpos);
 	}
 	
+	/**
+	 * A method to demonstrate part of the functionality of the program as mentioned
+	 * in the docs for Sprint 1. It moves a pip to the bar.
+	 * 
+	 * @param pointNum: Which point to move the top pip from
+	 */
 	void Sprint1_MovePipFromPointToBar(int pointNum){
+		//Move logical representation of pip
 		int barPos = gameBoard.movePipToBar(pointNum);
-		int yPos;
-		//Move the pip on the given point, to the bar
+
+		//Calculate new coordinates for visual pip
+		int yPos;	
 		if(barPos == 26)
 			yPos = BoardCoordinateConstants.COORDS_BOTTOM_ROW[0];
 		else
 			yPos = BoardCoordinateConstants.COORDS_TOP_ROW[0];
 		
+		//Move the pip on the given point, to the bar
 		boardPanel.movePip(gameBoard.getTopPipIdOnPoint(barPos), 
 				BoardCoordinateConstants.COORDS_POINT[barPos], 
 				yPos);
 	}
 	
+	/**
+	 * A method to demonstrate part of the functionality of the program as mentioned
+	 * in the docs for Sprint 1. It moves a pip off the bar to the starting position.
+	 * Returns the point number moved to.
+	 * 
+	 * @param pointNum: Which point to move the top pip from
+	 */
 	int Sprint1_MovePipOffBar(int barNum){
+		//Move logical pip off bar
 		int pointNum = gameBoard.movePipOffBar(barNum);
 		
+		//Calculate new coordinates for visual pip
 		int yPos;
-
 		if(pointNum == 1)
 			yPos = BoardCoordinateConstants.COORDS_BOTTOM_ROW[1];
 		else
@@ -150,6 +179,13 @@ public class Game{
 		return pointNum;
 	}
 	
+	/**
+	 * A method to demonstrate part of the functionality of the program as mentioned
+	 * in the docs for Sprint 1. It moves a pip on a given point to bear off, moving
+	 * one point at a time.
+	 * 
+	 * @param pointNum: Which point to move the top pip from
+	 */
 	void Sprint1_MovePipFromPointToBearOff(int pointNum) {
 		//If the pip is on a bar take it off the bar
 		if(pointNum == 26 || pointNum == 27) {

@@ -5,8 +5,8 @@ import java.util.Stack;
 
 /**
  * Class of the data structure representing the board to be used
- * for the game logic. It consists of a List of 24 Stacks, where
- * each Stack represents a "Point"(BackGammon terminology).
+ * for the game logic. It consists of a List of 24 Stacks(28 incl. bar, & bear off),
+ * where each Stack represents a "Point"(BackGammon terminology).
  */
 public class BoardDataStructure{
 	private List<Stack<GameLogicPip>> board;

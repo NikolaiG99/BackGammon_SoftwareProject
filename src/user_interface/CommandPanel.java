@@ -9,6 +9,12 @@ import javax.swing.JTextField;
 import graphical_display.BoardPanel;
 import logic.GameLogicBoard;
 
+/**
+ * This class is responsible for the command panel in the game.
+ * And handles commands inputed by the user. Each CommandPanel
+ * then must be associated with a GameLogicBoard, a BordPanel, and
+ * an InformationPanel. 
+ */
 @SuppressWarnings("serial")
 public class CommandPanel extends JPanel{
 	private JTextField field;

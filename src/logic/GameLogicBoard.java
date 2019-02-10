@@ -1,6 +1,10 @@
 package logic;
 import java.util.Stack;
 
+/**
+ * This class is responsible for handling the logical representation
+ * of the game in terms of data.
+ */
 public class GameLogicBoard{
 	private BoardDataStructure gameBoard;
 	

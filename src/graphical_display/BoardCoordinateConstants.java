@@ -1,5 +1,9 @@
 package graphical_display;
 
+/**
+ * This class contains "symbolic" constants for x-y coordinates for possible positions
+ * of different objects.
+ */
 public class BoardCoordinateConstants{
 	/**
 	 * An array of the x-coordinates for each point.

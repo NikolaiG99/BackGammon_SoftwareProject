@@ -1,4 +1,5 @@
 package logic;
+
 /**
  * A class representing a Pip(BackGammon terminology) for
  * the game logic.

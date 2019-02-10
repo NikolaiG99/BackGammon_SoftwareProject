@@ -11,6 +11,10 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+/**
+ * Class which is responsible for the displaying the board and
+ * the pips, as well as for operations manipulating the display
+ */
 public class BoardPanel extends JPanel {
 	Ellipse2D.Double [] pips;	
 	
