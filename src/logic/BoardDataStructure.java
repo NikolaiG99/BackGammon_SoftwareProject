@@ -1,3 +1,4 @@
+package logic;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -13,11 +14,12 @@ public class BoardDataStructure{
 	//Initialize list of stacks, then initialize each stack.
 	
 	//Stacks in positions 1-24 are the points, while  positions 0 & 25 are 
-	//the bear off position for black and red. 
+	//the bear off position for black and red respectively.
+	//26 and 27 are the bar positions for black and red respectively
 	public BoardDataStructure() {
-		board = new ArrayList<Stack<GameLogicPip>>(26);
+		board = new ArrayList<Stack<GameLogicPip>>(28);
 		
-		for(int i = 0; i < 26; i++) {
+		for(int i = 0; i < 28; i++) {
 			board.add(new Stack<GameLogicPip>());
 		}
 	}
@@ -30,7 +32,7 @@ public class BoardDataStructure{
 	//Method which checks if the board is empty
 	public boolean boardIsEmpty() {
 		
-		for(int i = 0; i < 26; i++) {
+		for(int i = 0; i < 28; i++) {
 			if(board.get(i).empty() == false)
 				return false;
 		}
@@ -42,7 +44,7 @@ public class BoardDataStructure{
 	public void emptyBoard(){
 		Stack<GameLogicPip> s;
 		
-		for(int i = 0; i < 26; i++) {
+		for(int i = 0; i < 28; i++) {
 			s = board.get(i);
 			while(s.empty() == false){
 				s.pop();
