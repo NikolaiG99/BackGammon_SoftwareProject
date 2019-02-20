@@ -1,13 +1,21 @@
 package game_controller;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import graphical_display.BoardCoordinateConstants;
 import graphical_display.BoardPanel;
+import graphical_display.IntroPanel;
 import logic.GameLogicBoard;
 import user_interface.CommandPanel;
 import user_interface.InformationPanel;
@@ -16,43 +24,101 @@ import user_interface.InformationPanel;
  * This class connects the different aspects of the game, and the main class
  * runs the actual game. 
  */
-public class Game{
+public class Game {
+	// Store player 1 and 2 name
+	public static String p1;
+	public static String p2;
+
 	private GameLogicBoard gameBoard;
 	private BoardPanel boardPanel;
 	private InformationPanel infoPanel;
 	private CommandPanel commandPanel;
 	private JFrame gameFrame;
-	
-	public Game() throws IOException{
-		//Initialize data and logic
+	private JFrame introFrame;
+	private IntroPanel introPanel;
+
+	public Game() throws IOException {
+		// Initialize data and logic
 		gameBoard = new GameLogicBoard();
-		
-		//Set up JFrame
+
+		// Set up JFrame
 		gameFrame = new JFrame();
-	    gameFrame.setSize(910, 450);
-	    gameFrame.setTitle("Backgammon");
-	    gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	    gameFrame.setResizable(false);
-	    
-	    //Initialize and attach the board display panel
-	    boardPanel = new BoardPanel("resources/Screen Shot 2019-02-05 at 21.04.05.png");
-	    gameFrame.add(boardPanel, BorderLayout.CENTER);
-	    
-	    //Initialize information and command panels
-	    infoPanel = new InformationPanel();
-	    commandPanel = new CommandPanel(gameBoard, boardPanel, infoPanel);
-	    
-	    //Attach the information and command panels
-	    JPanel panel = new JPanel(new BorderLayout());
-	    panel.add(infoPanel, BorderLayout.NORTH);
-	    panel.add(commandPanel, BorderLayout.SOUTH);
-	    gameFrame.add(panel, BorderLayout.EAST);
-	    
-	    //Display JFrame
-	    gameFrame.setVisible(true);
+		gameFrame.setSize(910, 450);
+		gameFrame.setTitle("Backgammon");
+		gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		gameFrame.setResizable(false);
+
+		// Initialize and attach the board display panel
+		boardPanel = new BoardPanel("resources/Screen Shot 2019-02-05 at 21.04.05.png");
+		gameFrame.add(boardPanel, BorderLayout.CENTER);
+
+		// Initialize information and command panels
+		infoPanel = new InformationPanel();
+		commandPanel = new CommandPanel(gameBoard, boardPanel, infoPanel);
+
+		// Attach the information and command panels
+		JPanel panel = new JPanel(new BorderLayout());
+		panel.add(infoPanel, BorderLayout.NORTH);
+		panel.add(commandPanel, BorderLayout.SOUTH);
+		gameFrame.add(panel, BorderLayout.EAST);
+
+		// Display JFrame
+		gameFrame.setVisible(false);
+
+		// Create intro Frame with background image and start button
+		JFrame intro = new JFrame("BackGammon");
+		JButton start = new JButton("Click to start game");
+		JLabel image = new JLabel(new ImageIcon("resources/Screen Shot 2019-02-20 at 11.31.11.png"));
+		image.setBounds(0, 0, 1600, 1400);
+		intro.setSize(910, 450);
+		intro.add(image);
+		start.setBounds(400, 315, 150, 40);
+		image.add(start);
+		intro.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		intro.setResizable(false);
+
+		// Create TextField to get player 1 name
+		JTextField textplayer1;
+		JLabel labelplayer1;
+
+		labelplayer1 = new JLabel("Player 1 Name: ");
+		labelplayer1.setBounds(100, 300, 150, 40);
+		labelplayer1.setForeground(Color.white);
+		image.add(labelplayer1);
+		textplayer1 = new JTextField();
+		textplayer1.setBounds(195, 310, 100, 20);
+		image.add(textplayer1);
+
+		// Create TextField to get player 2 name
+		JTextField textplayer2;
+		JLabel labelplayer2;
+
+		labelplayer2 = new JLabel("Player 2 Name: ");
+		labelplayer2.setBounds(100, 350, 150, 40);
+		labelplayer2.setForeground(Color.white);
+		image.add(labelplayer2);
+		textplayer2 = new JTextField();
+		textplayer2.setBounds(195, 360, 100, 20);
+		image.add(textplayer2);
+		intro.setVisible(true);
+
+		// Once you click button,game will start
+		start.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String p1 = textplayer1.getText();
+				String p2 = textplayer2.getText();
+				System.out.println(p1);
+				System.out.println(p2);
+				intro.dispose();
+				gameFrame.setVisible(true);
+
+			}
+		});
 	}
 	
+	
 	public static void main(String [] args) throws IOException {
+
 		//Start game
 		Game game = new Game();
 		
