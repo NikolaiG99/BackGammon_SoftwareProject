@@ -24,7 +24,8 @@ import user_interface.InformationPanel;
  * This class connects the different aspects of the game, and the main class
  * runs the actual game. 
  */
-public class Game {
+
+public class Game{
 	// Store player 1 and 2 name
 	public static String p1;
 	public static String p2;
@@ -34,8 +35,6 @@ public class Game {
 	private InformationPanel infoPanel;
 	private CommandPanel commandPanel;
 	private JFrame gameFrame;
-	private JFrame introFrame;
-	private IntroPanel introPanel;
 
 	public Game() throws IOException {
 		// Initialize data and logic
@@ -107,9 +106,11 @@ public class Game {
 			public void actionPerformed(ActionEvent e) {
 				String p1 = textplayer1.getText();
 				String p2 = textplayer2.getText();
-				System.out.println(p1);
-				System.out.println(p2);
 				intro.dispose();
+				infoPanel.addText(p1 + ", You are the Red Checker");
+				infoPanel.addText("\n");
+				infoPanel.addText(p2 + ", You are the Black Checker");
+				infoPanel.addText("\n");
 				gameFrame.setVisible(true);
 
 			}
