@@ -15,7 +15,6 @@ import javax.swing.JTextField;
 
 import graphical_display.BoardCoordinateConstants;
 import graphical_display.BoardPanel;
-import graphical_display.IntroPanel;
 import logic.GameLogicBoard;
 import user_interface.CommandPanel;
 import user_interface.InformationPanel;
@@ -35,6 +34,7 @@ public class Game{
 	private InformationPanel infoPanel;
 	private CommandPanel commandPanel;
 	private JFrame gameFrame;
+	
 
 	public Game() throws IOException {
 		// Initialize data and logic
@@ -42,12 +42,36 @@ public class Game{
 
 		// Set up JFrame
 		gameFrame = new JFrame();
-		gameFrame.setSize(910, 450);
+		gameFrame.setSize(910, 500);
 		gameFrame.setTitle("Backgammon");
 		gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		gameFrame.setResizable(false);
-
-		// Initialize and attach the board display panel
+		
+		
+		// Set up Dice
+		getDiceImage images = new getDiceImage();
+		JLabel dice1 = new JLabel(images.getIcon("dice1.png"));
+		JLabel dice2 = new JLabel(images.getIcon("dice1.png"));
+		JButton button = new JButton("Throw");
+		button.setBounds(2, 2, 1, 1);
+		dice1.setBounds(4, 4, 1, 1);
+		dice2.setBounds(7, 7, 1, 1);
+		JLabel text = new JLabel("Total: 2");
+		
+		// add dice to panel and the panel to the game board
+		JPanel dicePanel = new JPanel();
+		dicePanel.setSize(20, 20);
+		button.addActionListener(new ButtonListener(dice1, dice2, text));
+	        
+	    dicePanel.add(button);
+	    dicePanel.add(dice1);
+	    dicePanel.add(dice2);
+	    dicePanel.add(text);
+	    
+	    gameFrame.add(dicePanel, BorderLayout.SOUTH);
+	    
+	       
+	    // Initialize and attach the board display panel
 		boardPanel = new BoardPanel("resources/Screen Shot 2019-02-05 at 21.04.05.png");
 		gameFrame.add(boardPanel, BorderLayout.CENTER);
 
