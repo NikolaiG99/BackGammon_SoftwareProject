@@ -15,9 +15,11 @@ import javax.swing.JTextField;
 
 import graphical_display.BoardCoordinateConstants;
 import graphical_display.BoardPanel;
+import graphical_display.DicePanel;
 import logic.GameLogicBoard;
 import user_interface.CommandPanel;
 import user_interface.InformationPanel;
+import user_interface.IntroFrame;
 
 /**
  * This class connects the different aspects of the game, and the main class
@@ -42,37 +44,14 @@ public class Game{
 
 		// Set up JFrame
 		gameFrame = new JFrame();
-		gameFrame.setSize(910, 500);
+		gameFrame.setSize(910, 680);
 		gameFrame.setTitle("Backgammon");
 		gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		gameFrame.setResizable(false);
-		
-		
-		// Set up Dice
-		getDiceImage images = new getDiceImage();
-		JLabel dice1 = new JLabel(images.getIcon("dice1.png"));
-		JLabel dice2 = new JLabel(images.getIcon("dice1.png"));
-		JButton button = new JButton("Throw");
-		button.setBounds(2, 2, 1, 1);
-		dice1.setBounds(4, 4, 1, 1);
-		dice2.setBounds(7, 7, 1, 1);
-		JLabel text = new JLabel("Total: 2");
-		
-		// add dice to panel and the panel to the game board
-		JPanel dicePanel = new JPanel();
-		dicePanel.setSize(20, 20);
-		button.addActionListener(new ButtonListener(dice1, dice2, text));
-	        
-	    dicePanel.add(button);
-	    dicePanel.add(dice1);
-	    dicePanel.add(dice2);
-	    dicePanel.add(text);
-	    
-	    gameFrame.add(dicePanel, BorderLayout.SOUTH);
 	    
 	       
 	    // Initialize and attach the board display panel
-		boardPanel = new BoardPanel("resources/Screen Shot 2019-02-05 at 21.04.05.png");
+		boardPanel = new BoardPanel("src/resources/Screen Shot 2019-02-05 at 21.04.05.png");
 		gameFrame.add(boardPanel, BorderLayout.CENTER);
 
 		// Initialize information and command panels
@@ -84,61 +63,16 @@ public class Game{
 		panel.add(infoPanel, BorderLayout.NORTH);
 		panel.add(commandPanel, BorderLayout.SOUTH);
 		gameFrame.add(panel, BorderLayout.EAST);
+		
+		// Initialize and attach panel with the dice
+		DicePanel dicePanel = new DicePanel();
+	    gameFrame.add(dicePanel, BorderLayout.SOUTH);
 
 		// Display JFrame
 		gameFrame.setVisible(false);
 
 		// Create intro Frame with background image and start button
-		JFrame intro = new JFrame("BackGammon");
-		JButton start = new JButton("Click to start game");
-		JLabel image = new JLabel(new ImageIcon("resources/Screen Shot 2019-02-20 at 11.31.11.png"));
-		image.setBounds(0, 0, 1600, 1400);
-		intro.setSize(910, 450);
-		intro.add(image);
-		start.setBounds(400, 315, 150, 40);
-		image.add(start);
-		intro.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		intro.setResizable(false);
-
-		// Create TextField to get player 1 name
-		JTextField textplayer1;
-		JLabel labelplayer1;
-
-		labelplayer1 = new JLabel("Player 1 Name: ");
-		labelplayer1.setBounds(100, 300, 150, 40);
-		labelplayer1.setForeground(Color.white);
-		image.add(labelplayer1);
-		textplayer1 = new JTextField();
-		textplayer1.setBounds(195, 310, 100, 20);
-		image.add(textplayer1);
-
-		// Create TextField to get player 2 name
-		JTextField textplayer2;
-		JLabel labelplayer2;
-
-		labelplayer2 = new JLabel("Player 2 Name: ");
-		labelplayer2.setBounds(100, 350, 150, 40);
-		labelplayer2.setForeground(Color.white);
-		image.add(labelplayer2);
-		textplayer2 = new JTextField();
-		textplayer2.setBounds(195, 360, 100, 20);
-		image.add(textplayer2);
-		intro.setVisible(true);
-
-		// Once you click button,game will start
-		start.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String p1 = textplayer1.getText();
-				String p2 = textplayer2.getText();
-				intro.dispose();
-				infoPanel.addText(p1 + ", You are the Red Checker");
-				infoPanel.addText("\n");
-				infoPanel.addText(p2 + ", You are the Black Checker");
-				infoPanel.addText("\n");
-				gameFrame.setVisible(true);
-
-			}
-		});
+		new IntroFrame(gameFrame, infoPanel);
 	}
 	
 	
