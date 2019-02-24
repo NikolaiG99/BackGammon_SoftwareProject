@@ -10,8 +10,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import game_controller.Game;
+
 public class IntroFrame extends JFrame{
-	public IntroFrame(JFrame gameToDisplayOnClick, InformationPanel infoPanel){	
+	public IntroFrame(JFrame gameToDisplayOnClick, InformationPanel infoPanel, Game associatedGame){	
 		super("BackGammon");
 	
 		JButton start = new JButton("Click to start game");
@@ -53,14 +55,16 @@ public class IntroFrame extends JFrame{
 		start.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			String p1 = textplayer1.getText();
+			associatedGame.p1 = p1;
 			String p2 = textplayer2.getText();
+			associatedGame.p2 = p2;
 			close();
-			infoPanel.addText(p1 + ", you are the Red Checker.");
+			infoPanel.addText(p1 + ", you are the black checker.");
 			infoPanel.addText("\n");
-			infoPanel.addText(p2 + ", you are the Black Checker.");
+			infoPanel.addText(p2 + ", you are the red checker.");
 			infoPanel.addText("\n");
 			gameToDisplayOnClick.setVisible(true);
-			
+			associatedGame.runGame(associatedGame);
 			}
 		});
 	}

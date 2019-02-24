@@ -1,12 +1,16 @@
 package graphical_display;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.Ellipse2D;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -17,6 +21,7 @@ import javax.swing.JPanel;
  */
 public class BoardPanel extends JPanel {
 	Ellipse2D.Double [] pips;	
+	String numbersAtBottom[];
 	
 	private Image backgroundImage;
 
@@ -27,10 +32,12 @@ public class BoardPanel extends JPanel {
 	    backgroundImage = ImageIO.read(new File(fileName));
 
 	    pips = new Ellipse2D.Double [30];
-		  
-	    for(int i = 0; i < 30; i++) {
+	    for(int i = 0; i < 30; i++) 
 	    	pips[i] = new Ellipse2D.Double(0, 0, 30, 30);
-	    }
+	    
+	    numbersAtBottom = new String[24];
+	    for(int i = 0; i < 24; i++)
+	    	numbersAtBottom[i] = ""+(i+1);
 	}
 
 	//Method to draw a pip at a location on the board
@@ -63,6 +70,20 @@ public class BoardPanel extends JPanel {
 		}
 	}
 	
+	/**
+	 * A method which displays the numbers at the base of each pip,
+	 * The numbers may be displayed in two orders, with the #1 pip(red turn)
+	 * being the top right, or the bottom left(black turn) depending on whether
+	 * the "isBlackTurn" flag is to false or true respectively
+	 */
+	public void displayPipEnumeration(boolean isBlackTurn) {
+		if((isBlackTurn && (numbersAtBottom[0].equals("24")))
+				|| (!isBlackTurn && (numbersAtBottom[0].equals("1")))) {
+			List<String> listOfProducts = Arrays.asList(numbersAtBottom);      
+			Collections.reverse(listOfProducts);
+		}
+	}
+	
 	public void paintComponent(Graphics g) {
 		
 		super.paintComponent(g);
@@ -70,7 +91,21 @@ public class BoardPanel extends JPanel {
 		// Draw the background image.
 		g.drawImage(backgroundImage, 5, 10, this);
 		
-		//Draw Black pips(Colour of each element(pip) is
+		//Draw the numbers at the bottom of the pips
+	    Font font = g.getFont().deriveFont(15.0f);
+	    g.setFont(font);
+		g.setColor(Color.YELLOW);
+		
+		for(int i = 0; i < 12; i++) {
+			g.drawString(numbersAtBottom[i], BoardCoordinateConstants.COORDS_POINT[i+1] + 7, 
+					BoardCoordinateConstants.COORDS_BOTTOM_ROW[1]+43);
+		}
+		for(int i = 12; i < 24; i++) {
+			g.drawString(numbersAtBottom[i], BoardCoordinateConstants.COORDS_POINT[i+1] + 5,
+					BoardCoordinateConstants.COORDS_TOP_ROW[1]-4);
+		}
+		
+		//Draw Black checkers(Colour of each element(checker) is
 		//hardcoded according to colours set in GameLogicBoard.java
 		g.setColor(Color.BLACK);
 		((Graphics2D) g).draw(pips[2]);
@@ -105,7 +140,7 @@ public class BoardPanel extends JPanel {
 		((Graphics2D) g).fill(pips[29]);
 		
 		
-		//Draw Red pips(Colour of each element(pip) is
+		//Draw Red checker(Colour of each element(checker) is
 		//hardcoded according to colours set in GameLogicBoard.java
 		g.setColor(Color.RED);
 		((Graphics2D) g).draw(pips[0]);

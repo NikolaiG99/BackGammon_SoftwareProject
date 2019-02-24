@@ -28,20 +28,23 @@ import user_interface.IntroFrame;
 
 public class Game{
 	// Store player 1 and 2 name
-	public static String p1;
-	public static String p2;
+	public String p1;
+	public String p2;
 
 	private GameLogicBoard gameBoard;
 	private BoardPanel boardPanel;
 	private InformationPanel infoPanel;
 	private CommandPanel commandPanel;
+	private DicePanel dicePanel;
 	private JFrame gameFrame;
+	private Gamestate gameState;
 	
 
 	public Game() throws IOException {
 		// Initialize data and logic
 		gameBoard = new GameLogicBoard();
-
+		gameState = new Gamestate(true);
+		
 		// Set up JFrame
 		gameFrame = new JFrame();
 		gameFrame.setSize(910, 680);
@@ -65,31 +68,59 @@ public class Game{
 		gameFrame.add(panel, BorderLayout.EAST);
 		
 		// Initialize and attach panel with the dice
-		DicePanel dicePanel = new DicePanel();
+		dicePanel = new DicePanel(infoPanel);
 	    gameFrame.add(dicePanel, BorderLayout.SOUTH);
 
 		// Display JFrame
 		gameFrame.setVisible(false);
-
-		// Create intro Frame with background image and start button
-		new IntroFrame(gameFrame, infoPanel);
 	}
 	
+	/*
+	 * Class which keeps track of some necessary information as the game goes on
+	 */
+	class Gamestate{
+		boolean isBlackTurn;
+		
+		public Gamestate(boolean isBlackTurn) {
+			this.isBlackTurn = isBlackTurn;
+		}
+		
+		//Resets the game state
+		public void reset(boolean isBlackTurn) {
+			this.isBlackTurn = isBlackTurn;
+		}
+	}
 	
+	/*
+	 * The game is started here and immediately passed off to the introductory frame,
+	 * which when it's closed, continues the game at the "runGame()" method.
+	 */
 	public static void main(String [] args) throws IOException {
-
 		//Start game
 		Game game = new Game();
 		
-		//Display initial positions of all pips
+		// Create intro Frame with background image and start button
+		new IntroFrame(game.gameFrame, game.infoPanel, game);
+	}
+	
+	public void runGame(Game game){
+		//Display initial positions of all checkers
 		game.drawAllPips();
 
-		//Demonstrate functionality for Sprint 1
-		game.Sprint1_MovePipFromPointToBearOff(6);
-		game.Sprint1_MovePipFromPointToBearOff(12);
-		game.Sprint1_MovePipFromPointToBar(13);
-		game.Sprint1_MovePipFromPointToBearOff(26);
-
+		//Roll dice to see who starts and initialize game state
+		game.dicePanel.rollInitialThrows();
+		
+		if(game.dicePanel.getFirstRoll() > game.dicePanel.getSecondRoll()) {
+			game.gameState.reset(true);
+			game.infoPanel.addText(p1 + " starts.\n");
+		}
+		else {
+			game.gameState.reset(false);
+			game.infoPanel.addText(p2 + " starts.\n");
+		}
+		
+		//Display initial pip numbering
+		game.boardPanel.displayPipEnumeration(gameState.isBlackTurn);
 	}
 	
 	/**
@@ -156,8 +187,7 @@ public class Game{
 	}
 	
 	/**
-	 * A method to demonstrate part of the functionality of the program as mentioned
-	 * in the docs for Sprint 1. It moves a pip to the bar.
+	 * A method which moves a pip from any to the bar.
 	 * 
 	 * @param pointNum: Which point to move the top pip from
 	 */
@@ -192,9 +222,9 @@ public class Game{
 		//Calculate new coordinates for visual pip
 		int yPos;
 		if(pointNum == 1)
-			yPos = BoardCoordinateConstants.COORDS_BOTTOM_ROW[1];
+			yPos = BoardCoordinateConstants.COORDS_BOTTOM_ROW[gameBoard.getNumberOfPipsOnPoint(1)];
 		else
-			yPos = BoardCoordinateConstants.COORDS_TOP_ROW[1];
+			yPos = BoardCoordinateConstants.COORDS_TOP_ROW[gameBoard.getNumberOfPipsOnPoint(24)];
 		
 		//Move the pip on the given bar, to the start point
 		boardPanel.movePip(gameBoard.getTopPipIdOnPoint(pointNum), 
