@@ -1,5 +1,7 @@
 package user_interface;
 
+import java.awt.Dimension;
+
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -25,4 +27,9 @@ public class InformationPanel extends JPanel{
 		text.setText(text.getText() + s);
 		return;
 	}
+	
+    @Override
+    public Dimension getPreferredSize() {
+        return new Dimension(200, 370);
+    }
 }

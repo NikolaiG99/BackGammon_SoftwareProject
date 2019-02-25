@@ -1,6 +1,9 @@
 package graphical_display;
 
 import java.awt.Color;
+
+import java.awt.Dimension;
+
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -19,6 +22,7 @@ import javax.swing.JPanel;
  * Class which is responsible for the displaying the board and
  * the pips, as well as for operations manipulating the display
  */
+@SuppressWarnings("serial")
 public class BoardPanel extends JPanel {
 	Ellipse2D.Double [] pips;	
 	String numbersAtBottom[];
@@ -39,6 +43,11 @@ public class BoardPanel extends JPanel {
 	    for(int i = 0; i < 24; i++)
 	    	numbersAtBottom[i] = ""+(i+1);
 	}
+	
+    @Override
+    public Dimension getPreferredSize() {
+        return new Dimension(600, 410);
+    }
 
 	//Method to draw a pip at a location on the board
 	public void drawPip(int pipNum, int x, int y) {		
@@ -49,6 +58,7 @@ public class BoardPanel extends JPanel {
 	
 	//Method to move a pip to a location on the board
 	public void movePip(int pipNum, int newX, int newY) {
+
 		while(pips[pipNum].x != newX || pips[pipNum].y != newY) {
 			
 			if(pips[pipNum].x < newX)
@@ -62,7 +72,7 @@ public class BoardPanel extends JPanel {
 				pips[pipNum].y--;
 			
             try{
-                Thread.sleep(2);
+                Thread.sleep(0);
             } catch (Exception e){
             	e.printStackTrace();
             }

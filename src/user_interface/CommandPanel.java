@@ -2,10 +2,15 @@ package user_interface;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.EmptyStackException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import game_controller.GameMethods;
 import graphical_display.BoardPanel;
 import logic.GameLogicBoard;
 
@@ -45,7 +50,7 @@ public class CommandPanel extends JPanel{
 	}
 	
 	enum CommandType{
-		ECHO, QUIT;
+		ECHO, QUIT, MOVE, UNKNOWN, NEXT;
 	}
 	
 	class UserCommand{
@@ -59,18 +64,40 @@ public class CommandPanel extends JPanel{
 	}
 	
 	private UserCommand parseInputText(String input){
-		if(input.toLowerCase().equals("quit"))
+		
+		if(input.matches("(\\d+)(\\s)(\\d+)")){
+			return new UserCommand(CommandType.MOVE, input);
+		}
+		else if(input.toLowerCase().equals("next")) {
+			return new UserCommand(CommandType.NEXT, "");
+		}
+		else if(input.toLowerCase().equals("quit")) {
 			return new UserCommand(CommandType.QUIT, "");
+		}
 		else
-			return new UserCommand(CommandType.ECHO, input + '\n');
+			return new UserCommand(CommandType.UNKNOWN, "");
 	}
 
 	private void handleEvent(UserCommand u) {
-		switch(u.type) {
-		case ECHO:	infoPanel.addText(u.input);
-					break;
-		case QUIT: System.exit(0);
-					break;
+		switch(u.type) {	
+		case MOVE: 		Pattern p = Pattern.compile("(\\d+)(\\s)(\\d+)");
+						Matcher m = p.matcher(u.input);
+						m.find();
+						try {
+							GameMethods.Sprint2_MoveCheckerFromPipToPip(
+									Integer.parseInt(m.group(1)),
+									Integer.parseInt(m.group(3)), boardPanel, gameBoard);
+						}	catch(EmptyStackException e) { infoPanel.addText("Error: No checkers there to move.\nTry again.\n");
+						}	catch (Exception e) {infoPanel.addText("Error: " + e.getMessage() + "\n Try again.\n");}
+						break;
+		case NEXT: 		GameMethods.next(boardPanel, gameBoard, infoPanel);
+						break;
+		case QUIT:	 	System.exit(0);
+						break;
+		case UNKNOWN:	infoPanel.addText("Invalid command, try again.\n");
+						break;
+		case ECHO:		infoPanel.addText(u.input);
+						break;
 		}
 	}
 }

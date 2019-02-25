@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import game_controller.Game;
 import user_interface.InformationPanel;
 
+@SuppressWarnings("serial")
 public class DicePanel extends JPanel{
 	//Variables storing the first two rolls to see who goes first
 	private int firstRoll;
@@ -75,24 +76,38 @@ public class DicePanel extends JPanel{
 	 * Method which does intial game rolls to see who starts
 	 */
 	public void rollInitialThrows() {
+		firstRoll = 0;
+		secondRoll = 0;
+		
+		//Roll first die
 	    ThrowDice initialThrow1 = new ThrowDice(dice1, dice2, text);
 	    timer.schedule(initialThrow1, 0);
-       	try{
-       		Thread.sleep(20);
-       	} catch (Exception e){
-       		e.printStackTrace();
-       	}
-	    firstRoll = initialThrow1.lastRollResult;	
+	    
+	    //Wait until roll finished and take result
+	    while(firstRoll == 0) {
+	    	try{
+	    		Thread.sleep(20);
+	    	} catch (Exception e){
+	    		e.printStackTrace();
+	    	}
+	    	firstRoll = initialThrow1.lastRollResult;	
+	    }
+	    
 	    infoPanel.addText("Black rolled " + firstRoll + ".\n");
        	
+	    //Roll second die
 	    ThrowDice initialThrow2 = new ThrowDice(dice1, dice2, text);
 	    timer.schedule(initialThrow2, 0);
-       	try{
-       		Thread.sleep(20);
-       	} catch (Exception e){
-       		e.printStackTrace();
-       	}
-	    secondRoll = initialThrow2.lastRollResult;	
+
+	    //Wait until roll finished and take result
+	    while(secondRoll == 0) {
+	    	try{
+	    		Thread.sleep(20);
+	    	} catch (Exception e){
+	    		e.printStackTrace();
+	    	}
+	    	secondRoll = initialThrow2.lastRollResult;	
+	    }
 	    infoPanel.addText("Red rolled " + secondRoll + ".\n");
 	    
 	    //If the rolls were the same, print a message and redo the procedure
