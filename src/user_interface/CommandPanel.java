@@ -5,14 +5,15 @@ import java.awt.event.ActionListener;
 import java.util.EmptyStackException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import graphical_display.BoardPanel;
+import logic.GameLogicBoard;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import game_controller.GameMethods;
-import graphical_display.BoardPanel;
-import logic.GameLogicBoard;
+import graphical_display.DicePanel.ThrowDice;
 
 /**
  * This class is responsible for the command panel in the game.
@@ -91,6 +92,7 @@ public class CommandPanel extends JPanel{
 						}	catch (Exception e) {infoPanel.addText("Error: " + e.getMessage() + "\n Try again.\n");}
 						break;
 		case NEXT: 		GameMethods.next(boardPanel, gameBoard, infoPanel);
+		                ThrowDice.roll(gameBoard);
 						break;
 		case QUIT:	 	System.exit(0);
 						break;
@@ -101,3 +103,5 @@ public class CommandPanel extends JPanel{
 		}
 	}
 }
+	
+	
