@@ -32,7 +32,7 @@ public class Game {
 	private InformationPanel infoPanel;
 	private CommandPanel commandPanel;
 	private DicePanel dicePanel;
-	private JFrame gameFrame;
+	public static JFrame gameFrame;
 	private Gamestate gameState;
 
 	public Game() throws IOException {
