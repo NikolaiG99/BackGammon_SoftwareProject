@@ -6,7 +6,7 @@ import java.util.Stack;
  * of the game in terms of data.
  */
 public class GameLogicBoard{
-	private BoardDataStructure gameBoard;
+	private static BoardDataStructure gameBoard;
 	public GameState gameState;
 	
 	public GameLogicBoard(){
@@ -223,7 +223,7 @@ public class GameLogicBoard{
 	}
 	
 	//Method which fills the board with the pips in their starting positions
-	public void setStartingPositions() {
+	public static void setStartingPositions() {
 		if(gameBoard.boardIsEmpty() == false)
 			gameBoard.emptyBoard();
 		
