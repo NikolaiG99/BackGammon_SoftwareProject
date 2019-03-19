@@ -2,6 +2,7 @@ package user_interface;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.EmptyStackException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -12,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import game_controller.Game;
 import game_controller.GameMethods;
 import graphical_display.DicePanel.ThrowDice;
 
@@ -42,7 +44,12 @@ public class CommandPanel extends JPanel{
 		field.addActionListener(new ActionListener() {
 			 @Override
 	            public void actionPerformed(ActionEvent e) {
-				 		handleEvent(parseInputText(field.getText()));
+				 		try {
+							handleEvent(parseInputText(field.getText()));
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 				 		field.setText("");
 				 	}
 		});
@@ -51,7 +58,7 @@ public class CommandPanel extends JPanel{
 	}
 	
 	enum CommandType{
-		ECHO, QUIT, MOVE, UNKNOWN, NEXT;
+		ECHO, QUIT, MOVE, UNKNOWN, NEXT, CHEAT;
 	}
 	
 	class UserCommand{
@@ -75,11 +82,14 @@ public class CommandPanel extends JPanel{
 		else if(input.toLowerCase().equals("quit")) {
 			return new UserCommand(CommandType.QUIT, "");
 		}
+		else if(input.toLowerCase().equals("cheat")) {
+			return new UserCommand(CommandType.CHEAT, "");
+		}
 		else
 			return new UserCommand(CommandType.UNKNOWN, "");
 	}
 
-	private void handleEvent(UserCommand u) {
+	private void handleEvent(UserCommand u) throws IOException {
 		switch(u.type) {	
 		case MOVE: 		Pattern p = Pattern.compile("(\\d+)(\\s)(\\d+)");
 						Matcher m = p.matcher(u.input);
@@ -100,7 +110,13 @@ public class CommandPanel extends JPanel{
 						break;
 		case ECHO:		infoPanel.addText(u.input);
 						break;
-		}
+						
+		case CHEAT:     GameLogicBoard.setStartingPositions();
+		                Game.cheat();
+		                Game.drawAllPips();
+		                infoPanel.addText((gameBoard.isBlackTurn() ? Game.p1 : Game.p2) + ", you used cheat" + ".\n");
+		                break;
+			}
 	}
 }
 	
