@@ -102,6 +102,7 @@ public class CommandPanel extends JPanel{
 						}	catch (Exception e) {infoPanel.addText("Error: " + e.getMessage() + "\n Try again.\n");}
 						break;
 		case NEXT: 		GameMethods.next(boardPanel, gameBoard, infoPanel);
+		                GameLogicBoard.endGame();
 		                ThrowDice.roll(gameBoard);
 						break;
 		case QUIT:	 	System.exit(0);
