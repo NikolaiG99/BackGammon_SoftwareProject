@@ -3,10 +3,8 @@ import java.io.IOException;
 import java.util.EmptyStackException;
 import java.util.Stack;
 
-import game_controller.EndPanel;
 import game_controller.Game;
 import user_interface.EndFrame;
-import user_interface.IntroFrame;
 
 /**
  * This class is responsible for handling the logical representation
@@ -283,6 +281,7 @@ public class GameLogicBoard{
 		currentStack.push(new GameLogicPip(PipColour.BLACK, 28+i));
 	}
 	
+	//TODO Modify for OOP
 	public static void endGame() throws IOException{
 		countR = 0;
 		countB = 0;
@@ -308,11 +307,7 @@ public class GameLogicBoard{
 	    if (countB == 0){
 	    	Game.gameFrame.dispose();
 	    	new EndFrame(Game.p1);
-	    }
-	    	
-	    
-			
-		   
+	    }	  
 		
 	}
 }

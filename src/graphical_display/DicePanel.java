@@ -16,15 +16,13 @@ import game_controller.Game;
 @SuppressWarnings("serial")
 public class DicePanel extends JPanel {
 	// Variables storing the first two rolls to see who goes first
-	private static int firstRoll;
-	private static int secondRoll;
+	private int firstRoll;
+	private int secondRoll;
 	
-	private static int currentRoll;
-	
-	
+	private int currentRoll;
 
 	// The information panel which the panel can send text to
-	static InformationPanel infoPanel;
+	InformationPanel infoPanel;
 
 	// Timer to carry out rolls
 	private static Timer timer;
@@ -34,7 +32,7 @@ public class DicePanel extends JPanel {
 	private JLabel text;
 
 	public DicePanel(InformationPanel infoPanel) {
-		DicePanel.infoPanel = infoPanel;
+		this.infoPanel = infoPanel;
 
 		timer = new Timer();
 
@@ -97,19 +95,19 @@ public class DicePanel extends JPanel {
 		// If the rolls were the same, print a message and redo the procedure
 		if (firstRoll == secondRoll) {
 			infoPanel.addText("Same result for intial rolls. Rerolling.\n");
-			this.rollInitialThrows();
+			rollInitialThrows();
 		}
 	}
 
-	public static int getFirstRoll() {
+	public int getFirstRoll() {
 		return firstRoll;
 	}
 
-	public static int getSecondRoll() {
+	public int getSecondRoll() {
 		return secondRoll;
 	}
 
-	private static Icon getIcon(String name) {
+	private Icon getIcon(String name) {
 		return new ImageIcon(Game.class.getResource("/resources/" + name));
 	}
 
@@ -117,18 +115,18 @@ public class DicePanel extends JPanel {
 	 * Method which rolls the two dice & displays them, and returns the result
 	 */
 
-	public static class ThrowDice extends TimerTask {
-		private static JLabel dice1;
-		private static JLabel dice2;
-		private static JLabel text;
+	class ThrowDice extends TimerTask {
+		private JLabel dice1;
+		private JLabel dice2;
+		private JLabel text;
 		private Random number = new Random();
 		private int count;
 		int lastRollResult;
 
 		public ThrowDice(JLabel dice1, JLabel dice2, JLabel text) {
-			ThrowDice.dice1 = dice1;
-			ThrowDice.dice2 = dice2;
-			ThrowDice.text = text;
+			this.dice1 = dice1;
+			this.dice2 = dice2;
+			this.text = text;
 			count = 25;
 		}
 
@@ -144,33 +142,35 @@ public class DicePanel extends JPanel {
 				lastRollResult = roll1 + roll2 + 2;
 				text.setText("Total: " + lastRollResult);
 			} else {
-				this.cancel();
+				cancel();
 			}
-		}
-
-		// Method to roll dice when user types next
-		public static void roll(GameLogicBoard gameBoard) {
-			currentRoll = 0;
-
-			// Roll the dice
-			ThrowDice roll = new ThrowDice(dice1, dice2, text);
-			timer.schedule(roll, 0);
-
-			// Wait until roll finished and take result
-			while (currentRoll == 0) {
-				try {
-					Thread.sleep(20);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				currentRoll = roll.lastRollResult;
-			}
-
-			// Check and print which player rolled the dice and the dice total
-
-			infoPanel.addText((gameBoard.isBlackTurn() ? Game.p1 : Game.p2) + ", you rolled  " + currentRoll + ".\n");
-
 		}
 	}
-}
 
+	// Method to roll dice when user types next
+	public int roll(GameLogicBoard gameBoard) {
+		currentRoll = 0;
+		
+		// Roll the dice
+		ThrowDice roll = new ThrowDice(dice1, dice2, text);
+		timer.schedule(roll, 0);
+		
+		// Wait until roll finished and take result
+		while (currentRoll == 0) {
+			try {
+				Thread.sleep(20);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}		
+			currentRoll = roll.lastRollResult;
+		}
+		
+		// Check and print which player rolled the dice and the dice total
+		
+		infoPanel.addText((gameBoard.isBlackTurn() ? Game.p1 : Game.p2) + ", you rolled  " + currentRoll + ".\n");
+		
+		return currentRoll;
+			}
+}	
+	
+			
