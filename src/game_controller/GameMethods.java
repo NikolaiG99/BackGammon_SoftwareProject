@@ -1,8 +1,14 @@
 package game_controller;
 
+import java.io.IOException;
+import java.util.EmptyStackException;
+import java.util.Stack;
+
 import graphical_display.BoardCoordinateConstants;
 import graphical_display.BoardPanel;
 import logic.GameLogicBoard;
+import logic.GameLogicPip;
+import logic.PipColour;
 import user_interface.InformationPanel;
 
 /**
@@ -194,6 +200,18 @@ public class GameMethods{
 				movePipFromPointByNPoints(pointNum-i, 1, boardPanel, gameBoard);
 			}
 		}
+	}
+	
+	/**
+	 * Method to check, whether the game is over(if there is a winner)
+	 * 
+	 * @param gameBoard
+	 */
+	public static boolean gameIsEnded(GameLogicBoard gameBoard){
+		if(gameBoard.getNumberOfPipsOnPoint(0) == 30 || gameBoard.getNumberOfPipsOnPoint(25) == 30)
+			return true;
+		
+		else return false;
 	}
 	
 	static void CheatMovePipFromPointToBar(int pointNum) {

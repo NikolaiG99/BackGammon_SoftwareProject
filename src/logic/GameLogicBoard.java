@@ -1,10 +1,6 @@
 package logic;
-import java.io.IOException;
-import java.util.EmptyStackException;
-import java.util.Stack;
 
-import game_controller.Game;
-import user_interface.EndFrame;
+import java.util.Stack;
 
 /**
  * This class is responsible for handling the logical representation
@@ -13,10 +9,6 @@ import user_interface.EndFrame;
 public class GameLogicBoard{
 	private static BoardDataStructure gameBoard;
 	public GameState gameState;
-	
-	public static int countR;
-	public static int countB;
-	
 	
 	public GameLogicBoard(){
 		gameBoard = new BoardDataStructure();
@@ -279,35 +271,5 @@ public class GameLogicBoard{
 	currentStack = gameBoard.getPoint(24);
 	for(int i = 0; i < 2; i++)
 		currentStack.push(new GameLogicPip(PipColour.BLACK, 28+i));
-	}
-	
-	//TODO Modify for OOP
-	public static void endGame() throws IOException{
-		countR = 0;
-		countB = 0;
-	    for(int i = 1; i <= 24; i++) {
-	    	Stack<GameLogicPip> stack = gameBoard.getPoint(i);
-	    	try{
-	    	if ((stack.peek().colour == PipColour.RED))
-	    			countR++;
-	    	if ((stack.peek().colour == PipColour.BLACK))
-	    			countB++;
-	    	}
-	    	catch (EmptyStackException exception){
-	    		continue;
-	    	}
-	    	
-	    }
-	    
-	    if ((countR == 0)){
-	    	Game.gameFrame.dispose();
-	    	new EndFrame(Game.p2);
-	    }
-	    
-	    if (countB == 0){
-	    	Game.gameFrame.dispose();
-	    	new EndFrame(Game.p1);
-	    }	  
-		
 	}
 }
