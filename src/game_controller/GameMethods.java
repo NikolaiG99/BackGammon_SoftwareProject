@@ -195,4 +195,84 @@ public class GameMethods{
 			}
 		}
 	}
+	
+	static void CheatMovePipFromPointToBar(int pointNum) {
+		// Move logical representation of pip
+		int barPos = gameBoard.movePipToBar(pointNum);
+
+		// Calculate new coordinates for visual pip
+		int yPos;
+		if (barPos == 26) {
+			yPos = BoardCoordinateConstants.COORDS_BOTTOM_ROW[cheatBottom + 7];
+			cheatBottom++;
+			if (cheatBottom == 3)
+				cheatBottom =0;
+		}
+
+		else {
+			yPos = BoardCoordinateConstants.COORDS_TOP_ROW[cheatTop + 7];
+			cheatTop++;
+			if(cheatTop == 3)
+				cheatTop = 0;
+		}
+
+		// Move the pip on the given point, to the bar
+		boardPanel.movePip(gameBoard.getTopPipIdOnPoint(barPos), BoardCoordinateConstants.COORDS_POINT[barPos], yPos);
+	}
+
+	// Cheat Method to display pips in cheat position and be able to play on after cheat called
+	public static void cheat() {
+
+		// move black 24 to 5
+		movePipFromPointByNPoints(24, 19);
+		movePipFromPointByNPoints(24, 19);
+		// move red 19 to 24
+		movePipFromPointByNPoints(19, 5);
+		movePipFromPointByNPoints(19, 5);
+		movePipFromPointByNPoints(19, 5);
+		// move red 19 and 17 to 22
+		movePipFromPointByNPoints(19, 3);
+		movePipFromPointByNPoints(19, 3);
+		movePipFromPointByNPoints(17, 5);
+
+		// move red 17 and 12 to 21
+		movePipFromPointByNPoints(17, 4);
+		movePipFromPointByNPoints(17, 4);
+		movePipFromPointByNPoints(12, 9);
+
+		// move red 12 to 21,22 and 24 to then add to bar
+		movePipFromPointByNPoints(12, 9);
+		movePipFromPointByNPoints(12, 10);
+		movePipFromPointByNPoints(12, 12);
+		CheatMovePipFromPointToBar(21);
+		CheatMovePipFromPointToBar(22);
+		CheatMovePipFromPointToBar(24);
+
+		// move rest of red to bear off
+		Sprint1_MovePipFromPointToBearOff(12);
+		Sprint1_MovePipFromPointToBearOff(1);
+		Sprint1_MovePipFromPointToBearOff(1);
+
+		// move black 13 to 4,3 and 2
+		movePipFromPointByNPoints(13, 9);
+		movePipFromPointByNPoints(13, 9);
+		movePipFromPointByNPoints(13, 10);
+		movePipFromPointByNPoints(13, 10);
+		movePipFromPointByNPoints(13, 11);
+
+		// move black 8 to 2 and 1
+		movePipFromPointByNPoints(8, 6);
+		movePipFromPointByNPoints(8, 7);
+		movePipFromPointByNPoints(8, 7);
+
+		// move 3 from black 6 to bar
+        CheatMovePipFromPointToBar(6);
+		CheatMovePipFromPointToBar(6);
+		CheatMovePipFromPointToBar(6);
+
+		// move rest to bear off
+		Sprint1_MovePipFromPointToBearOff(6);
+		Sprint1_MovePipFromPointToBearOff(6);
+
+	}
 }
