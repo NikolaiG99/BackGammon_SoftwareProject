@@ -7,7 +7,9 @@ import java.util.EmptyStackException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import graphical_display.BoardPanel;
+import graphical_display.DicePanel;
 import logic.GameLogicBoard;
+import logic.LogicDice;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -31,11 +33,13 @@ public class CommandPanel extends JPanel{
 	private GameLogicBoard gameBoard;
 	private BoardPanel boardPanel;
 	InformationPanel infoPanel;
+	private DicePanel dicePanel;
 	
-	public CommandPanel(GameLogicBoard gameBoard, BoardPanel boardPanel, InformationPanel infoPanel){
+	public CommandPanel(GameLogicBoard gameBoard, BoardPanel boardPanel, InformationPanel infoPanel, DicePanel dicePanel){
 		this.gameBoard = gameBoard;
 		this.boardPanel = boardPanel;
 		this.infoPanel = infoPanel;
+		this.dicePanel = dicePanel;
 		
 		label = new JLabel("Enter Command: ");
 		this.add(label);
@@ -102,9 +106,13 @@ public class CommandPanel extends JPanel{
 						}	catch (Exception e) {infoPanel.addText("Error: " + e.getMessage() + "\n Try again.\n");}
 						break;
 		case NEXT: 		GameMethods.next(boardPanel, gameBoard, infoPanel);
-		                GameLogicBoard.endGame();
-		                ThrowDice.roll(gameBoard);
-						break;
+		                if(GameMethods.gameIsEnded(gameBoard))//TODO
+		                	;
+		                
+		                LogicDice diceThrow = new LogicDice();
+		                gameBoard.setCurrentRoll(diceThrow.roll());
+		                dicePanel.update(diceThrow);
+		                break;
 		case QUIT:	 	System.exit(0);
 						break;
 		case UNKNOWN:	infoPanel.addText("Invalid command, try again.\n");

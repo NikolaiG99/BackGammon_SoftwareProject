@@ -23,6 +23,8 @@ public class GameLogicBoard{
 	 */
 	class GameState{
 		private boolean isBlackTurn;
+		//TODO fix visibility
+		public int currentRoll;
 		
 		public GameState(boolean isBlackTurn) {
 			this.isBlackTurn = isBlackTurn;
@@ -32,6 +34,14 @@ public class GameLogicBoard{
 	//Resets the game state
 	public void newGameState(boolean isBlackTurn) {
 		gameState = new GameState(isBlackTurn);
+	}
+	
+	//Methods to provide access to current dice roll
+	public int getCurrentRoll() {
+		return gameState.currentRoll;
+	}
+	public void setCurrentRoll(int currentRoll) {
+		gameState.currentRoll = currentRoll;
 	}
 	
 	//Method returns true if it's black's turn, false otherwise.

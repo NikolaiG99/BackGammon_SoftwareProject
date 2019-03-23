@@ -8,7 +8,6 @@ import graphical_display.BoardCoordinateConstants;
 import graphical_display.BoardPanel;
 import logic.GameLogicBoard;
 import logic.GameLogicPip;
-import logic.PipColour;
 import user_interface.InformationPanel;
 
 /**

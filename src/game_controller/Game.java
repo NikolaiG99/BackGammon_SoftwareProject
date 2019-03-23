@@ -58,9 +58,10 @@ public class Game {
 		JPanel gamePanel = new JPanel();
 		gamePanel.add(boardPanel, BorderLayout.CENTER);
 
-		// Initialize information and command panels
+		// Initialize information, dice, and command panels
 		infoPanel = new InformationPanel();
-		commandPanel = new CommandPanel(gameBoard, boardPanel, infoPanel);
+		dicePanel = new DicePanel(infoPanel);
+		commandPanel = new CommandPanel(gameBoard, boardPanel, infoPanel, dicePanel);
 		
 		// Attach the information and command panels to the game panel
 		JPanel panel = new JPanel(new BorderLayout());
@@ -69,7 +70,6 @@ public class Game {
 		gamePanel.add(panel, BorderLayout.EAST);
 		
 		//Initialize and attach the panel with the dice
-		dicePanel = new DicePanel(infoPanel);
 	    gamePanel.add(dicePanel, BorderLayout.SOUTH);
 
 	    // Initialize title screen panel

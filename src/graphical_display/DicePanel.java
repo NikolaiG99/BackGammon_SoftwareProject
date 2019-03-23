@@ -1,14 +1,12 @@
 package graphical_display;
 
-import java.util.Random;
 import java.util.Timer;
-import java.util.TimerTask;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import logic.GameLogicBoard;
+import logic.LogicDice;
 import user_interface.InformationPanel;
 
 import game_controller.Game;
@@ -18,8 +16,6 @@ public class DicePanel extends JPanel {
 	// Variables storing the first two rolls to see who goes first
 	private int firstRoll;
 	private int secondRoll;
-	
-	private int currentRoll;
 
 	// The information panel which the panel can send text to
 	InformationPanel infoPanel;
@@ -53,16 +49,28 @@ public class DicePanel extends JPanel {
 		this.setSize(20, 20);
 		
 	}
+	
+	/**
+	 * Method to be called to update graphical image when logical dice are rolled
+	 */
+	public void update(LogicDice logicDice) {
+		Icon image1 = getIcon("dice" + (logicDice.roll1 + 1) + ".png");
+		Icon image2 = getIcon("dice" + (logicDice.roll2 + 1) + ".png");
+		dice1.setIcon(image1);
+		dice2.setIcon(image2);
+		
+		text.setText("Total: " + logicDice.currentRoll);
+	}
 
 	/*
-	 * Method which does intial game rolls to see who starts
+	 * Method which does initial game rolls to see who starts
 	 */
 	public void rollInitialThrows() {
 		firstRoll = 0;
 		secondRoll = 0;
 
 		// Roll first die
-		ThrowDice initialThrow1 = new ThrowDice(dice1, dice2, text);
+		LogicDice initialThrow1 = new LogicDice();
 		timer.schedule(initialThrow1, 0);
 
 		// Wait until roll finished and take result
@@ -73,12 +81,19 @@ public class DicePanel extends JPanel {
 				e.printStackTrace();
 			}
 			firstRoll = initialThrow1.lastRollResult;
+			
+			Icon image1 = getIcon("dice" + (initialThrow1.roll1 + 1) + ".png");
+			Icon image2 = getIcon("dice" + (initialThrow1.roll2 + 1) + ".png");
+			dice1.setIcon(image1);
+			dice2.setIcon(image2);
+			
+			text.setText("Total: " + firstRoll);
 		}
 
 		infoPanel.addText("Black rolled " + firstRoll + ".\n");
 
 		// Roll second die
-		ThrowDice initialThrow2 = new ThrowDice(dice1, dice2, text);
+		LogicDice initialThrow2 = new LogicDice();
 		timer.schedule(initialThrow2, 0);
 
 		// Wait until roll finished and take result
@@ -89,6 +104,13 @@ public class DicePanel extends JPanel {
 				e.printStackTrace();
 			}
 			secondRoll = initialThrow2.lastRollResult;
+			
+			Icon image1 = getIcon("dice" + (initialThrow2.roll1 + 1) + ".png");
+			Icon image2 = getIcon("dice" + (initialThrow2.roll2 + 1) + ".png");
+			dice1.setIcon(image1);
+			dice2.setIcon(image2);
+			
+			text.setText("Total: " + secondRoll);
 		}
 		infoPanel.addText("Red rolled " + secondRoll + ".\n");
 
@@ -110,67 +132,6 @@ public class DicePanel extends JPanel {
 	private Icon getIcon(String name) {
 		return new ImageIcon(Game.class.getResource("/resources/" + name));
 	}
-
-	/**
-	 * Method which rolls the two dice & displays them, and returns the result
-	 */
-
-	class ThrowDice extends TimerTask {
-		private JLabel dice1;
-		private JLabel dice2;
-		private JLabel text;
-		private Random number = new Random();
-		private int count;
-		int lastRollResult;
-
-		public ThrowDice(JLabel dice1, JLabel dice2, JLabel text) {
-			this.dice1 = dice1;
-			this.dice2 = dice2;
-			this.text = text;
-			count = 25;
-		}
-
-		public void run() {
-			if (count > 0) {
-				count--;
-				int roll1 = number.nextInt(6);
-				int roll2 = number.nextInt(6);
-				Icon image1 = getIcon("dice" + (roll1 + 1) + ".png");
-				Icon image2 = getIcon("dice" + (roll2 + 1) + ".png");
-				dice1.setIcon(image1);
-				dice2.setIcon(image2);
-				lastRollResult = roll1 + roll2 + 2;
-				text.setText("Total: " + lastRollResult);
-			} else {
-				cancel();
-			}
-		}
-	}
-
-	// Method to roll dice when user types next
-	public int roll(GameLogicBoard gameBoard) {
-		currentRoll = 0;
-		
-		// Roll the dice
-		ThrowDice roll = new ThrowDice(dice1, dice2, text);
-		timer.schedule(roll, 0);
-		
-		// Wait until roll finished and take result
-		while (currentRoll == 0) {
-			try {
-				Thread.sleep(20);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}		
-			currentRoll = roll.lastRollResult;
-		}
-		
-		// Check and print which player rolled the dice and the dice total
-		
-		infoPanel.addText((gameBoard.isBlackTurn() ? Game.p1 : Game.p2) + ", you rolled  " + currentRoll + ".\n");
-		
-		return currentRoll;
-			}
-}	
+}		
 	
 			
