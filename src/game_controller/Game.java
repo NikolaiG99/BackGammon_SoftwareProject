@@ -1,17 +1,18 @@
 package game_controller;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import graphical_display.BoardCoordinateConstants;
 import graphical_display.BoardPanel;
 import graphical_display.DicePanel;
 import logic.GameLogicBoard;
 import user_interface.CommandPanel;
 import user_interface.InformationPanel;
-import user_interface.IntroFrame;
 
 /**
  * This class connects the different aspects of the game, and the main class
@@ -20,56 +21,71 @@ import user_interface.IntroFrame;
 
 public class Game {
 	// Store player 1 and 2 name
-	public static String p1;
-	public static String p2;
+	public String p1;
+	public String p2;
 
 	// Position of the pip in bar position
-	public static int cheatTop = 0;
-	public static int cheatBottom = 0;
+	public static int CHEAT_TOP = 0;
+	public static int CHEAT_BOTTOM = 0;
 
-	private static GameLogicBoard gameBoard;
-	private static BoardPanel boardPanel;
+	private GameLogicBoard gameBoard;
+	private BoardPanel boardPanel;
 	private InformationPanel infoPanel;
-	private CommandPanel commandPanel;
+	private static CommandPanel commandPanel;
 	private DicePanel dicePanel;
-	public static JFrame gameFrame;
+	
+	private JPanel screenContainer;
+	private IntroPanel titlePanel;
+	static CardLayout cl;
 	
 	public Game() throws IOException {
 		// Initialize data and logic
 		gameBoard = new GameLogicBoard();
 
 		// Set up JFrame
-		gameFrame = new JFrame();
+		JFrame gameFrame = new JFrame();
 		gameFrame.setSize(940, 680);
 		gameFrame.setTitle("Backgammon");
 		gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		gameFrame.setResizable(false);
 
+		// Set up Card Layout to control different screens, e.g. title screen, game screen etc..
+		CardLayout cl = new CardLayout(5, 5);
+		screenContainer = new JPanel(cl);
+		
 		// Initialize and attach the board display panel
 		boardPanel = new BoardPanel("src/resources/Screen Shot 2019-02-05 at 21.04.05.png");
-		gameFrame.add(boardPanel, BorderLayout.CENTER);
+		JPanel gamePanel = new JPanel();
+		gamePanel.add(boardPanel, BorderLayout.CENTER);
 
 		// Initialize information and command panels
 		infoPanel = new InformationPanel();
 		commandPanel = new CommandPanel(gameBoard, boardPanel, infoPanel);
 		
-		//Initialize the dice panel
-		dicePanel = new DicePanel(infoPanel);
-
-		// Attach the information and command panels
+		// Attach the information and command panels to the game panel
 		JPanel panel = new JPanel(new BorderLayout());
 		panel.add(infoPanel, BorderLayout.NORTH);
 		panel.add(commandPanel, BorderLayout.SOUTH);
-		gameFrame.add(panel, BorderLayout.EAST);
-
-		// Initialize and attach panel with the dice
+		gamePanel.add(panel, BorderLayout.EAST);
+		
+		//Initialize and attach the panel with the dice
 		dicePanel = new DicePanel(infoPanel);
-		gameFrame.add(dicePanel, BorderLayout.SOUTH);
+	    gamePanel.add(dicePanel, BorderLayout.SOUTH);
+
+	    // Initialize title screen panel
+	    titlePanel = new IntroPanel();
+	    
+	    //Add a listener to the title panel button to switch to the game when pressed
+	    titlePanel.start.addActionListener(e -> cl.show(screenContainer, "game"));
+
+	    //Attach the title panel and game panel to the card layout container
+	    screenContainer.add(gamePanel, "game");
+	    screenContainer.add(titlePanel, "title screen");
 
 		// Display JFrame
-		gameFrame.setVisible(false);
-		
-		
+	    gameFrame.add(screenContainer);
+	    cl.show(screenContainer, "title screen");
+		gameFrame.setVisible(true);
 
 	}
 
@@ -79,14 +95,43 @@ public class Game {
 	 * method.
 	 */
 	public static void main(String[] args) throws IOException {
-		// Start game
+		//Start game
 		Game game = new Game();
+		
+		game.titlePanel.start.addActionListener(new ActionListener() {
+			 @Override
+	            public void actionPerformed(ActionEvent e) {
+				 
+					//Get player names and inform them of their colour
+					try {
+						game.p1 = game.titlePanel.p1.getText();
+						game.p2 = game.titlePanel.p2.getText();
+					} catch (Exception e1) {
+						game.p1 = "Player 1";
+						game.p2 = "Player 2";
+					}
+					game.infoPanel.addText(game.p1 + ", you are the black checker.\n");
+					game.infoPanel.addText(game.p2 + ", you are the red checker.\n");
+					
+					//Display initial positions of all checkers
+					GameMethods.drawAllPips(game.boardPanel, game.gameBoard);
 
-		// Create intro Frame with background image and start button
-		
-		//TODO Make this work
-		new IntroFrame(game.gameFrame, game.infoPanel, game);
-		
+					//Roll dice to see who starts and initialize game state
+					game.dicePanel.rollInitialThrows();
+					
+					if(game.dicePanel.getFirstRoll() > game.dicePanel.getSecondRoll()) {
+						game.gameBoard.newGameState(true); //Set black has first move
+						game.infoPanel.addText(game.p1 + " starts.\n");
+					}
+					else {
+						game.gameBoard.newGameState(false); //Set red has first move
+						game.infoPanel.addText(game.p2 + " starts.\n");
+					}
+					
+					//Display initial pip numbering according to whose turn in it
+					game.boardPanel.displayPipEnumeration(game.gameBoard.isBlackTurn());
+					
+				 	}
+		});
 	}
-	
 }
