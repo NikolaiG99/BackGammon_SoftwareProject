@@ -7,7 +7,7 @@ import java.util.Stack;
  * of the game in terms of data.
  */
 public class GameLogicBoard{
-	private static BoardDataStructure gameBoard;
+	protected static BoardDataStructure gameBoard;
 	public GameState gameState;
 	
 	public GameLogicBoard(){
@@ -48,6 +48,26 @@ public class GameLogicBoard{
 		}
 		
 		System.out.println("");	
+	}
+	
+	/**
+	 * A method which returns a copy of the underlying data structure
+	 */
+	public BoardDataStructure getDataStructure() {
+		BoardDataStructure ret = new BoardDataStructure();
+		
+		for(int i = 0; i < 28; i++) {
+			Stack<GameLogicPip> s = ret.getPoint(i);
+			
+			@SuppressWarnings("unchecked")
+			Stack<GameLogicPip> c = (Stack<GameLogicPip>) gameBoard.getPoint(i).clone();
+			
+			for(int j = c.size(); j > 0; j--) {
+				s.push(c.pop());
+			}
+		}
+		
+		return ret;
 	}
 	
 	//A method which returns an two-dimensional int array representation

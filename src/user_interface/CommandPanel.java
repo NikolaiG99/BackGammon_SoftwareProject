@@ -8,6 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import graphical_display.BoardPanel;
 import graphical_display.DicePanel;
+import logic.AvailablePlayAnalyser;
 import logic.GameLogicBoard;
 import logic.GameState;
 import logic.LogicDice;
@@ -117,6 +118,8 @@ public class CommandPanel extends JPanel{
 		case NEXT: 		GameMethods.next(boardPanel, gameBoard, gameState, infoPanel, logicDice, dicePanel);
 		                if(GameMethods.gameIsEnded(gameBoard))//TODO
 		                	;
+		                AvailablePlayAnalyser a = new AvailablePlayAnalyser(gameBoard, gameState);
+		                a.ListAvailablePlays();
 		                break;
 		                
 		case QUIT:	 	System.exit(0);
