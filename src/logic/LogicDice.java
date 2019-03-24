@@ -25,9 +25,6 @@ public class LogicDice{
 			secondDieRoll = randomObject.nextInt(6) + 1;
 			
 			numberOfTimesDiceRolled++;
-			
-			//TODO Update GameState
-			
 	}
 	
 	public int getFirstDieRoll() {

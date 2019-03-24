@@ -12,46 +12,9 @@ public class GameLogicBoard{
 	
 	public GameLogicBoard(){
 		gameBoard = new BoardDataStructure();
-		gameState = new GameState(true);
 		
 		//Fill board with the starting pip positions
 		setStartingPositions();
-	}
-	
-	/*
-	 * Class which keeps track of some necessary information as the game goes on
-	 */
-	class GameState{
-		private boolean isBlackTurn;
-		//TODO fix visibility
-		public int currentRoll;
-		
-		public GameState(boolean isBlackTurn) {
-			this.isBlackTurn = isBlackTurn;
-		}
-	}
-	
-	//Resets the game state
-	public void newGameState(boolean isBlackTurn) {
-		gameState = new GameState(isBlackTurn);
-	}
-	
-	//Methods to provide access to current dice roll
-	public int getCurrentRoll() {
-		return gameState.currentRoll;
-	}
-	public void setCurrentRoll(int currentRoll) {
-		gameState.currentRoll = currentRoll;
-	}
-	
-	//Method returns true if it's black's turn, false otherwise.
-	public boolean isBlackTurn(){
-		return gameState.isBlackTurn;
-	}
-	
-	//Method which steps the game state forward one turn
-	public void nextTurn() {
-		gameState.isBlackTurn = !gameState.isBlackTurn;
 	}
 
 	//Method for testing which prints the board's contents to console

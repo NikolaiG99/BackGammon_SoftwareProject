@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 import graphical_display.BoardPanel;
 import graphical_display.DicePanel;
 import logic.GameLogicBoard;
+import logic.GameState;
 import logic.LogicDice;
 
 import javax.swing.JLabel;
@@ -34,6 +35,7 @@ public class CommandPanel extends JPanel{
 	InformationPanel infoPanel;
 	private DicePanel dicePanel;
 	private LogicDice logicDice;
+	private GameState gameState = null;
 	
 	public CommandPanel(GameLogicBoard gameBoard, LogicDice logicDice, BoardPanel boardPanel, InformationPanel infoPanel, DicePanel dicePanel){
 		this.gameBoard = gameBoard;
@@ -60,6 +62,11 @@ public class CommandPanel extends JPanel{
 		});
 		
 		this.add(field);
+	}
+	
+	public void initializeGameState(GameState gameState) {
+		if(this.gameState == null)
+			this.gameState = gameState;
 	}
 	
 	enum CommandType{
@@ -102,12 +109,12 @@ public class CommandPanel extends JPanel{
 						try {
 							GameMethods.Sprint2_MoveCheckerFromPipToPip(
 									Integer.parseInt(m.group(1)),
-									Integer.parseInt(m.group(3)), boardPanel, gameBoard);
+									Integer.parseInt(m.group(3)), boardPanel, gameBoard, gameState);
 						}	catch(EmptyStackException e) { infoPanel.addText("Error: No checkers there to move.\nTry again.\n");
 						}	catch (Exception e) {infoPanel.addText("Error: " + e.getMessage() + "\n Try again.\n");}
 						break;
 						
-		case NEXT: 		GameMethods.next(boardPanel, gameBoard, infoPanel, logicDice, dicePanel);
+		case NEXT: 		GameMethods.next(boardPanel, gameBoard, gameState, infoPanel, logicDice, dicePanel);
 		                if(GameMethods.gameIsEnded(gameBoard))//TODO
 		                	;
 		                break;

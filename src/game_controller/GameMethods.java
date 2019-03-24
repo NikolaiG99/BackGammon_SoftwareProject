@@ -9,6 +9,7 @@ import graphical_display.BoardPanel;
 import graphical_display.DicePanel;
 import logic.GameLogicBoard;
 import logic.GameLogicPip;
+import logic.GameState;
 import logic.LogicDice;
 import user_interface.InformationPanel;
 
@@ -50,11 +51,11 @@ public class GameMethods{
 	 * @param startPoint The pip to move the checker from
 	 * @param endPoint The pip to move the checker to
 	 */
-	public static void Sprint2_MoveCheckerFromPipToPip(int startPip, int endPip, BoardPanel boardPanel, GameLogicBoard gameBoard) {
+	public static void Sprint2_MoveCheckerFromPipToPip(int startPip, int endPip, BoardPanel boardPanel, GameLogicBoard gameBoard, GameState gameState) {
 		int step;
 		
 		//Account for ordering of pip enumeration in the input
-		if(!gameBoard.isBlackTurn()) {
+		if(!gameState.isBlackTurn()) {
 			startPip = 25 - startPip;
 			endPip = 25 - endPip;
 			step = endPip - startPip;
@@ -63,12 +64,12 @@ public class GameMethods{
 			step = startPip - endPip;
 		
 		//Prevent the moving of checkers of wrong colour(not their turn)
-		if((gameBoard.isBlackTurn() && gameBoard.topPipColourOnPointIsRed(startPip))
-				|| (!gameBoard.isBlackTurn() && !gameBoard.topPipColourOnPointIsRed(startPip)))
+		if((gameState.isBlackTurn() && gameBoard.topPipColourOnPointIsRed(startPip))
+				|| (!gameState.isBlackTurn() && !gameBoard.topPipColourOnPointIsRed(startPip)))
 				throw new RuntimeException("Cannot move this checker colour, it is not their turn.");
 		
 		//Provide error information if user tries to move checker wrong way
-		if((!gameBoard.isBlackTurn() && startPip > endPip) || (gameBoard.isBlackTurn() && startPip < endPip))
+		if((!gameState.isBlackTurn() && startPip > endPip) || (gameState.isBlackTurn() && startPip < endPip))
 			throw new RuntimeException("You cannot move a checker backwards.");
 		
 		//Move pips
@@ -78,17 +79,20 @@ public class GameMethods{
 	/**
 	 * Method moves the game forward one turn, updating all necessary parts
 	 */
-	public static void next(BoardPanel boardPanel, GameLogicBoard gameBoard, InformationPanel infoPanel, LogicDice logicDice, DicePanel dicePanel) {
-		gameBoard.nextTurn();
-		boardPanel.displayPipEnumeration(gameBoard.isBlackTurn());
-		boardPanel.repaint();
-		infoPanel.addText("Next turn.\nRolling.\n");
+	public static void next(BoardPanel boardPanel, GameLogicBoard gameBoard, GameState gameState, InformationPanel infoPanel, LogicDice logicDice, DicePanel dicePanel) {
 		logicDice.roll();
 		dicePanel.update(logicDice);
-		String msg = gameBoard.isBlackTurn() ? "Black rolled " : "Red rolled ";
-		msg += (logicDice.getFirstDieRoll() + logicDice.getSecondDieRoll());
+		
+		gameState.nextTurn(logicDice);
+		boardPanel.displayPipEnumeration(gameState.isBlackTurn());
+		
+		dicePanel.repaint();
+		boardPanel.repaint();
+		
+		infoPanel.addText("Next turn.\nRolling.\n");
+		String msg = gameState.isBlackTurn() ? "Black rolled " : "Red rolled ";
+		msg += gameState.getCurrentRoll();
 		infoPanel.addText(msg + "\n");
-		//TODO update gamestate
 	}
 	
 	/**

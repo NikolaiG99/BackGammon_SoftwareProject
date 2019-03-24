@@ -12,6 +12,7 @@ import graphical_display.BoardPanel;
 import graphical_display.DicePanel;
 import logic.GameLogicBoard;
 import logic.GameLogicPip;
+import logic.GameState;
 import logic.LogicDice;
 import user_interface.CommandPanel;
 import user_interface.InformationPanel;
@@ -33,9 +34,10 @@ public class Game {
 	private GameLogicBoard gameBoard;
 	private BoardPanel boardPanel;
 	private InformationPanel infoPanel;
-	private static CommandPanel commandPanel;
+	private final CommandPanel commandPanel;
 	private  LogicDice logicDice;
 	private DicePanel dicePanel;
+	private GameState gameState;
 	
 	private JPanel screenContainer;
 	private IntroPanel titlePanel;
@@ -117,16 +119,17 @@ public class Game {
 					
 					//Roll dice to see who starts and initialize game state
 					if(game.rollInitialThrows().isBlack()) {
-						game.gameBoard.newGameState(true); //Set black has first move
+						game.gameState = new GameState(true, game.logicDice); //Set black has first move
 						game.infoPanel.addText(game.p1 + " starts.\n");
 					}
 					else {
-						game.gameBoard.newGameState(false); //Set red has first move
+						game.gameState = new GameState(false, game.logicDice); //Set red has first move
 						game.infoPanel.addText(game.p2 + " starts.\n");
 					}
+					game.commandPanel.initializeGameState(game.gameState);
 					
 					//Display initial pip numbering according to whose turn in it
-					game.boardPanel.displayPipEnumeration(game.gameBoard.isBlackTurn());
+					game.boardPanel.displayPipEnumeration(game.gameState.isBlackTurn());
 					
 				 	}
 		});
