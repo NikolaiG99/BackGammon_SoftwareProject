@@ -5,7 +5,9 @@ package logic;
  */
 public class GameState{
 		private boolean isBlackTurn;
-		private int currentRoll;
+		private int currentRollTotal;
+		private int currentRollDie1;
+		private int currentRollDie2;
 		private int turnNumber;
 		private int initialNumberOfTimesDiceRolled;
 		
@@ -17,7 +19,9 @@ public class GameState{
 		}
 
 		private void updateRoll(LogicDice logicDice) {
-			currentRoll = logicDice.firstDieRoll + logicDice.secondDieRoll;
+			currentRollDie1 = logicDice.firstDieRoll;
+			currentRollDie2 = logicDice.secondDieRoll;
+			currentRollTotal = currentRollDie1 + currentRollDie2;
 		}
 		
 		/**
@@ -29,10 +33,24 @@ public class GameState{
 		}
 		
 		/**
-		 * Method which returns the current dice roll
+		 * Method which returns the current dice roll total
 		 */
 		public int getCurrentRoll() {
-			return currentRoll;
+			return currentRollTotal;
+		}
+		
+		/**
+		 * Method which returns the roll on the first die
+		 */
+		public int getCurrentRollDie1() {
+			return currentRollDie1;
+		}
+		
+		/**
+		 * Method which returns the roll on the second die
+		 */
+		public int getCurrentRollDie2() {
+			return currentRollDie2;
 		}
 		
 		/**
