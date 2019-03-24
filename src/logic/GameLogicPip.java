@@ -12,6 +12,22 @@ public class GameLogicPip{
 		this.colour = colour;
 		this.pipId = id;
 	}
+	
+	public GameLogicPip(boolean blackPip, int id){
+		if(blackPip)
+			colour = PipColour.BLACK;
+		else
+			colour = PipColour.RED;
+		
+		this.pipId = id;
+	}
+	
+	public boolean isBlack() {
+		if(colour == PipColour.BLACK)
+			return true;
+		else
+			return false;
+	}
 }
 
 enum PipColour{

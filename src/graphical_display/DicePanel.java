@@ -62,6 +62,8 @@ public class DicePanel extends JPanel {
 		dice2.setIcon(image2);
 		
 		text.setText("Total: " + (logicDice.getFirstDieRoll() + logicDice.getSecondDieRoll()));
+		
+		numberOfTimesDiceUpdated++;
 	}
 
 	private Icon getIcon(String name) {

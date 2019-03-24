@@ -13,7 +13,7 @@ public class LogicDice{
 	int firstDieRoll;
 	int secondDieRoll;
 
-	LogicDice(){
+	public LogicDice(){
 		numberOfTimesDiceRolled = 0;
 	}
 	
