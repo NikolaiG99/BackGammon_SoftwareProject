@@ -113,24 +113,18 @@ public class AvailablePlayAnalyser{
 			List<Integer> availablePositions = new ArrayList<Integer>();
 			availablePositions = black ? getStacksWithBlackCheckers() : getStacksWithRedCheckers();
 			
-			List<Hop> possibleFirstHops = new ArrayList<Hop>();
+			//Get a list of possible hops using the first die roll
+			List<Hop> possibleFirstHopsWithRoll1 = new ArrayList<Hop>();
+			possibleFirstHopsWithRoll1 = generatePossibleHops(roll1, availablePositions);
 			
-			//For each available position starting from the smallest generate every possible first hop
-			for(Integer i: availablePositions) {
-				if(i == 26){ //Bar for red
-					Hop hop = new Hop(i, 25 + roll1, false);
-					possibleFirstHops.add(hop);
-				} else if(i == 27) { //Bar for black
-					Hop hop = new Hop(i, roll1, false);
-					possibleFirstHops.add(hop);
-				}else if(i + roll1 >= 0 && i + roll1 <= 25){ //General case
-					Hop hop = new Hop(i, i+roll1, false);
-					possibleFirstHops.add(hop);
-				}
-			}
+			//Check if any hop is a hit, and annotate appropriately 
+			checkForAndHandleHits(possibleFirstHopsWithRoll1);
 			
-			//Check if a play is a hit, and annotate appropriately 
-			checkForAndHandleHits(possibleFirstHops);
+			//Check if any hop is invalid because of opponents checkers
+			checkForAndHandleInvalidHops(possibleFirstHopsWithRoll1);
+			
+			//Check if with the second roll we have new possible second hops & form plays where there are
+			List<Integer> availableNewPositions = new ArrayList<Integer>();
 			
 			for(Hop h : possibleFirstHops) {
 				System.out.println(h.toString() + "\n");
@@ -162,12 +156,49 @@ public class AvailablePlayAnalyser{
 		return availablePositions;
 	}
 	
+	/*
+	 * Method checks if any hop lands on a stack with one checker of the opposite colour and adds "*" if so
+	 */
 	private void checkForAndHandleHits(List<Hop> l) {
 		for(Hop h: l) {
 			if(gameBoard.getNumberOfPipsOnPoint(h.end) == 1)
 				if(gameBoard.topPipColourOnPointIsRed(h.start) != gameBoard.topPipColourOnPointIsRed(h.end))
 					h.isHit = true;
 		}
+	}
+	
+	/*
+	 * Method checks if any hops lands on a stack with more than one checker of the opposite colour and removes it if so
+	 */
+	private void checkForAndHandleInvalidHops(List<Hop> l) {
+		for(Hop h: l) {
+			if(gameBoard.getNumberOfPipsOnPoint(h.end) > 1)
+				if(gameBoard.topPipColourOnPointIsRed(h.start) != gameBoard.topPipColourOnPointIsRed(h.end))
+					l.remove(h);
+		}
+	}
+	
+	/*
+	 * Method generates a list of possible hops given a die value(1 to 6) and a list of possible starting points
+	 */
+	private List<Hop> generatePossibleHops(int rollValue, List<Integer> availablePositions){
+		List<Hop> possibleHops = new ArrayList<Hop>();
+		
+		//For each available position starting from the smallest generate every possible first hop
+		for(Integer i: availablePositions) {
+			if(i == 26){ //Bar for red
+				Hop hop = new Hop(i, 25 + rollValue, false);
+				possibleHops.add(hop);
+			} else if(i == 27) { //Bar for black
+				Hop hop = new Hop(i, rollValue, false);
+				possibleHops.add(hop);
+			}else if(i + rollValue >= 0 && i + rollValue <= 25){ //General case
+				Hop hop = new Hop(i, i+rollValue, false);
+				possibleHops.add(hop);
+			}
+		}
+		
+		return possibleHops;
 	}
 	
 	//TODO
