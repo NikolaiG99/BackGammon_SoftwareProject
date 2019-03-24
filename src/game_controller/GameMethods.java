@@ -2,6 +2,7 @@ package game_controller;
 
 import java.io.IOException;
 import java.util.EmptyStackException;
+import java.util.List;
 import java.util.Stack;
 
 import graphical_display.BoardCoordinateConstants;
@@ -215,14 +216,46 @@ public class GameMethods{
 	
 	/**
 	 * Method to check, whether the game is over(if there is a winner)
-	 * 
-	 * @param gameBoard
 	 */
 	public static boolean gameIsEnded(GameLogicBoard gameBoard){
 		if(gameBoard.getNumberOfPipsOnPoint(0) == 30 || gameBoard.getNumberOfPipsOnPoint(25) == 30)
 			return true;
 		
 		else return false;
+	}
+	
+	/**
+	 * Method which returns a list of Strings which denote possible plays as described in the "Assignments"
+	 * document(Without A,B,C,... enumeration). The list does not contain duplicate plays
+	 */
+	public static List<String> ListAvailablePlays(GameLogicBoard gameBoard, GameState gameState) {
+		/* 
+		 * The mechanism which removes duplicates works using the fact that: if a play consists of moving two
+		 * checkers off two different stacks which are further away from each other than the largest roll(out of
+		 * the two dice), then it cannot be a duplicate of any other play. This is true since checkers can 
+		 * only move in one direction, and a checker from one stack cannot be moved past the other stack
+		 * position(as it is further away than the largest die value will take it).
+		 * 
+		 * The method also checks for hits, and annotates the play appropriately
+		 * 
+		 * Also it makes the use of a "readyForBearOff" flag which checks that all the checkers are on a
+		 * player's home board, in which case it starts checking for bear-off plays.
+		 */
+		
+		//If a player rolls a double, they move twice and then the algorithm/mechanisms must be different so we
+		//pass to a special method
+		if(gameState.getCurrentRollDie1() == gameState.getCurrentRollDie2())
+			return ListAvailablePlaysDoubleRoll(gameBoard, gameState);
+		else {
+		
+			
+			
+		}
+	}
+	
+	//TODO
+	private static List<String> ListAvailablePlaysDoubleRoll(GameLogicBoard gameBoard, GameState gameState){
+		
 	}
 	
 	static void CheatMovePipFromPointToBar(int pointNum) {
