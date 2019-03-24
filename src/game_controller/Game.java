@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-import javax.swing.Icon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import graphical_display.BoardPanel;
@@ -66,7 +65,7 @@ public class Game {
 		// Initialize information, dice, and command panels
 		infoPanel = new InformationPanel();
 		dicePanel = new DicePanel();
-		commandPanel = new CommandPanel(gameBoard, boardPanel, infoPanel, dicePanel);
+		commandPanel = new CommandPanel(gameBoard, logicDice, boardPanel, infoPanel, dicePanel);
 		
 		// Attach the information and command panels to the game panel
 		JPanel panel = new JPanel(new BorderLayout());
@@ -115,7 +114,7 @@ public class Game {
 					
 					//Display initial positions of all checkers
 					GameMethods.drawAllPips(game.boardPanel, game.gameBoard);
-
+					
 					//Roll dice to see who starts and initialize game state
 					if(game.rollInitialThrows().isBlack()) {
 						game.gameBoard.newGameState(true); //Set black has first move
@@ -145,11 +144,14 @@ public class Game {
 					
 			// Wait until first roll finished and take result
 			while (logicDice.getNumberOfTimesDiceRolled() != initialNumRolls + 1) {
+				logicDice.roll();
+				
 				try {
 					Thread.sleep(20);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+				
 				firstRoll = logicDice.getFirstDieRoll() + logicDice.getSecondDieRoll();
 			}
 			
@@ -158,11 +160,14 @@ public class Game {
 
 			// Wait until second roll finished and take result
 			while (logicDice.getNumberOfTimesDiceRolled() != initialNumRolls + 2) {
+				logicDice.roll();
+				
 				try {
 					Thread.sleep(20);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+				
 				secondRoll = logicDice.getFirstDieRoll() + logicDice.getSecondDieRoll();
 			}
 			dicePanel.update(logicDice);

@@ -6,8 +6,10 @@ import java.util.Stack;
 
 import graphical_display.BoardCoordinateConstants;
 import graphical_display.BoardPanel;
+import graphical_display.DicePanel;
 import logic.GameLogicBoard;
 import logic.GameLogicPip;
+import logic.LogicDice;
 import user_interface.InformationPanel;
 
 /**
@@ -76,11 +78,17 @@ public class GameMethods{
 	/**
 	 * Method moves the game forward one turn, updating all necessary parts
 	 */
-	public static void next(BoardPanel boardPanel, GameLogicBoard gameBoard, InformationPanel infoPanel) {
+	public static void next(BoardPanel boardPanel, GameLogicBoard gameBoard, InformationPanel infoPanel, LogicDice logicDice, DicePanel dicePanel) {
 		gameBoard.nextTurn();
 		boardPanel.displayPipEnumeration(gameBoard.isBlackTurn());
 		boardPanel.repaint();
-		infoPanel.addText("Next turn.\n");
+		infoPanel.addText("Next turn.\nRolling.\n");
+		logicDice.roll();
+		dicePanel.update(logicDice);
+		String msg = gameBoard.isBlackTurn() ? "Black rolled " : "Red rolled ";
+		msg += (logicDice.getFirstDieRoll() + logicDice.getSecondDieRoll());
+		infoPanel.addText(msg + "\n");
+		//TODO update gamestate
 	}
 	
 	/**

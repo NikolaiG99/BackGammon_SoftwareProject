@@ -33,12 +33,14 @@ public class CommandPanel extends JPanel{
 	private BoardPanel boardPanel;
 	InformationPanel infoPanel;
 	private DicePanel dicePanel;
+	private LogicDice logicDice;
 	
-	public CommandPanel(GameLogicBoard gameBoard, BoardPanel boardPanel, InformationPanel infoPanel, DicePanel dicePanel){
+	public CommandPanel(GameLogicBoard gameBoard, LogicDice logicDice, BoardPanel boardPanel, InformationPanel infoPanel, DicePanel dicePanel){
 		this.gameBoard = gameBoard;
 		this.boardPanel = boardPanel;
 		this.infoPanel = infoPanel;
 		this.dicePanel = dicePanel;
+		this.logicDice = logicDice;
 		
 		label = new JLabel("Enter Command: ");
 		this.add(label);
@@ -104,25 +106,25 @@ public class CommandPanel extends JPanel{
 						}	catch(EmptyStackException e) { infoPanel.addText("Error: No checkers there to move.\nTry again.\n");
 						}	catch (Exception e) {infoPanel.addText("Error: " + e.getMessage() + "\n Try again.\n");}
 						break;
-		case NEXT: 		GameMethods.next(boardPanel, gameBoard, infoPanel);
+						
+		case NEXT: 		GameMethods.next(boardPanel, gameBoard, infoPanel, logicDice, dicePanel);
 		                if(GameMethods.gameIsEnded(gameBoard))//TODO
 		                	;
-		                
-		                LogicDice diceThrow = new LogicDice();
-		                gameBoard.setCurrentRoll(diceThrow.roll());
-		                dicePanel.update(diceThrow);
 		                break;
+		                
 		case QUIT:	 	System.exit(0);
 						break;
+						
 		case UNKNOWN:	infoPanel.addText("Invalid command, try again.\n");
 						break;
+						
 		case ECHO:		infoPanel.addText(u.input);
 						break;
 						
 		case CHEAT:     GameLogicBoard.setStartingPositions();
-		                Game.cheat();
-		                Game.drawAllPips();
-		                infoPanel.addText((gameBoard.isBlackTurn() ? Game.p1 : Game.p2) + ", you used cheat" + ".\n");
+		             //   Game.cheat();
+		              //  Game.drawAllPips();
+		               // infoPanel.addText((gameBoard.isBlackTurn() ? Game.p1 : Game.p2) + ", you used cheat" + ".\n");
 		                break;
 			}
 	}
