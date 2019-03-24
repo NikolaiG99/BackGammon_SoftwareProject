@@ -6,11 +6,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
+import javax.swing.Icon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import graphical_display.BoardPanel;
 import graphical_display.DicePanel;
 import logic.GameLogicBoard;
+import logic.LogicDice;
 import user_interface.CommandPanel;
 import user_interface.InformationPanel;
 
@@ -89,11 +91,6 @@ public class Game {
 
 	}
 
-	/*
-	 * The game is started here and immediately passed off to the introductory
-	 * frame, which when it's closed, continues the game at the "runGame()"
-	 * method.
-	 */
 	public static void main(String[] args) throws IOException {
 		//Start game
 		Game game = new Game();
@@ -117,7 +114,7 @@ public class Game {
 					GameMethods.drawAllPips(game.boardPanel, game.gameBoard);
 
 					//Roll dice to see who starts and initialize game state
-					game.dicePanel.rollInitialThrows();
+					game.rollInitialThrows();
 					
 					if(game.dicePanel.getFirstRoll() > game.dicePanel.getSecondRoll()) {
 						game.gameBoard.newGameState(true); //Set black has first move
@@ -133,5 +130,64 @@ public class Game {
 					
 				 	}
 		});
+	}
+	
+	/*
+	 * Method which rolls the dice initially to see who goes first and carries out associated tasks
+	 */
+	private void rollInitialThrows() {
+			firstRoll = 0;
+			secondRoll = 0;
+
+			// Roll first die
+			LogicDice initialThrow1 = new LogicDice();
+			timer.schedule(initialThrow1, 0);
+
+			// Wait until roll finished and take result
+			while (firstRoll == 0) {
+				try {
+					Thread.sleep(20);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				firstRoll = initialThrow1.lastRollResult;
+				
+				Icon image1 = getIcon("dice" + (initialThrow1.roll1 + 1) + ".png");
+				Icon image2 = getIcon("dice" + (initialThrow1.roll2 + 1) + ".png");
+				dice1.setIcon(image1);
+				dice2.setIcon(image2);
+				
+				text.setText("Total: " + firstRoll);
+			}
+
+			infoPanel.addText("Black rolled " + firstRoll + ".\n");
+
+			// Roll second die
+			LogicDice initialThrow2 = new LogicDice();
+			timer.schedule(initialThrow2, 0);
+
+			// Wait until roll finished and take result
+			while (secondRoll == 0) {
+				try {
+					Thread.sleep(20);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				secondRoll = initialThrow2.lastRollResult;
+				
+				Icon image1 = getIcon("dice" + (initialThrow2.roll1 + 1) + ".png");
+				Icon image2 = getIcon("dice" + (initialThrow2.roll2 + 1) + ".png");
+				dice1.setIcon(image1);
+				dice2.setIcon(image2);
+				
+				text.setText("Total: " + secondRoll);
+			}
+			infoPanel.addText("Red rolled " + secondRoll + ".\n");
+
+			// If the rolls were the same, print a message and redo the procedure
+			if (firstRoll == secondRoll) {
+				infoPanel.addText("Same result for intial rolls. Rerolling.\n");
+				rollInitialThrows();
+			}
 	}
 }

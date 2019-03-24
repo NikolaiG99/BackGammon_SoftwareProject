@@ -17,7 +17,6 @@ import javax.swing.JTextField;
 
 import game_controller.Game;
 import game_controller.GameMethods;
-import graphical_display.DicePanel.ThrowDice;
 
 /**
  * This class is responsible for the command panel in the game.
