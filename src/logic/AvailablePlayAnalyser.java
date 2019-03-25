@@ -30,6 +30,8 @@ public class AvailablePlayAnalyser{
 	private GameLogicBoardSimulation gameBoardSimulation;
 	List<GameMove> availablePlays;
 	
+	private int numberOfCheckersNotOnHomeBoard;
+	
 	public AvailablePlayAnalyser(GameLogicBoard gameBoard, GameState gameState) {
 		gameBoardSimulation = new GameLogicBoardSimulation(gameBoard);
 		
@@ -37,6 +39,8 @@ public class AvailablePlayAnalyser{
 		this.gameState = gameState;
 		
 		availablePlays = new ArrayList<GameMove>();
+		
+		numberOfCheckersNotOnHomeBoard = calculateCheckersNotOnHomeBoard();
 	}
 	
 	
@@ -312,6 +316,25 @@ public class AvailablePlayAnalyser{
 		return possibleHops;
 	}
 	
+	/*
+	 * Method returns the number of checkers not on the player's homeboard(excluding bear-off)
+	 */
+	private int calculateCheckersNotOnHomeBoard() {
+		int count = 0;
+		if(gameState.isBlackTurn()) {
+			for(int i = 7; i <= 24; i++) {
+				count += gameBoardSimulation.getNumberOfPipsOnPoint(i);
+			}
+			count += gameBoardSimulation.getNumberOfPipsOnPoint(26);
+		}
+		else {
+			for(int i = 1; i <= 18; i++) {
+				count += gameBoardSimulation.getNumberOfPipsOnPoint(i);
+			}
+			count += gameBoardSimulation.getNumberOfPipsOnPoint(26);
+		}
+		return count;
+	}
 	//TODO
 	private List<String> ListAvailablePlaysDoubleRoll(GameLogicBoard gameBoard, GameState gameState){
 		return null;
