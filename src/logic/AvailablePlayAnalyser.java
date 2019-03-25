@@ -188,6 +188,29 @@ public class AvailablePlayAnalyser{
 				}
 			}
 			
+			//Remove all available plays which go to bear-off unless in bear-off position
+			List<GameMove> toRemove = new ArrayList<GameMove>();
+			for(GameMove g : availablePlays) {
+				if(numberOfCheckersNotOnHomeBoard > 1) {
+					if(g.firstHop.end == 0 || g.secondHop.end == 0)
+						toRemove.add(g);
+				}
+				else if(numberOfCheckersNotOnHomeBoard == 1) {
+					//Simulate first hop
+					gameBoardSimulation.moveCheckerFromStackToStack(g.firstHop.start, g.firstHop.end);
+					
+					if(calculateCheckersNotOnHomeBoard() != 0)
+						if(g.firstHop.end == 0 || g.secondHop.end == 0)
+							toRemove.add(g);
+					
+					//Revert simulation
+					gameBoardSimulation.moveCheckerFromStackToStack(g.firstHop.end, g.firstHop.start);
+				}
+			}
+			for(GameMove r : toRemove) {
+				availablePlays.remove(r);
+			}
+			
 			for(GameMove g : availablePlays) {
 				System.out.println(g.toString());
 			}
@@ -309,6 +332,14 @@ public class AvailablePlayAnalyser{
 				possibleHops.add(hop);
 			}else if(i + rollValue >= 0 && i + rollValue <= 25){ //General case
 				Hop hop = new Hop(i, i+rollValue, false);
+				possibleHops.add(hop);
+			}
+			else if(i + rollValue < 0 && i > 0)  { //Bear-off for black
+				Hop hop = new Hop(i, 0, false);
+				possibleHops.add(hop);
+			}
+			else if(i + rollValue > 25 && i < 25) { //Bear-off for red
+				Hop hop = new Hop(i, 25, false);
 				possibleHops.add(hop);
 			}
 		}
