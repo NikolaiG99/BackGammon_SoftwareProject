@@ -75,6 +75,24 @@ public class GameLogicBoard{
 		return ret;
 	}
 	
+	public boolean equals(GameLogicBoard otherBoard) {
+		BoardDataStructure board1 = getDataStructure();
+		BoardDataStructure board2 = otherBoard.getDataStructure();
+		
+		try {
+			for(int i = 0; i < 28; i++) {
+				for(int j = board1.getPoint(i).size(); j > 0; j--) {
+					if(board1.getPoint(i).pop().pipId != board2.getPoint(i).pop().pipId)
+						return false;
+				}
+			}
+		} catch(Exception e) {
+			return false;
+		}
+		
+		return true;
+	}
+	
 	//A method which returns an two-dimensional int array representation
 	//of the position of the pips. [1] is point 1, [24] is point
 	//24, [0], [25] is bear off for black and red respectively. [26], [27] is

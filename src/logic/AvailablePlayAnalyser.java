@@ -213,9 +213,9 @@ public class AvailablePlayAnalyser{
 			
 			//For any plays that might be duplicates, check them for being duplicates and remove them if they are
 			List<GameMove> possibleDuplicates = findPossibleDuplicates(availablePlays);
-			List<GameMove> Duplicates = getDuplicates(possibleDuplicates);
+			List<GameMove> duplicates = getDuplicates(possibleDuplicates);
 			
-			for(GameMove g : Duplicates) {
+			for(GameMove g : duplicates) {
 				availablePlays.remove(g);
 			}
 			
@@ -228,8 +228,62 @@ public class AvailablePlayAnalyser{
 	}
 
 	private List<GameMove> getDuplicates(List<GameMove> possibleDuplicates) {
-		// TODO Auto-generated method stub
-		return null;
+		List<GameMove> duplicates = new ArrayList<GameMove>();
+		
+		for(int i = 0; i < possibleDuplicates.size(); i++) {
+			for(int j = 0; j < possibleDuplicates.size(); j++) {
+				if(i == j) {
+					continue;
+				} else {
+					if(areDuplicates(possibleDuplicates.get(i), possibleDuplicates.get(j))) {
+						duplicates.add(possibleDuplicates.get(i));
+					}
+				}
+			}
+		}
+		
+		return duplicates;
+	}
+
+	/*
+	 * Method tests if two plays are duplicates by simulating one and then simulating the second move, but in
+	 * reverse. If the gameBoard is unchanged, they are duplicates.
+	 */
+	private boolean areDuplicates(GameMove gameMove, GameMove gameMove2) {
+		GameLogicPip p1 = null;
+		GameLogicPip p2 = null;
+		
+		try {
+			//Simulate first move
+			gameBoardSimulation.moveCheckerFromStackToStack(gameMove.firstHop.start, gameMove.firstHop.end);
+			if(gameMove.firstHop.isHit)
+				p1 = gameBoardSimulation.gameBoard.getPoint(gameMove.firstHop.end).pop();
+				
+			gameBoardSimulation.moveCheckerFromStackToStack(gameMove.secondHop.start, gameMove.secondHop.end);
+			if(gameMove.secondHop.isHit)
+				p2 = gameBoardSimulation.gameBoard.getPoint(gameMove.secondHop.end).pop();
+			
+			//Simulate second move in reverse	
+			gameBoardSimulation.moveCheckerFromStackToStack(gameMove2.secondHop.end, gameMove2.secondHop.start);
+			if(gameMove2.secondHop.isHit)
+				gameBoardSimulation.gameBoard.getPoint(gameMove2.secondHop.end).push(p2);
+				
+			gameBoardSimulation.moveCheckerFromStackToStack(gameMove2.firstHop.end, gameMove2.firstHop.start);	
+			if(gameMove2.firstHop.isHit)
+				gameBoardSimulation.gameBoard.getPoint(gameMove2.firstHop.end).push(p1);
+			
+		} catch(Exception e) {
+			return false;
+		}
+		
+		if(gameBoard.equals(gameBoardSimulation)) {
+			return true;
+		}
+		else {
+			gameBoardSimulation = new GameLogicBoardSimulation(gameBoard);
+			return false;
+		}
+			
 	}
 
 	/*
@@ -364,11 +418,11 @@ public class AvailablePlayAnalyser{
 				Hop hop = new Hop(i, i+rollValue, false);
 				possibleHops.add(hop);
 			}
-			else if(i + rollValue < 0 && i > 0)  { //Bear-off for black
+			else if(i + rollValue < 1 && i > 0)  { //Bear-off for black
 				Hop hop = new Hop(i, 0, false);
 				possibleHops.add(hop);
 			}
-			else if(i + rollValue > 25 && i < 25) { //Bear-off for red
+			else if(i + rollValue > 24 && i < 25) { //Bear-off for red
 				Hop hop = new Hop(i, 25, false);
 				possibleHops.add(hop);
 			}
