@@ -87,10 +87,7 @@ public class CommandPanel extends JPanel{
 	
 	private UserCommand parseInputText(String input){
 		
-		if(input.matches("(\\d+)(\\s)(\\d+)")){
-			return new UserCommand(CommandType.MOVE, input);
-		}
-		else if(input.toLowerCase().equals("next")) {
+		if(input.toLowerCase().equals("next")) {
 			return new UserCommand(CommandType.NEXT, "");
 		}
 		else if(input.toLowerCase().equals("quit")) {
@@ -99,19 +96,20 @@ public class CommandPanel extends JPanel{
 		else if(input.toLowerCase().equals("cheat")) {
 			return new UserCommand(CommandType.CHEAT, "");
 		}
+		else if(input.trim().matches("[a-z|A-Z]+")){
+			return new UserCommand(CommandType.MOVE, input);
+		}
 		else
 			return new UserCommand(CommandType.UNKNOWN, "");
 	}
 
 	private void handleEvent(UserCommand u) throws IOException {
 		switch(u.type) {	
-		case MOVE: 		Pattern p = Pattern.compile("(\\d+)(\\s)(\\d+)");
+		case MOVE: 		Pattern p = Pattern.compile("([a-z|A-Z]+)");
 						Matcher m = p.matcher(u.input);
 						m.find();
 						try {
-							GameMethods.Sprint3_MoveCheckerFromPipToPip(
-									Integer.parseInt(m.group(1)),
-									Integer.parseInt(m.group(3)), boardPanel, gameBoard, gameState);
+							AvailablePlayAnalyser.executePlay(m.group(1), boardPanel, gameBoard, gameState);
 						}	catch(EmptyStackException e) { infoPanel.addText("Error: No checkers there to move.\nTry again.\n");
 						}	catch (Exception e) {infoPanel.addText("Error: " + e.getMessage() + "\n Try again.\n");}
 						break;

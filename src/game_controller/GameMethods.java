@@ -56,15 +56,7 @@ public class GameMethods{
 	 */
 	public static void Sprint3_MoveCheckerFromPipToPip(int startPip, int endPip, BoardPanel boardPanel, GameLogicBoard gameBoard, GameState gameState) {
 		int step;
-		
-		//Account for ordering of pip enumeration in the input
-		if(!gameState.isBlackTurn()) {
-			startPip = 25 - startPip;
-			endPip = 25 - endPip;
-			step = endPip - startPip;
-		}
-		else
-			step = startPip - endPip;
+		step = Math.abs(startPip - endPip);
 		
 		//Prevent the moving of checkers of wrong colour(not their turn)
 		if((gameState.isBlackTurn() && gameBoard.topPipColourOnPointIsRed(startPip))
@@ -104,8 +96,8 @@ public class GameMethods{
 		msg += gameState.getCurrentRoll();
 		infoPanel.addText(msg + "\n");
 		
-        AvailablePlayAnalyser a = new AvailablePlayAnalyser(gameBoard, gameState);
-        List<String> moves = a.getAvailablePlays();
+        gameState.currentTurnPlays = new AvailablePlayAnalyser(gameBoard, gameState);
+        List<String> moves = gameState.currentTurnPlays.getAvailablePlays();
         infoPanel.addText("The legal moves are:\n");
         for(String s : moves) {
         	infoPanel.addText(s + "\n");

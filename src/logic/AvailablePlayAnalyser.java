@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+import game_controller.GameMethods;
+import graphical_display.BoardPanel;
+
 public class AvailablePlayAnalyser{
 	
 	/*
@@ -262,7 +265,23 @@ public class AvailablePlayAnalyser{
 		
 		return s.reverse().toString();
 	}
-
+	
+	/**
+	 * Method takes a String formatted as the enumeration described in the Assignments document and returns
+	 * the integer value
+	 */
+	public static int fromLettering(String lettering) {
+		int value = 0;
+		lettering = lettering.toUpperCase();
+		char [] cArr = lettering.toCharArray();
+		for(int i = 0; i < cArr.length; i++){
+			value *= 26;
+			value += (cArr[i] - 'A');
+		}
+		return value;
+	}
+	
+	
 	private List<GameMove> getDuplicates(List<GameMove> possibleDuplicates) {
 		List<GameMove> duplicates = new ArrayList<GameMove>();
 		
@@ -491,6 +510,26 @@ public class AvailablePlayAnalyser{
 		}
 		return count;
 	}
+	
+	/**
+	 *	Method takes a String formatted as a representation of possible plays and executes the associated
+	 *	play
+	 */
+	public static void executePlay(String lettering, BoardPanel boardPanel, GameLogicBoard gameBoard, GameState gameState) {	
+		Hop hop1 = gameState.currentTurnPlays.availablePlays.get(AvailablePlayAnalyser.fromLettering(lettering)).firstHop;
+		Hop hop2 = gameState.currentTurnPlays.availablePlays.get(AvailablePlayAnalyser.fromLettering(lettering)).secondHop;
+		
+		
+		GameMethods.Sprint3_MoveCheckerFromPipToPip(hop1.start, hop1.end, boardPanel, gameBoard, gameState);
+		try {//TODO fix this bit
+			Thread.sleep(40);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		GameMethods.Sprint3_MoveCheckerFromPipToPip(hop2.start, hop2.end, boardPanel, gameBoard, gameState);
+		
+	}
+	
 	//TODO
 	private List<String> ListAvailablePlaysDoubleRoll(GameLogicBoard gameBoard, GameState gameState){
 		return null;

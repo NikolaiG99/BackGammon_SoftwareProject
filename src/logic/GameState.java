@@ -11,6 +11,8 @@ public class GameState{
 		private int turnNumber;
 		private int initialNumberOfTimesDiceRolled;
 		
+		public AvailablePlayAnalyser currentTurnPlays; 
+		
 		public GameState(boolean isBlackTurn, LogicDice logicDice) {
 			this.isBlackTurn = isBlackTurn;
 			turnNumber = 1;

@@ -134,8 +134,8 @@ public class Game {
 					game.boardPanel.displayPipEnumeration(game.gameState.isBlackTurn());
 					
 					//List initial possible moves for the starting player
-			        AvailablePlayAnalyser a = new AvailablePlayAnalyser(game.gameBoard, game.gameState);
-			        List<String> moves = a.getAvailablePlays();
+			        game.gameState.currentTurnPlays = new AvailablePlayAnalyser(game.gameBoard, game.gameState);
+			        List<String> moves = game.gameState.currentTurnPlays.getAvailablePlays();
 			        game.infoPanel.addText("The legal moves are:\n");
 			        for(String s : moves) {
 			        		game.infoPanel.addText(s + "\n");
