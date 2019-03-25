@@ -211,14 +211,44 @@ public class AvailablePlayAnalyser{
 				availablePlays.remove(r);
 			}
 			
+			//For any plays that might be duplicates, check them for being duplicates and remove them if they are
+			List<GameMove> possibleDuplicates = findPossibleDuplicates(availablePlays);
+			List<GameMove> Duplicates = getDuplicates(possibleDuplicates);
+			
+			for(GameMove g : Duplicates) {
+				availablePlays.remove(g);
+			}
+			
 			for(GameMove g : availablePlays) {
 				System.out.println(g.toString());
 			}
 			return null;
-			
-			//For any plays that might be duplicates, check them for being duplicates and remove them if they are
 		}
 			
+	}
+
+	private List<GameMove> getDuplicates(List<GameMove> possibleDuplicates) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 *	Method discards plays which cannot be duplicates(explanation for this criteria in
+	 *	ListAvailablePLays() comment
+	 */
+	private List<GameMove> findPossibleDuplicates(List<GameMove> availablePlays) {
+		List<GameMove> possibleDuplicates = new ArrayList<GameMove>();
+		int roll1 = gameState.getCurrentRollDie1();
+		int roll2 = gameState.getCurrentRollDie2();
+		
+		int largestRoll = (roll1 > roll2) ? roll1 : roll2;
+		
+		for(GameMove move : availablePlays) {
+			if(Math.abs(move.firstHop.start - move.secondHop.start) <= largestRoll)
+				possibleDuplicates.add(move);
+		}
+		
+		return possibleDuplicates;
 	}
 
 	/*
