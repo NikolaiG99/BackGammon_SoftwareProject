@@ -192,7 +192,7 @@ public class AvailablePlayAnalyser{
 			List<GameMove> toRemove = new ArrayList<GameMove>();
 			for(GameMove g : availablePlays) {
 				if(numberOfCheckersNotOnHomeBoard > 1) {
-					if(g.firstHop.end == 0 || g.secondHop.end == 0)
+					if(g.firstHop.end == 0 || g.secondHop.end == 0 || g.firstHop.end == 25 || g.secondHop.end == 25)
 						toRemove.add(g);
 				}
 				else if(numberOfCheckersNotOnHomeBoard == 1) {
@@ -223,9 +223,21 @@ public class AvailablePlayAnalyser{
 			List<String> availablePlaysString = new ArrayList<String>();
 			int i = 0;
 			for(GameMove g : availablePlays) {
+				GameMove move = new GameMove(new Hop(g.firstHop.start, g.firstHop.end, g.firstHop.isHit),
+						new Hop(g.secondHop.start, g.secondHop.end, g.secondHop.isHit));
+				
 				i++;
 				String s = toLettering(i);
-				availablePlaysString.add(s + " " + g.toString());
+				
+				//If it's red's turn, reverse the enumeration so that stack 1 is where 25 was, etc..
+				if(!black) {
+					move.firstHop.start = 25 - move.firstHop.start;
+					move.firstHop.end = 25 - move.firstHop.end;
+					move.secondHop.start = 25 - move.secondHop.start;
+					move.secondHop.end = 25 - move.secondHop.end;
+				}
+				
+				availablePlaysString.add(s + ". " + move.toString());
 			}
 			
 			return availablePlaysString;
