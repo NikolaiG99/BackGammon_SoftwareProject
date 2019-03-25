@@ -221,13 +221,35 @@ public class AvailablePlayAnalyser{
 			
 			//Make a String List Representation of the available plays
 			List<String> availablePlaysString = new ArrayList<String>();
+			int i = 0;
 			for(GameMove g : availablePlays) {
-				availablePlaysString.add(g.toString());
+				i++;
+				String s = toLettering(i);
+				availablePlaysString.add(s + " " + g.toString());
 			}
 			
 			return availablePlaysString;
 		}
 			
+	}
+	
+	/**
+	 * Method takes an integer and returns a String of the lettering representation to enumerate the plays
+	 * as described in the Assignments document
+	 */
+	public String toLettering(int num){
+		String lettering = "";
+		while(num > 26) {
+			int rem = num % 26;
+			num /= 26;
+			lettering += (char)(((int)'A') + rem-1);
+		}
+		lettering += (char)(((int)'A') + num-1);
+		
+		StringBuilder s = new StringBuilder();
+		s.append(lettering); 
+		
+		return s.reverse().toString();
 	}
 
 	private List<GameMove> getDuplicates(List<GameMove> possibleDuplicates) {

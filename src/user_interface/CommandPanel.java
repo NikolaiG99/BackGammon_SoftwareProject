@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.EmptyStackException;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import graphical_display.BoardPanel;
@@ -119,7 +120,10 @@ public class CommandPanel extends JPanel{
 		                if(GameMethods.gameIsEnded(gameBoard))//TODO
 		                	;
 		                AvailablePlayAnalyser a = new AvailablePlayAnalyser(gameBoard, gameState);
-		                a.ListAvailablePlays();
+		                List<String> moves = a.getAvailablePlays();
+		                for(String s : moves) {
+		                	System.out.println(s);
+		                }
 		                break;
 		                
 		case QUIT:	 	System.exit(0);
