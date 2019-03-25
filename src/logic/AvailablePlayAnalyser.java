@@ -28,30 +28,33 @@ public class AvailablePlayAnalyser{
 	private GameLogicBoard gameBoard;
 	private GameState gameState;
 	private GameLogicBoardSimulation gameBoardSimulation;
+	List<GameMove> availablePlays;
 	
 	public AvailablePlayAnalyser(GameLogicBoard gameBoard, GameState gameState) {
 		gameBoardSimulation = new GameLogicBoardSimulation(gameBoard);
 		
 		this.gameBoard = gameBoard;
 		this.gameState = gameState;
+		
+		availablePlays = new ArrayList<GameMove>();
 	}
 	
 	
 	/*
 	 * A class representing a play in the game.
 	 */
-	private class gameMove{
+	class GameMove{
 		Hop firstHop;
 		Hop secondHop;
 		
-		gameMove(int firstHopStart, int firstHopEnd, int secondHopStart, int secondHopEnd, boolean firstHopIsHit, boolean secondHopisHit){
-			firstHop = new Hop(firstHopStart, firstHopEnd, firstHopIsHit);
-			secondHop = new Hop(secondHopStart, secondHopEnd, secondHopisHit);
+		GameMove(Hop firstHop, Hop secondHop){
+			this.firstHop = firstHop;
+			this.secondHop = secondHop;
 		}
 		
 		public String toString(){
-			//TODO
-			return "";
+			String ret = firstHop.toString() + " " + secondHop.toString(); 
+			return ret;
 		}
 	}
 	/*
@@ -125,9 +128,65 @@ public class AvailablePlayAnalyser{
 			
 			//Check if with the second roll we have new possible second hops & form plays where there are
 			List<Integer> availableNewPositions = new ArrayList<Integer>();
+			for(Hop h : possibleFirstHopsWithRoll1) {
+				availableNewPositions.add(h.end);
+			}
+			List<Hop> possibleNewHops = new ArrayList<Hop>();
+			possibleNewHops = generatePossibleHops(roll2, availableNewPositions);
+			for(Hop h1 : possibleFirstHopsWithRoll1) {
+				for(Hop h2 : possibleNewHops) {
+					if(h1.end != h2.start)
+						continue;
+					GameMove play = new GameMove(h1, h2);
+					//Check for hits
+					checkForAndHandleHits(play);
+					//Check for invalid play
+					if(moveIsValid(play))
+						availablePlays.add(new GameMove(h1, h2));
+				}
+			}
 			
-			for(Hop h : possibleFirstHops) {
-				System.out.println(h.toString() + "\n");
+			//REPEAT ABOVE FOR SECOND DIE VALUE:
+			//Get a list of possible hops using the second die roll
+			List<Hop> possibleFirstHopsWithRoll2 = new ArrayList<Hop>();
+			possibleFirstHopsWithRoll2 = generatePossibleHops(roll2, availablePositions);
+			//Check if any hop is a hit, and annotate appropriately 
+			checkForAndHandleHits(possibleFirstHopsWithRoll2);
+			//Check if any hop is invalid because of opponents checkers
+			checkForAndHandleInvalidHops(possibleFirstHopsWithRoll2);
+			//Check if with the second roll we have new possible second hops & form plays where there are
+			availableNewPositions = new ArrayList<Integer>();
+			for(Hop h : possibleFirstHopsWithRoll2) {
+				availableNewPositions.add(h.end);
+			}
+			possibleNewHops = new ArrayList<Hop>();
+			possibleNewHops = generatePossibleHops(roll1, availableNewPositions);
+			for(Hop h1 : possibleFirstHopsWithRoll2) {
+				for(Hop h2 : possibleNewHops) {
+					if(h1.end != h2.start)
+						continue;
+					//Simulate move
+					gameBoardSimulation.moveCheckerFromStackToStack(h1.start, h1.end);
+					//Check for hits
+					checkForAndHandleHits(possibleNewHops);
+					//Revert Simulation
+					gameBoardSimulation.moveCheckerFromStackToStack(h1.end, h1.start);
+					GameMove play = new GameMove(h1, h2);
+					//Check for invalid play
+					if(moveIsValid(play))
+						availablePlays.add(new GameMove(h1, h2));
+				}
+			}
+			
+			//NOW ADD REMAINING POSSIBLE MOVES
+			for(Hop h1 : possibleFirstHopsWithRoll1) {
+				for(Hop h2 : possibleFirstHopsWithRoll2) {
+					availablePlays.add(new GameMove(h1, h2));
+				}
+			}
+			
+			for(GameMove g : availablePlays) {
+				System.out.println(g.toString());
 			}
 			return null;
 			
@@ -135,7 +194,7 @@ public class AvailablePlayAnalyser{
 		}
 			
 	}
-	
+
 	/*
 	 * The following two methods return a list containing the point numbers with checkers of a certain colour
 	 */
@@ -161,21 +220,74 @@ public class AvailablePlayAnalyser{
 	 */
 	private void checkForAndHandleHits(List<Hop> l) {
 		for(Hop h: l) {
-			if(gameBoard.getNumberOfPipsOnPoint(h.end) == 1)
-				if(gameBoard.topPipColourOnPointIsRed(h.start) != gameBoard.topPipColourOnPointIsRed(h.end))
+			if(gameBoardSimulation.getNumberOfPipsOnPoint(h.end) == 1)
+				if(gameBoardSimulation.topPipColourOnPointIsRed(h.start) != gameBoardSimulation.topPipColourOnPointIsRed(h.end))
 					h.isHit = true;
 		}
+	}
+	
+	/*
+	 * Method does same as above except for a GameMove rather than Lists of Hops
+	 */
+	private void checkForAndHandleHits(GameMove play) {
+		//Check for a hit on first hop
+		if(gameBoardSimulation.getNumberOfPipsOnPoint(play.firstHop.end) == 1)
+			if(gameBoardSimulation.topPipColourOnPointIsRed(play.firstHop.start) != gameBoardSimulation.topPipColourOnPointIsRed(play.firstHop.end))
+				play.firstHop.isHit = true;
+		
+		//Simulate first hop
+		gameBoardSimulation.moveCheckerFromStackToStack(play.firstHop.start, play.firstHop.end);
+		
+		//Check for a hit on second hop
+		if(gameBoardSimulation.getNumberOfPipsOnPoint(play.secondHop.end) == 1)
+			if(gameBoardSimulation.topPipColourOnPointIsRed(play.secondHop.start) != gameBoardSimulation.topPipColourOnPointIsRed(play.secondHop.end))
+				play.secondHop.isHit = true;
+		
+		//Revert simulation
+		gameBoardSimulation.moveCheckerFromStackToStack(play.firstHop.end, play.firstHop.start);
 	}
 	
 	/*
 	 * Method checks if any hops lands on a stack with more than one checker of the opposite colour and removes it if so
 	 */
 	private void checkForAndHandleInvalidHops(List<Hop> l) {
+		List<Hop> toRemove = new ArrayList<Hop>();
 		for(Hop h: l) {
-			if(gameBoard.getNumberOfPipsOnPoint(h.end) > 1)
-				if(gameBoard.topPipColourOnPointIsRed(h.start) != gameBoard.topPipColourOnPointIsRed(h.end))
-					l.remove(h);
+			if(gameBoardSimulation.getNumberOfPipsOnPoint(h.end) > 1)
+				//if checkers on the two stacks are different colours(statement has form (!A^B)v(A^!B) i.e. A XOR B)
+				if((!gameBoardSimulation.topPipColourOnPointIsRed(h.start) && gameBoardSimulation.topPipColourOnPointIsRed(h.end))
+						|| (gameBoardSimulation.topPipColourOnPointIsRed(h.start) && !gameBoardSimulation.topPipColourOnPointIsRed(h.end)))
+					toRemove.add(h);
 		}
+		for(Hop h : toRemove) {
+			l.remove(h);
+		}
+	}
+	
+	/*
+	 * Method takes a GameMove and returns true if it is a valid move and false otherwise
+	 */
+	private boolean moveIsValid(GameMove g) {
+		//Check first hop isn't invalid due to opponent's checkers
+		if(gameBoardSimulation.getNumberOfPipsOnPoint(g.firstHop.end) > 1)
+			if((!gameBoardSimulation.topPipColourOnPointIsRed(g.firstHop.start) && gameBoardSimulation.topPipColourOnPointIsRed(g.firstHop.end))
+					|| (gameBoardSimulation.topPipColourOnPointIsRed(g.firstHop.start) && !gameBoardSimulation.topPipColourOnPointIsRed(g.firstHop.end)))
+				return false;
+		
+		//Simulate first hop
+		gameBoardSimulation.moveCheckerFromStackToStack(g.firstHop.start, g.firstHop.end);
+		
+		//Check second hop isn't invalid due to opponent's checkers
+		if(gameBoardSimulation.getNumberOfPipsOnPoint(g.secondHop.end) > 1)
+			if((!gameBoardSimulation.topPipColourOnPointIsRed(g.secondHop.start) && gameBoardSimulation.topPipColourOnPointIsRed(g.secondHop.end))
+					|| (gameBoardSimulation.topPipColourOnPointIsRed(g.secondHop.start) && !gameBoardSimulation.topPipColourOnPointIsRed(g.secondHop.end))) {
+				//Revert simulation
+				gameBoardSimulation.moveCheckerFromStackToStack(g.firstHop.end, g.firstHop.start);
+				return false;
+			}
+		
+		gameBoardSimulation.moveCheckerFromStackToStack(g.firstHop.end, g.firstHop.start);
+		return true;
 	}
 	
 	/*
