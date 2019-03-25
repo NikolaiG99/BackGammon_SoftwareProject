@@ -3,6 +3,8 @@ package logic;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import game_controller.GameMethods;
 import graphical_display.BoardPanel;
@@ -194,6 +196,9 @@ public class AvailablePlayAnalyser{
 			List<GameMove> toRemove = new ArrayList<GameMove>();
 			for(GameMove g : availablePlays) {
 				if(numberOfCheckersNotOnHomeBoard > 1) {
+					System.out.print("# = " + numberOfCheckersNotOnHomeBoard);
+					System.out.println("| " + g.firstHop.start + "-" + g.firstHop.end);
+					
 					if(g.firstHop.end == 0 || g.secondHop.end == 0 || g.firstHop.end == 25 || g.secondHop.end == 25)
 						toRemove.add(g);
 				}
@@ -521,12 +526,13 @@ public class AvailablePlayAnalyser{
 		
 		
 		GameMethods.Sprint3_MoveCheckerFromPipToPip(hop1.start, hop1.end, boardPanel, gameBoard, gameState);
-		try {//TODO fix this bit
-			Thread.sleep(40);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		GameMethods.Sprint3_MoveCheckerFromPipToPip(hop2.start, hop2.end, boardPanel, gameBoard, gameState);
+		TimerTask doHop2 = new TimerTask() {
+			public void run(){
+				GameMethods.Sprint3_MoveCheckerFromPipToPip(hop2.start, hop2.end, boardPanel, gameBoard, gameState);
+			}
+		};
+		Timer timer = new Timer();
+		timer.schedule(doHop2, 400);
 		
 	}
 	

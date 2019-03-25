@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.EmptyStackException;
 import java.util.List;
 import java.util.Stack;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import graphical_display.BoardCoordinateConstants;
 import graphical_display.BoardPanel;
@@ -101,6 +103,53 @@ public class GameMethods{
         infoPanel.addText("The legal moves are:\n");
         for(String s : moves) {
         	infoPanel.addText(s + "\n");
+        }
+        
+        //If there's only one legal move, execute it, inform user, do next turn
+        if(gameState.currentTurnPlays.availablePlays.size() == 1) {
+        	Timer timer = new Timer();
+        	
+        	TimerTask informUser = new TimerTask(){
+        		public void run() {
+        			infoPanel.addText("There is only one possible move, it will be executed automatically.\n");
+        		}
+        	};
+        	
+        	TimerTask executeMove = new TimerTask() {
+        		public void run() {
+        			AvailablePlayAnalyser.executePlay("A" , boardPanel, gameBoard, gameState);
+        		}
+        	};
+        	
+        	TimerTask nextTurn = new TimerTask() {
+        		public void run() {
+        			next(boardPanel, gameBoard, gameState, infoPanel, logicDice, dicePanel);
+        		}
+        	};
+        	
+        	timer.schedule(informUser, 400);
+        	timer.schedule(executeMove, 1000);
+        	timer.schedule(nextTurn, 1600);
+        }
+        
+        //If there are no legal moves, inform user, do next turn
+        if(gameState.currentTurnPlays.availablePlays.size() == 0) {
+        	Timer timer = new Timer();
+        	
+        	TimerTask informUser = new TimerTask(){
+        		public void run() {
+        			infoPanel.addText("There are no possible moves. Next turn.\n");
+        		}
+        	};
+        	
+        	TimerTask nextTurn = new TimerTask() {
+        		public void run() {
+        			next(boardPanel, gameBoard, gameState, infoPanel, logicDice, dicePanel);
+        		}
+        	};
+        	
+        	timer.schedule(informUser, 400);
+        	timer.schedule(nextTurn, 1200);
         }
 	}
 	
