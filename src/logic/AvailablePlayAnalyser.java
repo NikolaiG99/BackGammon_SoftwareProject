@@ -28,7 +28,7 @@ public class AvailablePlayAnalyser{
 	private GameLogicBoard gameBoard;
 	private GameState gameState;
 	private GameLogicBoardSimulation gameBoardSimulation;
-	List<GameMove> availablePlays;
+	public List<GameMove> availablePlays;
 	
 	private int numberOfCheckersNotOnHomeBoard;
 	
@@ -86,7 +86,7 @@ public class AvailablePlayAnalyser{
 	 * Method which returns a list of Strings which denote possible plays as described in the "Assignments"
 	 * document(Without A,B,C,... enumeration). The list does not contain duplicate plays
 	 */
-	public List<String> ListAvailablePlays() {
+	public List<String> getAvailablePlays() {
 		/* 
 		 * The mechanism which removes duplicates works using the fact that: if a play consists of moving two
 		 * checkers off two different stacks which are further away from each other than the largest roll(out of
@@ -219,10 +219,13 @@ public class AvailablePlayAnalyser{
 				availablePlays.remove(g);
 			}
 			
+			//Make a String List Representation of the available plays
+			List<String> availablePlaysString = new ArrayList<String>();
 			for(GameMove g : availablePlays) {
-				System.out.println(g.toString());
+				availablePlaysString.add(g.toString());
 			}
-			return null;
+			
+			return availablePlaysString;
 		}
 			
 	}
