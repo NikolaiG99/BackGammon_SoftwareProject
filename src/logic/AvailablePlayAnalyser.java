@@ -188,17 +188,16 @@ public class AvailablePlayAnalyser{
 			//NOW ADD REMAINING POSSIBLE MOVES
 			for(Hop h1 : possibleFirstHopsWithRoll1) {
 				for(Hop h2 : possibleFirstHopsWithRoll2) {
-					availablePlays.add(new GameMove(h1, h2));
+					GameMove play = new GameMove(h1, h2);
+					if(moveIsValid(play))
+						availablePlays.add(play);
 				}
 			}
 			
 			//Remove all available plays which go to bear-off unless in bear-off position
 			List<GameMove> toRemove = new ArrayList<GameMove>();
 			for(GameMove g : availablePlays) {
-				if(numberOfCheckersNotOnHomeBoard > 1) {
-					System.out.print("# = " + numberOfCheckersNotOnHomeBoard);
-					System.out.println("| " + g.firstHop.start + "-" + g.firstHop.end);
-					
+				if(numberOfCheckersNotOnHomeBoard > 1) {	
 					if(g.firstHop.end == 0 || g.secondHop.end == 0 || g.firstHop.end == 25 || g.secondHop.end == 25)
 						toRemove.add(g);
 				}
@@ -281,8 +280,9 @@ public class AvailablePlayAnalyser{
 		char [] cArr = lettering.toCharArray();
 		for(int i = 0; i < cArr.length; i++){
 			value *= 26;
-			value += (cArr[i] - 'A');
+			value += (cArr[i] - 'A' + 1);
 		}
+		value--;
 		return value;
 	}
 	
@@ -503,13 +503,17 @@ public class AvailablePlayAnalyser{
 		int count = 0;
 		if(gameState.isBlackTurn()) {
 			for(int i = 7; i <= 24; i++) {
-				count += gameBoardSimulation.getNumberOfPipsOnPoint(i);
+				int n = gameBoardSimulation.getNumberOfPipsOnPoint(i);
+				if(n > 0 && !gameBoardSimulation.topPipColourOnPointIsRed(i))
+					count += n;
 			}
 			count += gameBoardSimulation.getNumberOfPipsOnPoint(26);
 		}
 		else {
 			for(int i = 1; i <= 18; i++) {
-				count += gameBoardSimulation.getNumberOfPipsOnPoint(i);
+				int n = gameBoardSimulation.getNumberOfPipsOnPoint(i);
+				if(n > 0 && gameBoardSimulation.topPipColourOnPointIsRed(i))
+					count += n;
 			}
 			count += gameBoardSimulation.getNumberOfPipsOnPoint(26);
 		}

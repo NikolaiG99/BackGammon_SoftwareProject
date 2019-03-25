@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.EmptyStackException;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import graphical_display.BoardPanel;
@@ -110,8 +112,17 @@ public class CommandPanel extends JPanel{
 						m.find();
 						try {
 							AvailablePlayAnalyser.executePlay(m.group(1), boardPanel, gameBoard, gameState);
-						}	catch(EmptyStackException e) { infoPanel.addText("Error: No checkers there to move.\nTry again.\n");
-						}	catch (Exception e) {infoPanel.addText("Error: " + e.getMessage() + "\n Try again.\n");}
+						}	catch(EmptyStackException e) { infoPanel.addText("Error: No checkers there to move.\nTry again.\n"); break;
+						}	catch (Exception e) {infoPanel.addText("Error: " + e.getMessage() + "\n Try again.\n"); break;}
+						
+						//Do next turn
+						Timer timer = new Timer();
+			        	TimerTask nextTurn = new TimerTask() {
+			        		public void run() {
+			        			GameMethods.next(boardPanel, gameBoard, gameState, infoPanel, logicDice, dicePanel);
+			        		}
+			        	};
+			        	timer.schedule(nextTurn, 1000);
 						break;
 						
 		case NEXT: 		GameMethods.next(boardPanel, gameBoard, gameState, infoPanel, logicDice, dicePanel);

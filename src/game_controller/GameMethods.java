@@ -65,6 +65,24 @@ public class GameMethods{
 				|| (!gameState.isBlackTurn() && !gameBoard.topPipColourOnPointIsRed(startPip)))
 				throw new RuntimeException("Cannot move this checker colour, it is not their turn.");
 		
+		//If a checker is on the bar, take it off the bar
+		if(startPip == 26 || startPip == 27) {
+			if(gameState.isBlackTurn()) {
+				Sprint1_MovePipOffBar(26, boardPanel, gameBoard);
+				startPip = 24; 
+				if(endPip == 24)
+					return;
+				step = Math.abs(startPip-endPip);
+			}
+			else {
+				Sprint1_MovePipOffBar(27, boardPanel, gameBoard);
+				startPip = 1;
+				if(endPip == 1)
+					return;
+				step = Math.abs(startPip-endPip);
+			}
+		}
+		
 		//Provide error information if user tries to move checker wrong way
 		if((!gameState.isBlackTurn() && startPip > endPip) || (gameState.isBlackTurn() && startPip < endPip))
 			throw new RuntimeException("You cannot move a checker backwards.");
