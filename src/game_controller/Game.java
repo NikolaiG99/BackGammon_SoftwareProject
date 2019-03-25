@@ -26,12 +26,8 @@ import user_interface.InformationPanel;
 
 public class Game {
 	// Store player 1 and 2 name
-	public String p1;
-	public String p2;
-
-	// Position of the pip in bar position
-	public static int CHEAT_TOP = 0;
-	public static int CHEAT_BOTTOM = 0;
+	public static String p1;
+	public static String p2;
 
 	private GameLogicBoard gameBoard;
 	private BoardPanel boardPanel;

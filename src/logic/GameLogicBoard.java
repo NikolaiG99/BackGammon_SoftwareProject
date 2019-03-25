@@ -298,4 +298,78 @@ public class GameLogicBoard{
 	for(int i = 0; i < 2; i++)
 		currentStack.push(new GameLogicPip(PipColour.BLACK, 28+i));
 	}
+	
+	//Method which fills the board with the pips in their cheat positions
+	public void setCheatPositions() {
+		if(gameBoard.boardIsEmpty() == false)
+			gameBoard.emptyBoard();
+		
+	//The structure has stack element 0, corresponding to bottom right point(point #1), and stack element 23
+	//corresponding to top right point(point #24).
+	Stack<GameLogicPip> currentStack;
+	
+	//Fill point 0 (2 pips)
+	currentStack = gameBoard.getPoint(0);
+	for(int i = 0; i < 2; i++)
+		currentStack.push(new GameLogicPip(PipColour.BLACK, 2+i));
+	
+	//Fill point 1 (2 pips)
+	currentStack = gameBoard.getPoint(1);
+	for(int i = 0; i < 2; i++)
+		currentStack.push(new GameLogicPip(PipColour.BLACK, 4+i));
+	
+	//Fill point 2 (2 pips)
+	currentStack = gameBoard.getPoint(2);
+	for(int i = 0; i < 2; i++)
+		currentStack.push(new GameLogicPip(PipColour.BLACK, 6+i));
+	
+	//Fill point 3 (2 pips)
+	currentStack = gameBoard.getPoint(3);
+	for(int i = 0; i < 2; i++)
+		currentStack.push(new GameLogicPip(PipColour.BLACK, 8+i));
+	
+	//Fill point 4 (2 pips)
+	currentStack = gameBoard.getPoint(4);
+	for(int i = 0; i < 2; i++)
+		currentStack.push(new GameLogicPip(PipColour.BLACK, 15+i));
+	
+	//Fill point 5 (2 pips)
+	currentStack = gameBoard.getPoint(5);
+	for(int i = 0; i < 2; i++)
+		currentStack.push(new GameLogicPip(PipColour.BLACK, 17+i));
+	
+	//Fill point 21 (3 pips)
+	currentStack = gameBoard.getPoint(21);
+	for(int i = 0; i < 2; i++)
+		currentStack.push(new GameLogicPip(PipColour.RED, i));
+	currentStack.push(new GameLogicPip(PipColour.RED, 10));
+	
+	//Fill point 22 (3 pips)
+	currentStack = gameBoard.getPoint(22);
+	for(int i = 0; i < 3; i++)
+		currentStack.push(new GameLogicPip(PipColour.RED, 11+i));
+		
+	//Fill point 24 (3 pips)
+	currentStack = gameBoard.getPoint(24);
+	currentStack.push(new GameLogicPip(PipColour.RED, 14));
+	for(int i = 0; i < 2; i++)
+		currentStack.push(new GameLogicPip(PipColour.RED, 20+i));
+	
+	//Fill point 25 (3 pips)
+	currentStack = gameBoard.getPoint(25);
+	currentStack.push(new GameLogicPip(PipColour.RED, 22));
+	for(int i = 0; i < 2; i++)
+		currentStack.push(new GameLogicPip(PipColour.RED, 21+i));
+	
+	//Fill point 26 (3 pips)
+	currentStack = gameBoard.getPoint(26);
+	currentStack.push(new GameLogicPip(PipColour.BLACK, 19));
+	for(int i = 0; i < 2; i++)
+		currentStack.push(new GameLogicPip(PipColour.BLACK, 28+i));
+	
+	//Fill point 27 (3 pips)
+	currentStack = gameBoard.getPoint(27);
+	for(int i = 0; i < 3; i++)
+		currentStack.push(new GameLogicPip(PipColour.RED, 25+i));
+	}
 }

@@ -25,6 +25,10 @@ import user_interface.InformationPanel;
  */
 public class GameMethods{
 	
+	// Position of the pip in bar position
+	public static int cheatTop= 0;
+	public static int cheatBottom = 0;
+	
 	/**
 	 * Method scans through the logical representation of the board,
 	 * and draw's each pip it finds in the appropriate position
@@ -94,6 +98,11 @@ public class GameMethods{
 				Sprint1_MovePipFromPointToBar(endPip, boardPanel, gameBoard);
 			}
 			
+        //Check for the end of the game
+		if(GameMethods.gameIsEnded(gameBoard)) {
+			Game.cl.show(Game.screenContainer, "end screen");
+		}
+		
 		//Move pips
 		movePipFromPointByNPoints(startPip, step, boardPanel, gameBoard);		
 	}
@@ -141,13 +150,15 @@ public class GameMethods{
         	
         	TimerTask executeMove = new TimerTask() {
         		public void run() {
-        			AvailablePlayAnalyser.executePlay("A" , boardPanel, gameBoard, gameState);
+        			try{AvailablePlayAnalyser.executePlay("A" , boardPanel, gameBoard, gameState);}
+        			catch(Exception e){	Game.cl.show(Game.screenContainer, "end screen");}
         		}
         	};
         	
         	TimerTask nextTurn = new TimerTask() {
         		public void run() {
-        			next(boardPanel, gameBoard, gameState, infoPanel, logicDice, dicePanel);
+        			try{next(boardPanel, gameBoard, gameState, infoPanel, logicDice, dicePanel);}
+        			catch(Exception e) {Game.cl.show(Game.screenContainer, "end screen");}
         		}
         	};
         	
@@ -306,7 +317,7 @@ public class GameMethods{
 	}
 	
 	
-	static void CheatMovePipFromPointToBar(int pointNum) {
+	static void CheatMovePipFromPointToBar(int pointNum, BoardPanel boardPanel, GameLogicBoard gameBoard) {
 		// Move logical representation of pip
 		int barPos = gameBoard.movePipToBar(pointNum);
 
@@ -331,58 +342,58 @@ public class GameMethods{
 	}
 
 	// Cheat Method to display pips in cheat position and be able to play on after cheat called
-	public static void cheat() {
+	public static void cheat(BoardPanel boardPanel, GameLogicBoard gameBoard) {
 
 		// move black 24 to 5
-		movePipFromPointByNPoints(24, 19);
-		movePipFromPointByNPoints(24, 19);
+		movePipFromPointByNPoints(24, 19, boardPanel, gameBoard);
+		movePipFromPointByNPoints(24, 19, boardPanel, gameBoard);
 		// move red 19 to 24
-		movePipFromPointByNPoints(19, 5);
-		movePipFromPointByNPoints(19, 5);
-		movePipFromPointByNPoints(19, 5);
+		movePipFromPointByNPoints(19, 5, boardPanel, gameBoard);
+		movePipFromPointByNPoints(19, 5, boardPanel, gameBoard);
+		movePipFromPointByNPoints(19, 5, boardPanel, gameBoard);
 		// move red 19 and 17 to 22
-		movePipFromPointByNPoints(19, 3);
-		movePipFromPointByNPoints(19, 3);
-		movePipFromPointByNPoints(17, 5);
+		movePipFromPointByNPoints(19, 3, boardPanel, gameBoard);
+		movePipFromPointByNPoints(19, 3, boardPanel, gameBoard);
+		movePipFromPointByNPoints(17, 5, boardPanel, gameBoard);
 
 		// move red 17 and 12 to 21
-		movePipFromPointByNPoints(17, 4);
-		movePipFromPointByNPoints(17, 4);
-		movePipFromPointByNPoints(12, 9);
+		movePipFromPointByNPoints(17, 4, boardPanel, gameBoard);
+		movePipFromPointByNPoints(17, 4, boardPanel, gameBoard);
+		movePipFromPointByNPoints(12, 9, boardPanel, gameBoard);
 
 		// move red 12 to 21,22 and 24 to then add to bar
-		movePipFromPointByNPoints(12, 9);
-		movePipFromPointByNPoints(12, 10);
-		movePipFromPointByNPoints(12, 12);
-		CheatMovePipFromPointToBar(21);
-		CheatMovePipFromPointToBar(22);
-		CheatMovePipFromPointToBar(24);
+		movePipFromPointByNPoints(12, 9, boardPanel, gameBoard);
+		movePipFromPointByNPoints(12, 10, boardPanel, gameBoard);
+		movePipFromPointByNPoints(12, 12, boardPanel, gameBoard);
+		CheatMovePipFromPointToBar(21, boardPanel, gameBoard);
+		CheatMovePipFromPointToBar(22, boardPanel, gameBoard);
+		CheatMovePipFromPointToBar(24, boardPanel, gameBoard);
 
 		// move rest of red to bear off
-		Sprint1_MovePipFromPointToBearOff(12);
-		Sprint1_MovePipFromPointToBearOff(1);
-		Sprint1_MovePipFromPointToBearOff(1);
+		Sprint1_MovePipFromPointToBearOff(12, boardPanel, gameBoard);
+		Sprint1_MovePipFromPointToBearOff(1, boardPanel, gameBoard);
+		Sprint1_MovePipFromPointToBearOff(1, boardPanel, gameBoard);
 
 		// move black 13 to 4,3 and 2
-		movePipFromPointByNPoints(13, 9);
-		movePipFromPointByNPoints(13, 9);
-		movePipFromPointByNPoints(13, 10);
-		movePipFromPointByNPoints(13, 10);
-		movePipFromPointByNPoints(13, 11);
+		movePipFromPointByNPoints(13, 9, boardPanel, gameBoard);
+		movePipFromPointByNPoints(13, 9, boardPanel, gameBoard);
+		movePipFromPointByNPoints(13, 10, boardPanel, gameBoard);
+		movePipFromPointByNPoints(13, 10, boardPanel, gameBoard);
+		movePipFromPointByNPoints(13, 11, boardPanel, gameBoard);
 
 		// move black 8 to 2 and 1
-		movePipFromPointByNPoints(8, 6);
-		movePipFromPointByNPoints(8, 7);
-		movePipFromPointByNPoints(8, 7);
+		movePipFromPointByNPoints(8, 6, boardPanel, gameBoard);
+		movePipFromPointByNPoints(8, 7, boardPanel, gameBoard);
+		movePipFromPointByNPoints(8, 7, boardPanel, gameBoard);
 
 		// move 3 from black 6 to bar
-        CheatMovePipFromPointToBar(6);
-		CheatMovePipFromPointToBar(6);
-		CheatMovePipFromPointToBar(6);
+        CheatMovePipFromPointToBar(6, boardPanel, gameBoard);
+		CheatMovePipFromPointToBar(6, boardPanel, gameBoard);
+		CheatMovePipFromPointToBar(6, boardPanel, gameBoard);
 
 		// move rest to bear off
-		Sprint1_MovePipFromPointToBearOff(6);
-		Sprint1_MovePipFromPointToBearOff(6);
+		Sprint1_MovePipFromPointToBearOff(6, boardPanel, gameBoard);
+		Sprint1_MovePipFromPointToBearOff(6, boardPanel, gameBoard);
 
 	}
 }

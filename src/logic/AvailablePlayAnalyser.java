@@ -81,7 +81,14 @@ public class AvailablePlayAnalyser{
 		}
 		
 		public String toString() {
-			String ret = "" + start + "-" + end;
+			String ret;
+			if(start != -2 && start != 26 && end != 25 && end != 0)
+				ret = "" + start + "-" + end;
+			else if(start == -2 || start == 26) {
+				ret = "Bar-" + end;
+			}else {
+				ret = "" + start + "-Off";
+			}
 			ret += isHit ? "*" : "";
 			return ret;
 		}
@@ -242,6 +249,7 @@ public class AvailablePlayAnalyser{
 					move.secondHop.start = 25 - move.secondHop.start;
 					move.secondHop.end = 25 - move.secondHop.end;
 				}
+			
 				
 				availablePlaysString.add(s + ". " + move.toString());
 			}
