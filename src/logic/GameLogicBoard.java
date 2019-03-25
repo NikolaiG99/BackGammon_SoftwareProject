@@ -7,7 +7,7 @@ import java.util.Stack;
  * of the game in terms of data.
  */
 public class GameLogicBoard{
-	protected static BoardDataStructure gameBoard;
+	protected BoardDataStructure gameBoard;
 	public GameState gameState;
 	
 	public GameLogicBoard(){
@@ -62,8 +62,13 @@ public class GameLogicBoard{
 			@SuppressWarnings("unchecked")
 			Stack<GameLogicPip> c = (Stack<GameLogicPip>) gameBoard.getPoint(i).clone();
 			
+			Stack<GameLogicPip> h = new Stack<GameLogicPip>();
+			
 			for(int j = c.size(); j > 0; j--) {
-				s.push(c.pop());
+				h.push(c.pop());
+			}
+			for(int j = h.size(); j > 0; j--) {
+				s.push(h.pop());
 			}
 		}
 		
@@ -217,7 +222,7 @@ public class GameLogicBoard{
 	}
 	
 	//Method which fills the board with the pips in their starting positions
-	public static void setStartingPositions() {
+	public void setStartingPositions() {
 		if(gameBoard.boardIsEmpty() == false)
 			gameBoard.emptyBoard();
 		

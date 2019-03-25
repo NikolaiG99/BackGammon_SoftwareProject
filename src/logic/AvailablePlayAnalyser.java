@@ -147,6 +147,9 @@ public class AvailablePlayAnalyser{
 			}
 			
 			//REPEAT ABOVE FOR SECOND DIE VALUE:
+			//Scan through board and record all stacks with a player's checkers on them
+			availablePositions = new ArrayList<Integer>();
+			availablePositions = black ? getStacksWithBlackCheckers() : getStacksWithRedCheckers();
 			//Get a list of possible hops using the second die roll
 			List<Hop> possibleFirstHopsWithRoll2 = new ArrayList<Hop>();
 			possibleFirstHopsWithRoll2 = generatePossibleHops(roll2, availablePositions);
@@ -165,13 +168,9 @@ public class AvailablePlayAnalyser{
 				for(Hop h2 : possibleNewHops) {
 					if(h1.end != h2.start)
 						continue;
-					//Simulate move
-					gameBoardSimulation.moveCheckerFromStackToStack(h1.start, h1.end);
-					//Check for hits
-					checkForAndHandleHits(possibleNewHops);
-					//Revert Simulation
-					gameBoardSimulation.moveCheckerFromStackToStack(h1.end, h1.start);
 					GameMove play = new GameMove(h1, h2);
+					//Check for hits
+					checkForAndHandleHits(play);
 					//Check for invalid play
 					if(moveIsValid(play))
 						availablePlays.add(new GameMove(h1, h2));
