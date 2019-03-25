@@ -15,7 +15,7 @@ public class InformationPanel extends JPanel{
 	private JTextArea text;
 	
 	public InformationPanel() {
-		text = new JTextArea(8, 20);
+		text = new JTextArea(22, 20);
 		text.setEditable(false);
 		
 		JScrollPane scrollPane = new JScrollPane(text);
