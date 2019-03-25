@@ -54,7 +54,7 @@ public class GameMethods{
 	 * @param startPoint The pip to move the checker from
 	 * @param endPoint The pip to move the checker to
 	 */
-	public static void Sprint2_MoveCheckerFromPipToPip(int startPip, int endPip, BoardPanel boardPanel, GameLogicBoard gameBoard, GameState gameState) {
+	public static void Sprint3_MoveCheckerFromPipToPip(int startPip, int endPip, BoardPanel boardPanel, GameLogicBoard gameBoard, GameState gameState) {
 		int step;
 		
 		//Account for ordering of pip enumeration in the input
@@ -75,6 +75,13 @@ public class GameMethods{
 		if((!gameState.isBlackTurn() && startPip > endPip) || (gameState.isBlackTurn() && startPip < endPip))
 			throw new RuntimeException("You cannot move a checker backwards.");
 		
+		//If checker moves to a stack with a single opponent piece, send that piece to bar
+		if(gameBoard.getNumberOfPipsOnPoint(endPip) > 0)
+			if((!gameBoard.topPipColourOnPointIsRed(startPip) & gameBoard.topPipColourOnPointIsRed(endPip))
+					|| (gameBoard.topPipColourOnPointIsRed(startPip) & !gameBoard.topPipColourOnPointIsRed(endPip))) {
+				Sprint1_MovePipFromPointToBar(endPip, boardPanel, gameBoard);
+			}
+			
 		//Move pips
 		movePipFromPointByNPoints(startPip, step, boardPanel, gameBoard);		
 	}

@@ -109,7 +109,7 @@ public class CommandPanel extends JPanel{
 						Matcher m = p.matcher(u.input);
 						m.find();
 						try {
-							GameMethods.Sprint2_MoveCheckerFromPipToPip(
+							GameMethods.Sprint3_MoveCheckerFromPipToPip(
 									Integer.parseInt(m.group(1)),
 									Integer.parseInt(m.group(3)), boardPanel, gameBoard, gameState);
 						}	catch(EmptyStackException e) { infoPanel.addText("Error: No checkers there to move.\nTry again.\n");

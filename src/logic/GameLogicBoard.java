@@ -232,6 +232,16 @@ public class GameLogicBoard{
 	public int movePipByNPoints(int pointNum, int numSteps) {
 		int newPointNum = pointNum;
 		
+		//Account for possible bar positions
+		if(pointNum == 26) {
+			newPointNum = 24;
+			numSteps--;
+		}
+		else if(pointNum == 27) {
+			newPointNum = 1;
+			numSteps--;
+		}
+		
 		for(int i = numSteps; i > 0; i--) {
 			newPointNum = movePipByOne(newPointNum) ;
 		}
