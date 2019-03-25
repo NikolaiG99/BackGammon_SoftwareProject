@@ -403,6 +403,11 @@ public class AvailablePlayAnalyser{
 	 * Method takes a GameMove and returns true if it is a valid move and false otherwise
 	 */
 	private boolean moveIsValid(GameMove g) {
+		//Check that if both hops are from the same stack, that there are indeed two checkers there
+		if(g.firstHop.start == g.secondHop.start)
+			if(gameBoardSimulation.getNumberOfPipsOnPoint(g.firstHop.start) < 2)
+				return false;
+		
 		//Check first hop isn't invalid due to opponent's checkers
 		if(gameBoardSimulation.getNumberOfPipsOnPoint(g.firstHop.end) > 1)
 			if((!gameBoardSimulation.topPipColourOnPointIsRed(g.firstHop.start) && gameBoardSimulation.topPipColourOnPointIsRed(g.firstHop.end))
