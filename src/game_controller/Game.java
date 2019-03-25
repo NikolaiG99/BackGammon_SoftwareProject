@@ -41,9 +41,10 @@ public class Game {
 	private DicePanel dicePanel;
 	private GameState gameState;
 	
-	private JPanel screenContainer;
+	public static JPanel screenContainer;
 	private IntroPanel titlePanel;
-	static CardLayout cl;
+	private EndPanel endPanel;
+	public static CardLayout cl;
 	
 	public Game() throws IOException {
 		// Initialize data and logic
@@ -86,9 +87,13 @@ public class Game {
 	    //Add a listener to the title panel button to switch to the game when pressed
 	    titlePanel.start.addActionListener(e -> cl.show(screenContainer, "game"));
 
+	    // Initialize end screen panel
+	    endPanel = new EndPanel();
+	    
 	    //Attach the title panel and game panel to the card layout container
 	    screenContainer.add(gamePanel, "game");
 	    screenContainer.add(titlePanel, "title screen");
+	    screenContainer.add(endPanel, "end screen");
 
 		// Display JFrame
 	    gameFrame.add(screenContainer);

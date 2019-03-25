@@ -102,6 +102,12 @@ public class GameMethods{
 	 * Method moves the game forward one turn, updating all necessary parts
 	 */
 	public static void next(BoardPanel boardPanel, GameLogicBoard gameBoard, GameState gameState, InformationPanel infoPanel, LogicDice logicDice, DicePanel dicePanel) {
+        //Check for the end of the game
+		if(GameMethods.gameIsEnded(gameBoard)) {
+			Game.cl.show(Game.screenContainer, "end screen");
+		}
+        	
+		
 		logicDice.roll();
 		dicePanel.update(logicDice);
 		
@@ -293,10 +299,10 @@ public class GameMethods{
 	 * Method to check, whether the game is over(if there is a winner)
 	 */
 	public static boolean gameIsEnded(GameLogicBoard gameBoard){
-		if(gameBoard.getNumberOfPipsOnPoint(0) == 30 || gameBoard.getNumberOfPipsOnPoint(25) == 30)
+		if(gameBoard.getNumberOfPipsOnPoint(0) == 15 || gameBoard.getNumberOfPipsOnPoint(25) == 15)
 			return true;
-		
-		else return false;
+		else 
+			return false;
 	}
 	
 	

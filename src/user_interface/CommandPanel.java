@@ -126,8 +126,6 @@ public class CommandPanel extends JPanel{
 						break;
 						
 		case NEXT: 		GameMethods.next(boardPanel, gameBoard, gameState, infoPanel, logicDice, dicePanel);
-		                if(GameMethods.gameIsEnded(gameBoard))//TODO
-		                	;
 		                break;
 		                
 		case QUIT:	 	System.exit(0);
