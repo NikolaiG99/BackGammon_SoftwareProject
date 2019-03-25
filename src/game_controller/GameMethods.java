@@ -9,6 +9,7 @@ import java.util.Stack;
 import graphical_display.BoardCoordinateConstants;
 import graphical_display.BoardPanel;
 import graphical_display.DicePanel;
+import logic.AvailablePlayAnalyser;
 import logic.GameLogicBoard;
 import logic.GameLogicPip;
 import logic.GameState;
@@ -95,6 +96,13 @@ public class GameMethods{
 		String msg = gameState.isBlackTurn() ? "Black rolled " : "Red rolled ";
 		msg += gameState.getCurrentRoll();
 		infoPanel.addText(msg + "\n");
+		
+        AvailablePlayAnalyser a = new AvailablePlayAnalyser(gameBoard, gameState);
+        List<String> moves = a.getAvailablePlays();
+        infoPanel.addText("The legal moves are:\n");
+        for(String s : moves) {
+        	infoPanel.addText(s + "\n");
+        }
 	}
 	
 	/**

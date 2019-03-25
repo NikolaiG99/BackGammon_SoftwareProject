@@ -102,10 +102,9 @@ public class AvailablePlayAnalyser{
 		
 		//If a player rolls a double, they move twice so the algorithm/mechanisms must be different so we
 		//pass to a special method
-		if(gameState.getCurrentRollDie1() == gameState.getCurrentRollDie2())
+		if(gameState.getCurrentRollDie1() == 7)//gameState.getCurrentRollDie2())
 			return ListAvailablePlaysDoubleRoll(gameBoard, gameState);
-		else {
-			
+		else {			
 			int roll1 = gameState.getCurrentRollDie1();
 			int roll2 = gameState.getCurrentRollDie2();
 			boolean black = gameState.isBlackTurn();

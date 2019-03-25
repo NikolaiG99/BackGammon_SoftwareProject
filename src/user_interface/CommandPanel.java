@@ -119,11 +119,6 @@ public class CommandPanel extends JPanel{
 		case NEXT: 		GameMethods.next(boardPanel, gameBoard, gameState, infoPanel, logicDice, dicePanel);
 		                if(GameMethods.gameIsEnded(gameBoard))//TODO
 		                	;
-		                AvailablePlayAnalyser a = new AvailablePlayAnalyser(gameBoard, gameState);
-		                List<String> moves = a.getAvailablePlays();
-		                for(String s : moves) {
-		                	System.out.println(s);
-		                }
 		                break;
 		                
 		case QUIT:	 	System.exit(0);

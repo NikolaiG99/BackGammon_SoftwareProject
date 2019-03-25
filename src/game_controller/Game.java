@@ -5,11 +5,13 @@ import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import graphical_display.BoardPanel;
 import graphical_display.DicePanel;
+import logic.AvailablePlayAnalyser;
 import logic.GameLogicBoard;
 import logic.GameLogicPip;
 import logic.GameState;
@@ -131,6 +133,13 @@ public class Game {
 					//Display initial pip numbering according to whose turn in it
 					game.boardPanel.displayPipEnumeration(game.gameState.isBlackTurn());
 					
+					//List initial possible moves for the starting player
+			        AvailablePlayAnalyser a = new AvailablePlayAnalyser(game.gameBoard, game.gameState);
+			        List<String> moves = a.getAvailablePlays();
+			        game.infoPanel.addText("The legal moves are:\n");
+			        for(String s : moves) {
+			        		game.infoPanel.addText(s + "\n");
+			        	}
 				 	}
 		});
 	}
