@@ -49,6 +49,7 @@ public class GameMethods{
 		}
 	}
 	
+	
 	/**
 	 * A method which moves a checker from a given pip to another pip as described in the documentation
 	 * It does not include support for moving checkers to and from the bar/bear off positions as it
@@ -344,52 +345,72 @@ public class GameMethods{
 	// Cheat Method to display pips in cheat position and be able to play on after cheat called
 	public static void cheat(BoardPanel boardPanel, GameLogicBoard gameBoard) {
 
-		// move black 24 to 5
-		movePipFromPointByNPoints(24, 19, boardPanel, gameBoard);
-		movePipFromPointByNPoints(24, 19, boardPanel, gameBoard);
+		
 		// move red 19 to 24
 		movePipFromPointByNPoints(19, 5, boardPanel, gameBoard);
 		movePipFromPointByNPoints(19, 5, boardPanel, gameBoard);
 		movePipFromPointByNPoints(19, 5, boardPanel, gameBoard);
+		Sprint1_MovePipFromPointToBearOff(24, boardPanel, gameBoard);
+		Sprint1_MovePipFromPointToBearOff(24, boardPanel, gameBoard);
+		Sprint1_MovePipFromPointToBearOff(24, boardPanel, gameBoard);
 		// move red 19 and 17 to 22
 		movePipFromPointByNPoints(19, 3, boardPanel, gameBoard);
 		movePipFromPointByNPoints(19, 3, boardPanel, gameBoard);
 		movePipFromPointByNPoints(17, 5, boardPanel, gameBoard);
+		Sprint1_MovePipFromPointToBearOff(22, boardPanel, gameBoard);
+		Sprint1_MovePipFromPointToBearOff(22, boardPanel, gameBoard);
+		Sprint1_MovePipFromPointToBearOff(22, boardPanel, gameBoard);
 
 		// move red 17 and 12 to 21
 		movePipFromPointByNPoints(17, 4, boardPanel, gameBoard);
 		movePipFromPointByNPoints(17, 4, boardPanel, gameBoard);
 		movePipFromPointByNPoints(12, 9, boardPanel, gameBoard);
+		Sprint1_MovePipFromPointToBearOff(21, boardPanel, gameBoard);
+		Sprint1_MovePipFromPointToBearOff(21, boardPanel, gameBoard);
+		Sprint1_MovePipFromPointToBearOff(21, boardPanel, gameBoard);
 
 		// move red 12 to 21,22 and 24 to then add to bar
 		movePipFromPointByNPoints(12, 9, boardPanel, gameBoard);
 		movePipFromPointByNPoints(12, 10, boardPanel, gameBoard);
 		movePipFromPointByNPoints(12, 12, boardPanel, gameBoard);
-		CheatMovePipFromPointToBar(21, boardPanel, gameBoard);
-		CheatMovePipFromPointToBar(22, boardPanel, gameBoard);
-		CheatMovePipFromPointToBar(24, boardPanel, gameBoard);
+		Sprint1_MovePipFromPointToBearOff(21, boardPanel, gameBoard);
+		Sprint1_MovePipFromPointToBearOff(22, boardPanel, gameBoard);
+		Sprint1_MovePipFromPointToBearOff(24, boardPanel, gameBoard);
+		
 
 		// move rest of red to bear off
 		Sprint1_MovePipFromPointToBearOff(12, boardPanel, gameBoard);
 		Sprint1_MovePipFromPointToBearOff(1, boardPanel, gameBoard);
-		Sprint1_MovePipFromPointToBearOff(1, boardPanel, gameBoard);
+		
+		
 
-		// move black 13 to 4,3 and 2
+		// move black 13 to 4,3 and 2 then to bear off
 		movePipFromPointByNPoints(13, 9, boardPanel, gameBoard);
 		movePipFromPointByNPoints(13, 9, boardPanel, gameBoard);
 		movePipFromPointByNPoints(13, 10, boardPanel, gameBoard);
 		movePipFromPointByNPoints(13, 10, boardPanel, gameBoard);
 		movePipFromPointByNPoints(13, 11, boardPanel, gameBoard);
+		Sprint1_MovePipFromPointToBearOff(4, boardPanel, gameBoard);
+		Sprint1_MovePipFromPointToBearOff(4, boardPanel, gameBoard);
+		Sprint1_MovePipFromPointToBearOff(3, boardPanel, gameBoard);
+		Sprint1_MovePipFromPointToBearOff(3, boardPanel, gameBoard);
+		Sprint1_MovePipFromPointToBearOff(2, boardPanel, gameBoard);
+		
 
-		// move black 8 to 2 and 1
+		// move black 8 to 2 and 1 then to bear off
 		movePipFromPointByNPoints(8, 6, boardPanel, gameBoard);
-		movePipFromPointByNPoints(8, 7, boardPanel, gameBoard);
-		movePipFromPointByNPoints(8, 7, boardPanel, gameBoard);
+		Sprint1_MovePipFromPointToBearOff(8, boardPanel, gameBoard);
+		Sprint1_MovePipFromPointToBearOff(8, boardPanel, gameBoard);
+		
+		Sprint1_MovePipFromPointToBearOff(2, boardPanel, gameBoard);
+		Sprint1_MovePipFromPointToBearOff(24, boardPanel, gameBoard);
+		
 
-		// move 3 from black 6 to bar
-        CheatMovePipFromPointToBar(6, boardPanel, gameBoard);
-		CheatMovePipFromPointToBar(6, boardPanel, gameBoard);
-		CheatMovePipFromPointToBar(6, boardPanel, gameBoard);
+		// move 3 from black 6 to bar then to bear off
+		Sprint1_MovePipFromPointToBearOff(6, boardPanel, gameBoard);
+		Sprint1_MovePipFromPointToBearOff(6, boardPanel, gameBoard);
+		Sprint1_MovePipFromPointToBearOff(6, boardPanel, gameBoard);
+		
 
 		// move rest to bear off
 		Sprint1_MovePipFromPointToBearOff(6, boardPanel, gameBoard);
