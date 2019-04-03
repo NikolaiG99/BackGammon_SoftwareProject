@@ -138,8 +138,8 @@ public class CommandPanel extends JPanel{
 						break;
 						
 		case CHEAT:     gameBoard.setStartingPositions();
+			            GameMethods.drawAllPips(boardPanel, gameBoard);
 		                GameMethods.cheat(boardPanel, gameBoard);
-		                GameMethods.drawAllPips(boardPanel, gameBoard);
 		                infoPanel.addText((gameState.isBlackTurn() ? Game.p1 : Game.p2) + ", you used cheat" + ".\n");
 		                break;
 			}
