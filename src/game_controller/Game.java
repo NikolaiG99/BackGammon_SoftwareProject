@@ -2,12 +2,14 @@ package game_controller;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.List;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import graphical_display.BoardPanel;
 import graphical_display.DicePanel;
@@ -28,6 +30,9 @@ public class Game {
 	// Store player 1 and 2 name
 	public static String p1;
 	public static String p2;
+	
+	// store match ending score
+	public static String endScore;
 
 	public GameLogicBoard gameBoard;
 	public BoardPanel boardPanel;
@@ -42,6 +47,7 @@ public class Game {
 	public IntroPanel titlePanel;
 	private EndPanel endPanel;
 	public static CardLayout cl;
+	static JLabel matchLength;
 	
 	public Game() throws IOException {
 		// Initialize data and logic
@@ -54,6 +60,9 @@ public class Game {
 		gameFrame.setTitle("Backgammon");
 		gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		gameFrame.setResizable(false);
+		
+		
+		
 
 		// Set up Card Layout to control different screens, e.g. title screen, game screen etc..
 		CardLayout cl = new CardLayout(5, 5);
@@ -111,13 +120,20 @@ public class Game {
 					try {
 						game.p1 = game.titlePanel.p1.getText();
 						game.p2 = game.titlePanel.p2.getText();
+						game.endScore = game.titlePanel.matchScore.getText();
 					} catch (Exception e1) {
 						game.p1 = "Player 1";
 						game.p2 = "Player 2";
 					}
 					game.infoPanel.addText(game.p1 + ", you are the black checker.\n");
 					game.infoPanel.addText(game.p2 + ", you are the red checker.\n");
+					game.infoPanel.addText("You are playing to " + game.endScore + "\n");
 					
+					// display match length
+					matchLength = new JLabel("                                   Match Length: " + endScore);
+					matchLength.setBounds(100, 610, 300, 40);
+					matchLength.setForeground(Color.black);
+					game.dicePanel.add(matchLength);
 					//Display initial positions of all checkers
 					GameMethods.drawAllPips(game.boardPanel, game.gameBoard);
 					

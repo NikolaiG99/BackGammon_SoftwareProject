@@ -1,6 +1,7 @@
 package game_controller;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
@@ -16,6 +17,7 @@ public class IntroPanel extends JPanel{
 	public JButton start;
 	public JTextField p1;
 	public JTextField p2;
+	public JTextField matchScore;
 	
 	public IntroPanel() throws IOException{	
 		start = new JButton("Click to start game");
@@ -52,5 +54,18 @@ public class IntroPanel extends JPanel{
 		textplayer2.setBounds(195, 560, 100, 20);
 		image.add(textplayer2);
 		p2 = textplayer2;
+		
+		// get match points
+		JLabel askScore;
+		JTextField playScore;
+
+		askScore = new JLabel("How many points would you like to play to?");
+		askScore.setBounds(80, 610, 300, 40);
+		askScore.setForeground(Color.white);
+		image.add(askScore);
+		playScore = new JTextField();
+		playScore.setBounds(360, 620, 100, 20);
+		image.add(playScore);
+		matchScore = playScore;
 	}
 }
