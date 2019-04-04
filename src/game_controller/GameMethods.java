@@ -8,6 +8,8 @@ import java.util.Stack;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.swing.JFrame;
+
 import graphical_display.BoardCoordinateConstants;
 import graphical_display.BoardPanel;
 import graphical_display.DicePanel;
@@ -16,6 +18,7 @@ import logic.GameLogicBoard;
 import logic.GameLogicPip;
 import logic.GameState;
 import logic.LogicDice;
+import user_interface.EndFrame;
 import user_interface.InformationPanel;
 
 /**
@@ -100,9 +103,10 @@ public class GameMethods{
 			}
 			
         //Check for the end of the game
-		if(GameMethods.gameIsEnded(gameBoard)) {
+		/*if(GameMethods.gameIsEnded(gameBoard)) {
 			Game.cl.show(Game.screenContainer, "end screen");
-		}
+			new EndFrame(Game.p1);
+		}*/
 		
 		//Move pips
 		movePipFromPointByNPoints(startPip, step, boardPanel, gameBoard);		
@@ -111,82 +115,103 @@ public class GameMethods{
 	/**
 	 * Method moves the game forward one turn, updating all necessary parts
 	 */
-	public static void next(BoardPanel boardPanel, GameLogicBoard gameBoard, GameState gameState, InformationPanel infoPanel, LogicDice logicDice, DicePanel dicePanel) {
-        //Check for the end of the game
-		if(GameMethods.gameIsEnded(gameBoard)) {
-			Game.cl.show(Game.screenContainer, "end screen");
+	@SuppressWarnings("deprecation")
+	public static void next(BoardPanel boardPanel, GameLogicBoard gameBoard, GameState gameState,
+			InformationPanel infoPanel, LogicDice logicDice, DicePanel dicePanel, JFrame gameFrame) {
+		// Check for the end of the game
+		if (GameMethods.gameIsEndedB(gameBoard)) {
+			gameFrame.dispose();
+			new EndFrame(Game.p1);
+
 		}
-        	
-		
-		logicDice.roll();
-		dicePanel.update(logicDice);
-		
-		gameState.nextTurn(logicDice);
-		boardPanel.displayPipEnumeration(gameState.isBlackTurn());
-		
-		dicePanel.repaint();
-		boardPanel.repaint();
-		
-		infoPanel.addText("Next turn.\nRolling.\n");
-		String msg = gameState.isBlackTurn() ? "Black rolled " : "Red rolled ";
-		msg += gameState.getCurrentRoll();
-		infoPanel.addText(msg + "\n");
-		
-        gameState.currentTurnPlays = new AvailablePlayAnalyser(gameBoard, gameState);
-        List<String> moves = gameState.currentTurnPlays.getAvailablePlays();
-        infoPanel.addText("The legal moves are:\n");
-        for(String s : moves) {
-        	infoPanel.addText(s + "\n");
-        }
-        
-        //If there's only one legal move, execute it, inform user, do next turn
-        if(gameState.currentTurnPlays.availablePlays.size() == 1) {
-        	Timer timer = new Timer();
-        	
-        	TimerTask informUser = new TimerTask(){
-        		public void run() {
-        			infoPanel.addText("There is only one possible move, it will be executed automatically.\n");
-        		}
-        	};
-        	
-        	TimerTask executeMove = new TimerTask() {
-        		public void run() {
-        			try{AvailablePlayAnalyser.executePlay("A" , boardPanel, gameBoard, gameState);}
-        			catch(Exception e){	Game.cl.show(Game.screenContainer, "end screen");}
-        		}
-        	};
-        	
-        	TimerTask nextTurn = new TimerTask() {
-        		public void run() {
-        			try{next(boardPanel, gameBoard, gameState, infoPanel, logicDice, dicePanel);}
-        			catch(Exception e) {Game.cl.show(Game.screenContainer, "end screen");}
-        		}
-        	};
-        	
-        	timer.schedule(informUser, 400);
-        	timer.schedule(executeMove, 1000);
-        	timer.schedule(nextTurn, 1600);
-        }
-        
-        //If there are no legal moves, inform user, do next turn
-        if(gameState.currentTurnPlays.availablePlays.size() == 0) {
-        	Timer timer = new Timer();
-        	
-        	TimerTask informUser = new TimerTask(){
-        		public void run() {
-        			infoPanel.addText("There are no possible moves. Next turn.\n");
-        		}
-        	};
-        	
-        	TimerTask nextTurn = new TimerTask() {
-        		public void run() {
-        			next(boardPanel, gameBoard, gameState, infoPanel, logicDice, dicePanel);
-        		}
-        	};
-        	
-        	timer.schedule(informUser, 400);
-        	timer.schedule(nextTurn, 1200);
-        }
+
+		if (GameMethods.gameIsEndedR(gameBoard)) {
+			gameFrame.dispose();
+			new EndFrame(Game.p2);
+
+		}
+
+		else {
+			logicDice.roll();
+
+			dicePanel.update(logicDice);
+
+			gameState.nextTurn(logicDice);
+			boardPanel.displayPipEnumeration(gameState.isBlackTurn());
+
+			dicePanel.repaint();
+			boardPanel.repaint();
+
+			infoPanel.addText("Next turn.\nRolling.\n");
+			String msg = gameState.isBlackTurn() ? "Black rolled " : "Red rolled ";
+			msg += gameState.getCurrentRoll();
+			infoPanel.addText(msg + "\n");
+
+			gameState.currentTurnPlays = new AvailablePlayAnalyser(gameBoard, gameState);
+			List<String> moves = gameState.currentTurnPlays.getAvailablePlays();
+			infoPanel.addText("The legal moves are:\n");
+			for (String s : moves) {
+				infoPanel.addText(s + "\n");
+			}
+
+			// If there's only one legal move, execute it, inform user, do next
+			// turn
+			if (gameState.currentTurnPlays.availablePlays.size() == 1) {
+				Timer timer = new Timer();
+
+				TimerTask informUser = new TimerTask() {
+					public void run() {
+						infoPanel.addText("There is only one possible move, it will be executed automatically.\n");
+					}
+				};
+
+				TimerTask executeMove = new TimerTask() {
+					public void run() {
+						try {
+							AvailablePlayAnalyser.executePlay("A", boardPanel, gameBoard, gameState);
+						} catch (Exception e) { // Game.cl.show(Game.screenContainer,
+												// "end screen");
+						}
+					}
+
+				};
+
+				TimerTask nextTurn = new TimerTask() {
+					public void run() {
+						try {
+							next(boardPanel, gameBoard, gameState, infoPanel, logicDice, dicePanel, gameFrame);
+						} catch (Exception e) { // Game.cl.show(Game.screenContainer,
+												// "end screen");
+						}
+					}
+
+				};
+
+				timer.schedule(informUser, 400);
+				timer.schedule(executeMove, 1000);
+				timer.schedule(nextTurn, 1600);
+			}
+
+			// If there are no legal moves, inform user, do next turn
+			if (gameState.currentTurnPlays.availablePlays.size() == 0) {
+				Timer timer = new Timer();
+
+				TimerTask informUser = new TimerTask() {
+					public void run() {
+						infoPanel.addText("There are no possible moves. Next turn.\n");
+					}
+				};
+
+				TimerTask nextTurn = new TimerTask() {
+					public void run() {
+						next(boardPanel, gameBoard, gameState, infoPanel, logicDice, dicePanel, gameFrame);
+					}
+				};
+
+				timer.schedule(informUser, 400);
+				timer.schedule(nextTurn, 1200);
+			}
+		}
 	}
 	
 	/**
@@ -310,8 +335,18 @@ public class GameMethods{
 	/**
 	 * Method to check, whether the game is over(if there is a winner)
 	 */
-	public static boolean gameIsEnded(GameLogicBoard gameBoard){
-		if(gameBoard.getNumberOfPipsOnPoint(0) == 15 || gameBoard.getNumberOfPipsOnPoint(25) == 15)
+	public static boolean gameIsEndedB(GameLogicBoard gameBoard){
+		if(gameBoard.getNumberOfPipsOnPoint(0) == 15)
+			return true;
+		else 
+			return false;
+	}
+	
+	/**
+	 * Method to check, whether the game is over(if there is a winner)
+	 */
+	public static boolean gameIsEndedR(GameLogicBoard gameBoard){
+		if(gameBoard.getNumberOfPipsOnPoint(25) == 15)
 			return true;
 		else 
 			return false;

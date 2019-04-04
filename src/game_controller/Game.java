@@ -29,16 +29,17 @@ public class Game {
 	public static String p1;
 	public static String p2;
 
-	private GameLogicBoard gameBoard;
-	private BoardPanel boardPanel;
-	private InformationPanel infoPanel;
-	private final CommandPanel commandPanel;
-	private  LogicDice logicDice;
-	private DicePanel dicePanel;
-	private GameState gameState;
+	public GameLogicBoard gameBoard;
+	public BoardPanel boardPanel;
+	public InformationPanel infoPanel;
+	public final CommandPanel commandPanel;
+	public  LogicDice logicDice;
+	public DicePanel dicePanel;
+	public GameState gameState;
+	public JFrame gameFrame;
 	
 	public static JPanel screenContainer;
-	private IntroPanel titlePanel;
+	public IntroPanel titlePanel;
 	private EndPanel endPanel;
 	public static CardLayout cl;
 	
@@ -48,8 +49,8 @@ public class Game {
 		logicDice = new LogicDice();
 
 		// Set up JFrame
-		JFrame gameFrame = new JFrame();
-		gameFrame.setSize(940, 680);
+		gameFrame = new JFrame();
+		gameFrame.setSize(1000, 880);
 		gameFrame.setTitle("Backgammon");
 		gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		gameFrame.setResizable(false);
@@ -66,7 +67,7 @@ public class Game {
 		// Initialize information, dice, and command panels
 		infoPanel = new InformationPanel();
 		dicePanel = new DicePanel();
-		commandPanel = new CommandPanel(gameBoard, logicDice, boardPanel, infoPanel, dicePanel);
+		commandPanel = new CommandPanel(gameBoard, logicDice, boardPanel, infoPanel, dicePanel, gameFrame);
 		
 		// Attach the information and command panels to the game panel
 		JPanel panel = new JPanel(new BorderLayout());
@@ -150,7 +151,7 @@ public class Game {
 	 * 
 	 * Returns a Black pip if the first roll is larger(black to start), and a red pip otherwise
 	 */
-	private GameLogicPip rollInitialThrows() {
+	public GameLogicPip rollInitialThrows() {
 			int firstRoll = 0;
 			int secondRoll = 0;
 			int initialNumRolls = logicDice.getNumberOfTimesDiceRolled();
