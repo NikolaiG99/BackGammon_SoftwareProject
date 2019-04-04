@@ -16,6 +16,7 @@ import logic.GameLogicBoard;
 import logic.GameState;
 import logic.LogicDice;
 
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -36,17 +37,19 @@ public class CommandPanel extends JPanel{
 	
 	private GameLogicBoard gameBoard;
 	private BoardPanel boardPanel;
+	private JFrame gameFrame;
 	InformationPanel infoPanel;
 	private DicePanel dicePanel;
 	private LogicDice logicDice;
 	private GameState gameState = null;
 	
-	public CommandPanel(GameLogicBoard gameBoard, LogicDice logicDice, BoardPanel boardPanel, InformationPanel infoPanel, DicePanel dicePanel){
+	public CommandPanel(GameLogicBoard gameBoard, LogicDice logicDice, BoardPanel boardPanel, InformationPanel infoPanel, DicePanel dicePanel, JFrame gameFrame){
 		this.gameBoard = gameBoard;
 		this.boardPanel = boardPanel;
 		this.infoPanel = infoPanel;
 		this.dicePanel = dicePanel;
 		this.logicDice = logicDice;
+		this.gameFrame = gameFrame;
 		
 		label = new JLabel("Enter Command: ");
 		this.add(label);
@@ -119,13 +122,13 @@ public class CommandPanel extends JPanel{
 						Timer timer = new Timer();
 			        	TimerTask nextTurn = new TimerTask() {
 			        		public void run() {
-			        			GameMethods.next(boardPanel, gameBoard, gameState, infoPanel, logicDice, dicePanel);
+			        			GameMethods.next(boardPanel, gameBoard, gameState, infoPanel, logicDice, dicePanel, gameFrame);
 			        		}
 			        	};
 			        	timer.schedule(nextTurn, 1000);
 						break;
 						
-		case NEXT: 		GameMethods.next(boardPanel, gameBoard, gameState, infoPanel, logicDice, dicePanel);
+		case NEXT: 		GameMethods.next(boardPanel, gameBoard, gameState, infoPanel, logicDice, dicePanel, gameFrame);
 		                break;
 		                
 		case QUIT:	 	System.exit(0);
