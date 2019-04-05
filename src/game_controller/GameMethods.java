@@ -1,5 +1,8 @@
 package game_controller;
 
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.EmptyStackException;
@@ -9,6 +12,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 import graphical_display.BoardCoordinateConstants;
 import graphical_display.BoardPanel;
@@ -18,6 +22,7 @@ import logic.GameLogicBoard;
 import logic.GameLogicPip;
 import logic.GameState;
 import logic.LogicDice;
+
 import user_interface.EndFrame;
 import user_interface.InformationPanel;
 
@@ -120,14 +125,313 @@ public class GameMethods{
 			InformationPanel infoPanel, LogicDice logicDice, DicePanel dicePanel, JFrame gameFrame) {
 		// Check for the end of the game
 		if (GameMethods.gameIsEndedB(gameBoard)) {
-			gameFrame.dispose();
-			new EndFrame(Game.p1);
+			if (gameBoard.topPipColourOnPointIsRed(25)){
+				Game.BScore++;
+				gameFrame.dispose();
+				if (Integer.toString(Game.BScore) == Game.endScore){
+					
+					new EndFrame(Game.p1);
+				}
+				else{
+					Game game;
+					try {
+						game = new Game();
+					
+					game.titlePanel.start.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
 
+							// Get player names and inform them of their
+							// colour
+							
+							game.infoPanel.addText(game.p1 + ", you are the black checker.\n");
+							game.infoPanel.addText(game.p2 + ", you are the red checker.\n");
+							game.infoPanel.addText("You are playing to " + game.endScore + "\n");
+							
+							// display match length
+							game.matchLength = new JLabel("                                   Match Length: " + Game.endScore + "                    Current Score: " + Game.BScore +" - " + Game.RScore);
+							game.matchLength.setBounds(100, 610, 300, 40);
+							game.matchLength.setForeground(Color.black);
+							game.dicePanel.add(game.matchLength);
+
+							// Display initial positions of all checkers
+							GameMethods.drawAllPips(game.boardPanel, game.gameBoard);
+
+							// Roll dice to see who starts and initialize
+							// game state
+							if (game.rollInitialThrows().isBlack()) {
+								game.gameState = new GameState(true, game.logicDice); // Set
+																						// black
+																						// has
+																						// first
+																						// move
+								game.infoPanel.addText(game.p1 + " starts.\n");
+							} else {
+								game.gameState = new GameState(false, game.logicDice); // Set
+																						// red
+																						// has
+																						// first
+																						// move
+								game.infoPanel.addText(game.p2 + " starts.\n");
+							}
+							game.commandPanel.initializeGameState(game.gameState);
+
+							// Display initial pip numbering according to
+							// whose turn in it
+							game.boardPanel.displayPipEnumeration(game.gameState.isBlackTurn());
+
+							// List initial possible moves for the starting
+							// player
+							game.gameState.currentTurnPlays = new AvailablePlayAnalyser(game.gameBoard,
+									game.gameState);
+							List<String> moves = game.gameState.currentTurnPlays.getAvailablePlays();
+							game.infoPanel.addText("The legal moves are:\n");
+							for (String s : moves) {
+								game.infoPanel.addText(s + "\n");
+							}
+						}
+
+					});
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+			}
+			
+			else{
+				Game.BScore +=2;
+				gameFrame.dispose();
+				if (Integer.toString(Game.BScore) == Game.endScore){
+					
+					new EndFrame(Game.p1);
+				}
+				else{
+					Game game;
+					try {
+						game = new Game();
+					
+					game.titlePanel.start.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+
+							// Get player names and inform them of their
+							// colour
+							
+							game.infoPanel.addText(game.p1 + ", you are the black checker.\n");
+							game.infoPanel.addText(game.p2 + ", you are the red checker.\n");
+							game.infoPanel.addText("You are playing to " + game.endScore + "\n");
+							
+							// display match length
+							game.matchLength = new JLabel("                                   Match Length: " + Game.endScore + "                    Current Score: " + Game.BScore +" - " + Game.RScore);
+							game.matchLength.setBounds(100, 610, 300, 40);
+							game.matchLength.setForeground(Color.black);
+							game.dicePanel.add(game.matchLength);
+
+							// Display initial positions of all checkers
+							GameMethods.drawAllPips(game.boardPanel, game.gameBoard);
+
+							// Roll dice to see who starts and initialize
+							// game state
+							if (game.rollInitialThrows().isBlack()) {
+								game.gameState = new GameState(true, game.logicDice); // Set
+																						// black
+																						// has
+																						// first
+																						// move
+								game.infoPanel.addText(game.p1 + " starts.\n");
+							} else {
+								game.gameState = new GameState(false, game.logicDice); // Set
+																						// red
+																						// has
+																						// first
+																						// move
+								game.infoPanel.addText(game.p2 + " starts.\n");
+							}
+							game.commandPanel.initializeGameState(game.gameState);
+
+							// Display initial pip numbering according to
+							// whose turn in it
+							game.boardPanel.displayPipEnumeration(game.gameState.isBlackTurn());
+
+							// List initial possible moves for the starting
+							// player
+							game.gameState.currentTurnPlays = new AvailablePlayAnalyser(game.gameBoard,
+									game.gameState);
+							List<String> moves = game.gameState.currentTurnPlays.getAvailablePlays();
+							game.infoPanel.addText("The legal moves are:\n");
+							for (String s : moves) {
+								game.infoPanel.addText(s + "\n");
+							}
+						}
+
+					});
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+			}
 		}
+			
+		
+				
+		    	
+			
+			//gameFrame.dispose();
+			
+			//new EndFrame(Game.p1);
+
+		
 
 		if (GameMethods.gameIsEndedR(gameBoard)) {
-			gameFrame.dispose();
-			new EndFrame(Game.p2);
+			if (gameBoard.getNumberOfPipsOnPoint(0) > 0){
+				Game.RScore++;
+				gameFrame.dispose();
+				if (Integer.toString(Game.RScore) == Game.endScore){
+					
+					new EndFrame(Game.p1);
+				}
+				else{
+					Game game;
+					try {
+						game = new Game();
+					
+					game.titlePanel.start.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+
+							// Get player names and inform them of their
+							// colour
+							
+							game.infoPanel.addText(game.p1 + ", you are the black checker.\n");
+							game.infoPanel.addText(game.p2 + ", you are the red checker.\n");
+							game.infoPanel.addText("You are playing to " + game.endScore + "\n");
+							
+							// display match length
+							game.matchLength = new JLabel("                                   Match Length: " + Game.endScore + "                    Current Score: " + Game.BScore +" - " + Game.RScore);
+							game.matchLength.setBounds(100, 610, 300, 40);
+							game.matchLength.setForeground(Color.black);
+							game.dicePanel.add(game.matchLength);
+
+							// Display initial positions of all checkers
+							GameMethods.drawAllPips(game.boardPanel, game.gameBoard);
+
+							// Roll dice to see who starts and initialize
+							// game state
+							if (game.rollInitialThrows().isBlack()) {
+								game.gameState = new GameState(true, game.logicDice); // Set
+																						// black
+																						// has
+																						// first
+																						// move
+								game.infoPanel.addText(game.p1 + " starts.\n");
+							} else {
+								game.gameState = new GameState(false, game.logicDice); // Set
+																						// red
+																						// has
+																						// first
+																						// move
+								game.infoPanel.addText(game.p2 + " starts.\n");
+							}
+							game.commandPanel.initializeGameState(game.gameState);
+
+							// Display initial pip numbering according to
+							// whose turn in it
+							game.boardPanel.displayPipEnumeration(game.gameState.isBlackTurn());
+
+							// List initial possible moves for the starting
+							// player
+							game.gameState.currentTurnPlays = new AvailablePlayAnalyser(game.gameBoard,
+									game.gameState);
+							List<String> moves = game.gameState.currentTurnPlays.getAvailablePlays();
+							game.infoPanel.addText("The legal moves are:\n");
+							for (String s : moves) {
+								game.infoPanel.addText(s + "\n");
+							}
+						}
+
+					});
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+			}
+			
+			else{
+				Game.RScore +=2;
+				gameFrame.dispose();
+				if (Integer.toString(Game.RScore) == Game.endScore){
+					
+					new EndFrame(Game.p2);
+				}
+				else{
+					Game game;
+					try {
+						game = new Game();
+					
+					game.titlePanel.start.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+
+							// Get player names and inform them of their
+							// colour
+							
+							game.infoPanel.addText(game.p1 + ", you are the black checker.\n");
+							game.infoPanel.addText(game.p2 + ", you are the red checker.\n");
+							game.infoPanel.addText("You are playing to " + game.endScore + "\n");
+							
+							// display match length
+							game.matchLength = new JLabel("                                   Match Length: " + Game.endScore + "                    Current Score: " + Game.BScore +" - " + Game.RScore);
+							game.matchLength.setBounds(100, 610, 300, 40);
+							game.matchLength.setForeground(Color.black);
+							game.dicePanel.add(game.matchLength);
+
+							// Display initial positions of all checkers
+							GameMethods.drawAllPips(game.boardPanel, game.gameBoard);
+
+							// Roll dice to see who starts and initialize
+							// game state
+							if (game.rollInitialThrows().isBlack()) {
+								game.gameState = new GameState(true, game.logicDice); // Set
+																						// black
+																						// has
+																						// first
+																						// move
+								game.infoPanel.addText(game.p1 + " starts.\n");
+							} else {
+								game.gameState = new GameState(false, game.logicDice); // Set
+																						// red
+																						// has
+																						// first
+																						// move
+								game.infoPanel.addText(game.p2 + " starts.\n");
+							}
+							game.commandPanel.initializeGameState(game.gameState);
+
+							// Display initial pip numbering according to
+							// whose turn in it
+							game.boardPanel.displayPipEnumeration(game.gameState.isBlackTurn());
+
+							// List initial possible moves for the starting
+							// player
+							game.gameState.currentTurnPlays = new AvailablePlayAnalyser(game.gameBoard,
+									game.gameState);
+							List<String> moves = game.gameState.currentTurnPlays.getAvailablePlays();
+							game.infoPanel.addText("The legal moves are:\n");
+							for (String s : moves) {
+								game.infoPanel.addText(s + "\n");
+							}
+						}
+
+					});
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+			}
 
 		}
 
