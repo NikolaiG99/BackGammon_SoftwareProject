@@ -33,6 +33,10 @@ public class Game {
 	
 	// store match ending score
 	public static String endScore;
+	
+	// Store current score
+	public static int BScore = 0;
+	public static int RScore = 0;
 
 	public GameLogicBoard gameBoard;
 	public BoardPanel boardPanel;
@@ -130,7 +134,7 @@ public class Game {
 					game.infoPanel.addText("You are playing to " + game.endScore + "\n");
 					
 					// display match length
-					matchLength = new JLabel("                                   Match Length: " + endScore);
+					matchLength = new JLabel("                                   Match Length: " + endScore + "                    Current Score: " + BScore +" - " + RScore);
 					matchLength.setBounds(100, 610, 300, 40);
 					matchLength.setForeground(Color.black);
 					game.dicePanel.add(matchLength);
