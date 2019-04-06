@@ -199,6 +199,11 @@ public class AvailablePlayAnalyser{
 					if(moveIsValid(play))
 						availablePlays.add(play);
 				}
+				//If there is only one checker on the board, set the move to be simply the first hop
+				if(calculateRemainingCheckers() == 1) {
+					GameMove play = new GameMove(h1, new Hop(0, 0, false));
+					availablePlays.add(play);
+				}
 			}
 			
 			//Remove all available plays which go to bear-off unless in bear-off position
@@ -519,6 +524,31 @@ public class AvailablePlayAnalyser{
 		}
 		else {
 			for(int i = 1; i <= 18; i++) {
+				int n = gameBoardSimulation.getNumberOfPipsOnPoint(i);
+				if(n > 0 && gameBoardSimulation.topPipColourOnPointIsRed(i))
+					count += n;
+			}
+			count += gameBoardSimulation.getNumberOfPipsOnPoint(27);
+		}
+		return count;
+	}
+	
+	/*
+	 * Method to calculate the remaining checkers on the board(excluding bear-off) for the current player
+	 */
+	private int calculateRemainingCheckers(){
+		int count = 0;
+		
+		if(gameState.isBlackTurn()) {
+			for(int i = 1; i <= 24; i++) {
+				int n = gameBoardSimulation.getNumberOfPipsOnPoint(i);
+				if(n > 0 && !gameBoardSimulation.topPipColourOnPointIsRed(i))
+					count += n;
+			}
+			count += gameBoardSimulation.getNumberOfPipsOnPoint(26);
+		}
+		else {
+			for(int i = 1; i <= 24; i++) {
 				int n = gameBoardSimulation.getNumberOfPipsOnPoint(i);
 				if(n > 0 && gameBoardSimulation.topPipColourOnPointIsRed(i))
 					count += n;
