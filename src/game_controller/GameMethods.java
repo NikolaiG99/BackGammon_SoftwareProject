@@ -754,6 +754,11 @@ public class GameMethods{
 		// move rest to bear off
 		Sprint1_MovePipFromPointToBearOff(6, boardPanel, gameBoard);
 		Sprint1_MovePipFromPointToBearOff(6, boardPanel, gameBoard);
+		
+		// move pips both remaining pips from being on oponents ace points to own ace points
+		movePipFromPointByNPoints(24, 22, boardPanel, gameBoard);
+		movePipFromPointByNPoints(1, 23, boardPanel, gameBoard);
+		movePipFromPointByNPoints(2, 1, boardPanel, gameBoard);
 
 	}
 }

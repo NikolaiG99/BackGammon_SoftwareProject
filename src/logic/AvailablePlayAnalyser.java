@@ -523,7 +523,7 @@ public class AvailablePlayAnalyser{
 				if(n > 0 && gameBoardSimulation.topPipColourOnPointIsRed(i))
 					count += n;
 			}
-			count += gameBoardSimulation.getNumberOfPipsOnPoint(26);
+			count += gameBoardSimulation.getNumberOfPipsOnPoint(27);
 		}
 		return count;
 	}
