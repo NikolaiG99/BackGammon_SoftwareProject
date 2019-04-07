@@ -11,6 +11,10 @@ public class GameState{
 		private int turnNumber;
 		private int initialNumberOfTimesDiceRolled;
 		
+		private boolean blackHasDoublingCube;
+		private boolean redHasDoublingCube;
+		private int doublingCubeValue;
+		
 		public AvailablePlayAnalyser currentTurnPlays; 
 		
 		public GameState(boolean isBlackTurn, LogicDice logicDice) {

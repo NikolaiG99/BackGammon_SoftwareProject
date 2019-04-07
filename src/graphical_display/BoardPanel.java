@@ -16,6 +16,8 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
@@ -26,6 +28,11 @@ import javax.swing.JPanel;
 public class BoardPanel extends JPanel {
 	Ellipse2D.Double [] pips;	
 	String numbersAtBottom[];
+	public int doublingCubePosition;
+	public int doublingCubeValue;
+	final int TOP = 0;
+	final int MIDDLE = 1;
+	final int BOTTOM = 2;
 	
 	private Image backgroundImage;
 
@@ -34,6 +41,8 @@ public class BoardPanel extends JPanel {
 	// can vary depending on the use case of the panel.
 	public BoardPanel(String fileName) throws IOException {
 	    backgroundImage = ImageIO.read(new File(fileName));
+	    doublingCubePosition = MIDDLE;
+	    doublingCubeValue = 64;
 
 	    pips = new Ellipse2D.Double [30];
 	    for(int i = 0; i < 30; i++) 
@@ -43,6 +52,24 @@ public class BoardPanel extends JPanel {
 	    for(int i = 0; i < 24; i++)
 	    	numbersAtBottom[i] = ""+(i+1);
 	}
+	
+	class ImageLabel extends JLabel {
+
+		  public ImageLabel(String img) {
+		    this(new ImageIcon(img));
+		  }
+
+		  public ImageLabel(ImageIcon icon) {
+		    setIcon(icon);
+		    // setMargin(new Insets(0,0,0,0));
+		    setIconTextGap(0);
+		    // setBorderPainted(false);
+		    setBorder(null);
+		    setText(null);
+		    setSize(icon.getImage().getWidth(null), icon.getImage().getHeight(null));
+		  }
+
+		}
 	
     @Override
     public Dimension getPreferredSize() {
@@ -100,6 +127,19 @@ public class BoardPanel extends JPanel {
 
 		// Draw the background image.
 		g.drawImage(backgroundImage, 5, 10, this);
+		
+		//Draw the doubling cube
+	    try {
+			Image doublingCubeImage = ImageIO.read(new File("src/resources/doublingDie" + doublingCubeValue + ".png"));
+			
+		    g.drawImage(doublingCubeImage, 
+		    		BoardCoordinateConstants.COORDS_POINT[26],
+		    		BoardCoordinateConstants.DOUBLING_CUBE[doublingCubePosition],
+		    		this);
+		} catch (IOException e) {
+			System.out.println("ERROR: Doubling Cube Image not Found\n");
+			e.printStackTrace();
+		}
 		
 		//Draw the numbers at the bottom of the pips
 	    Font font = g.getFont().deriveFont(15.0f);

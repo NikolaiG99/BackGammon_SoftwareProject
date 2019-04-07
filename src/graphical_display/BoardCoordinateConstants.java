@@ -37,4 +37,13 @@ public class BoardCoordinateConstants{
 	}; 
 	
 	public final static int MIDDLE_ROW = 193;
+	
+	/**
+	 * An array of y-coordinates for doubling cube(use COORDS_POINT[26] for x-coord)
+	 * [1] is top of board, [2] is middle of board, [3] is bottom of board
+	 */
+	public final static int [] DOUBLING_CUBE
+	= new int[] {
+		25, 189, 362	
+	};
 }
