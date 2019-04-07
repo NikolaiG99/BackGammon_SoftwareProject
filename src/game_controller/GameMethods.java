@@ -147,6 +147,7 @@ public class GameMethods{
 							game.infoPanel.addText(game.p1 + ", you are the black checker.\n");
 							game.infoPanel.addText(game.p2 + ", you are the red checker.\n");
 							game.infoPanel.addText("You are playing to " + game.endScore + "\n");
+							game.infoPanel.addText("Current Score is: " + Game.p1 + " " + Game.BScore + " - " + Game.RScore + " " + Game.p2 + "\n");
 							
 							// display match length
 							game.matchLength = new JLabel("                                   Match Length: " + Game.endScore + "                    Current Score: " + Game.BScore +" - " + Game.RScore);
@@ -222,6 +223,8 @@ public class GameMethods{
 							game.infoPanel.addText(game.p1 + ", you are the black checker.\n");
 							game.infoPanel.addText(game.p2 + ", you are the red checker.\n");
 							game.infoPanel.addText("You are playing to " + game.endScore + "\n");
+							game.infoPanel.addText("Current Score is: " + Game.p1 + " " + Game.BScore + " - " + Game.RScore + " " + Game.p2 + "\n");
+							
 							
 							// display match length
 							game.matchLength = new JLabel("                                   Match Length: " + Game.endScore + "                    Current Score: " + Game.BScore +" - " + Game.RScore);
@@ -308,6 +311,8 @@ public class GameMethods{
 							game.infoPanel.addText(game.p1 + ", you are the black checker.\n");
 							game.infoPanel.addText(game.p2 + ", you are the red checker.\n");
 							game.infoPanel.addText("You are playing to " + game.endScore + "\n");
+							game.infoPanel.addText("Current Score is: " + Game.p1 + " " + Game.BScore + " - " + Game.RScore + " " + Game.p2 + "\n");
+							
 							
 							// display match length
 							game.matchLength = new JLabel("                                   Match Length: " + Game.endScore + "                    Current Score: " + Game.BScore +" - " + Game.RScore);
@@ -382,6 +387,8 @@ public class GameMethods{
 							game.infoPanel.addText(game.p1 + ", you are the black checker.\n");
 							game.infoPanel.addText(game.p2 + ", you are the red checker.\n");
 							game.infoPanel.addText("You are playing to " + game.endScore + "\n");
+							game.infoPanel.addText("Current Score is: " + Game.p1 + " " + Game.BScore + " - " + Game.RScore + " " + Game.p2 + "\n");
+							
 							
 							// display match length
 							game.matchLength = new JLabel("                                   Match Length: " + Game.endScore + "                    Current Score: " + Game.BScore +" - " + Game.RScore);
