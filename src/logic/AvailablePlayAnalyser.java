@@ -86,7 +86,11 @@ public class AvailablePlayAnalyser{
 				ret = "" + start + "-" + end;
 			else if(start == -2 || start == 26) {
 				ret = "Bar-" + end;
-			}else {
+			}
+			else if((start == 0 && end == 0) || start == 25){
+				ret = "";
+			}
+			else {
 				ret = "" + start + "-Off";
 			}
 			ret += isHit ? "*" : "";
@@ -570,7 +574,8 @@ public class AvailablePlayAnalyser{
 		GameMethods.Sprint3_MoveCheckerFromPipToPip(hop1.start, hop1.end, boardPanel, gameBoard, gameState);
 		TimerTask doHop2 = new TimerTask() {
 			public void run(){
-				GameMethods.Sprint3_MoveCheckerFromPipToPip(hop2.start, hop2.end, boardPanel, gameBoard, gameState);
+				if(!hop2.toString().equals(""))
+					GameMethods.Sprint3_MoveCheckerFromPipToPip(hop2.start, hop2.end, boardPanel, gameBoard, gameState);
 			}
 		};
 		Timer timer = new Timer();

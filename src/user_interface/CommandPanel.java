@@ -144,6 +144,14 @@ public class CommandPanel extends JPanel{
 			            GameMethods.drawAllPips(boardPanel, gameBoard);
 		                GameMethods.cheat(boardPanel, gameBoard);
 		                infoPanel.addText((gameState.isBlackTurn() ? Game.p1 : Game.p2) + ", you used cheat" + ".\n");
+		                
+		    			gameState.currentTurnPlays = new AvailablePlayAnalyser(gameBoard, gameState);
+		    			List<String> moves = gameState.currentTurnPlays.getAvailablePlays();
+		    			infoPanel.addText("The new(after using 'cheat') legal moves are:\n");
+		    			for (String s : moves) {
+		    				infoPanel.addText(s + "\n");
+		    			}
+		                
 		                break;
 			}
 	}
