@@ -32,7 +32,7 @@ public class Game {
 	public static String p2;
 	
 	// store match ending score
-	public static String endScore;
+	public static int endScore;
 	
 	// Store current score
 	public static int BScore = 0;
@@ -124,7 +124,7 @@ public class Game {
 					try {
 						game.p1 = game.titlePanel.p1.getText();
 						game.p2 = game.titlePanel.p2.getText();
-						game.endScore = game.titlePanel.matchScore.getText();
+						game.endScore = Integer.parseInt(game.titlePanel.matchScore.getText());
 					} catch (Exception e1) {
 						game.p1 = "Player 1";
 						game.p2 = "Player 2";

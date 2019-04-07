@@ -128,7 +128,7 @@ public class GameMethods{
 			if (gameBoard.topPipColourOnPointIsRed(25)){
 				Game.BScore++;
 				gameFrame.dispose();
-				if (Integer.toString(Game.BScore) == Game.endScore){
+				if (Game.BScore == Game.endScore){
 					
 					new EndFrame(Game.p1);
 				}
@@ -202,7 +202,7 @@ public class GameMethods{
 			else{
 				Game.BScore +=2;
 				gameFrame.dispose();
-				if (Integer.toString(Game.BScore) == Game.endScore){
+				if (Game.BScore == Game.endScore){
 					
 					new EndFrame(Game.p1);
 				}
@@ -289,7 +289,7 @@ public class GameMethods{
 			if (gameBoard.getNumberOfPipsOnPoint(0) > 0){
 				Game.RScore++;
 				gameFrame.dispose();
-				if (Integer.toString(Game.RScore) == Game.endScore){
+				if (Game.RScore == Game.endScore){
 					
 					new EndFrame(Game.p1);
 				}
@@ -363,7 +363,7 @@ public class GameMethods{
 			else{
 				Game.RScore +=2;
 				gameFrame.dispose();
-				if (Integer.toString(Game.RScore) == Game.endScore){
+				if (Game.RScore == Game.endScore){
 					
 					new EndFrame(Game.p2);
 				}
