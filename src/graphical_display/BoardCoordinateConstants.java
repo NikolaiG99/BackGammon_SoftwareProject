@@ -23,7 +23,7 @@ public class BoardCoordinateConstants{
 	 */
 	public final static int [] COORDS_TOP_ROW
 	= new int []{
-			170, 25, 55, 85, 115, 145, 175, 140, 110, 80
+			150, 25, 55, 85, 115, 145, 175, 140, 110, 80
 	}; 
 	
 	/**
@@ -33,7 +33,7 @@ public class BoardCoordinateConstants{
 	 */
 	public final static int [] COORDS_BOTTOM_ROW
 	= new int []{
-			208, 362, 332, 302, 272, 242, 212, 238, 268, 298
+			228, 362, 332, 302, 272, 242, 212, 238, 268, 298
 	}; 
 	
 	public final static int MIDDLE_ROW = 193;
