@@ -291,7 +291,7 @@ public class GameMethods{
 				gameFrame.dispose();
 				if (Game.RScore == Game.endScore){
 					
-					new EndFrame(Game.p1);
+					new EndFrame(Game.p2);
 				}
 				else{
 					Game game;
