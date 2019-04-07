@@ -208,6 +208,7 @@ public class GameMethods{
 				}
 				else{
 					Game game;
+					System.out.println("new Game() once.\\");
 					try {
 						game = new Game();
 					
@@ -284,7 +285,7 @@ public class GameMethods{
 
 		
 
-		if (GameMethods.gameIsEndedR(gameBoard)) {
+		else if (GameMethods.gameIsEndedR(gameBoard)) {
 			if (gameBoard.getNumberOfPipsOnPoint(0) > 0){
 				Game.RScore++;
 				gameFrame.dispose();
