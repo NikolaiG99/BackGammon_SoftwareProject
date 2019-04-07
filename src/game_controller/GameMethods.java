@@ -125,10 +125,10 @@ public class GameMethods{
 			InformationPanel infoPanel, LogicDice logicDice, DicePanel dicePanel, JFrame gameFrame) {
 		// Check for the end of the game
 		if (GameMethods.gameIsEndedB(gameBoard)) {
-			if (gameBoard.topPipColourOnPointIsRed(25)){
+			if (gameBoard.getNumberOfPipsOnPoint(25) > 0){
 				Game.BScore++;
 				gameFrame.dispose();
-				if (Game.BScore == Game.endScore){
+				if (Game.BScore >= Game.endScore){
 					
 					new EndFrame(Game.p1);
 				}
@@ -203,7 +203,7 @@ public class GameMethods{
 			else{
 				Game.BScore +=2;
 				gameFrame.dispose();
-				if (Game.BScore == Game.endScore){
+				if (Game.BScore >= Game.endScore){
 					
 					new EndFrame(Game.p1);
 				}
@@ -292,7 +292,7 @@ public class GameMethods{
 			if (gameBoard.getNumberOfPipsOnPoint(0) > 0){
 				Game.RScore++;
 				gameFrame.dispose();
-				if (Game.RScore == Game.endScore){
+				if (Game.RScore >= Game.endScore){
 					
 					new EndFrame(Game.p2);
 				}
@@ -368,7 +368,7 @@ public class GameMethods{
 			else{
 				Game.RScore +=2;
 				gameFrame.dispose();
-				if (Game.RScore == Game.endScore){
+				if (Game.RScore >= Game.endScore){
 					
 					new EndFrame(Game.p2);
 				}
