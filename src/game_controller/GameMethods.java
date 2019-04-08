@@ -125,10 +125,10 @@ public class GameMethods{
 			InformationPanel infoPanel, LogicDice logicDice, DicePanel dicePanel, JFrame gameFrame) {
 		// Check for the end of the game
 		if (GameMethods.gameIsEndedB(gameBoard)) {
-			if (gameBoard.topPipColourOnPointIsRed(25)){
+			if (gameBoard.getNumberOfPipsOnPoint(25) > 0){
 				Game.BScore++;
 				gameFrame.dispose();
-				if (Integer.toString(Game.BScore) == Game.endScore){
+				if (Game.BScore >= Game.endScore){
 					
 					new EndFrame(Game.p1);
 				}
@@ -147,6 +147,7 @@ public class GameMethods{
 							game.infoPanel.addText(game.p1 + ", you are the black checker.\n");
 							game.infoPanel.addText(game.p2 + ", you are the red checker.\n");
 							game.infoPanel.addText("You are playing to " + game.endScore + "\n");
+							game.infoPanel.addText("Current Score is: " + Game.p1 + " " + Game.BScore + " - " + Game.RScore + " " + Game.p2 + "\n");
 							
 							// display match length
 							game.matchLength = new JLabel("                                   Match Length: " + Game.endScore + "                    Current Score: " + Game.BScore +" - " + Game.RScore);
@@ -202,7 +203,7 @@ public class GameMethods{
 			else{
 				Game.BScore +=2;
 				gameFrame.dispose();
-				if (Integer.toString(Game.BScore) == Game.endScore){
+				if (Game.BScore >= Game.endScore){
 					
 					new EndFrame(Game.p1);
 				}
@@ -222,6 +223,8 @@ public class GameMethods{
 							game.infoPanel.addText(game.p1 + ", you are the black checker.\n");
 							game.infoPanel.addText(game.p2 + ", you are the red checker.\n");
 							game.infoPanel.addText("You are playing to " + game.endScore + "\n");
+							game.infoPanel.addText("Current Score is: " + Game.p1 + " " + Game.BScore + " - " + Game.RScore + " " + Game.p2 + "\n");
+							
 							
 							// display match length
 							game.matchLength = new JLabel("                                   Match Length: " + Game.endScore + "                    Current Score: " + Game.BScore +" - " + Game.RScore);
@@ -289,9 +292,9 @@ public class GameMethods{
 			if (gameBoard.getNumberOfPipsOnPoint(0) > 0){
 				Game.RScore++;
 				gameFrame.dispose();
-				if (Integer.toString(Game.RScore) == Game.endScore){
+				if (Game.RScore >= Game.endScore){
 					
-					new EndFrame(Game.p1);
+					new EndFrame(Game.p2);
 				}
 				else{
 					Game game;
@@ -308,6 +311,8 @@ public class GameMethods{
 							game.infoPanel.addText(game.p1 + ", you are the black checker.\n");
 							game.infoPanel.addText(game.p2 + ", you are the red checker.\n");
 							game.infoPanel.addText("You are playing to " + game.endScore + "\n");
+							game.infoPanel.addText("Current Score is: " + Game.p1 + " " + Game.BScore + " - " + Game.RScore + " " + Game.p2 + "\n");
+							
 							
 							// display match length
 							game.matchLength = new JLabel("                                   Match Length: " + Game.endScore + "                    Current Score: " + Game.BScore +" - " + Game.RScore);
@@ -363,7 +368,7 @@ public class GameMethods{
 			else{
 				Game.RScore +=2;
 				gameFrame.dispose();
-				if (Integer.toString(Game.RScore) == Game.endScore){
+				if (Game.RScore >= Game.endScore){
 					
 					new EndFrame(Game.p2);
 				}
@@ -382,6 +387,8 @@ public class GameMethods{
 							game.infoPanel.addText(game.p1 + ", you are the black checker.\n");
 							game.infoPanel.addText(game.p2 + ", you are the red checker.\n");
 							game.infoPanel.addText("You are playing to " + game.endScore + "\n");
+							game.infoPanel.addText("Current Score is: " + Game.p1 + " " + Game.BScore + " - " + Game.RScore + " " + Game.p2 + "\n");
+							
 							
 							// display match length
 							game.matchLength = new JLabel("                                   Match Length: " + Game.endScore + "                    Current Score: " + Game.BScore +" - " + Game.RScore);
