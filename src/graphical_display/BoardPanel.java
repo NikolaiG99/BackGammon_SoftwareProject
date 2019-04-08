@@ -130,7 +130,17 @@ public class BoardPanel extends JPanel {
 		
 		//Draw the doubling cube
 	    try {
-			Image doublingCubeImage = ImageIO.read(new File("src/resources/doublingDie" + doublingCubeValue + ".png"));
+	    	if(doublingCubeValue > 64)
+	    		doublingCubeValue /= 64;
+	    	
+	    	String filePath;
+	    	
+	    	if(doublingCubeValue == 1) 
+	    		filePath = "src/resources/doublingDie" + 64 + ".png";
+	    	else
+	    		filePath = "src/resources/doublingDie" + doublingCubeValue + ".png";
+	    	
+			Image doublingCubeImage = ImageIO.read(new File(filePath));
 			
 		    g.drawImage(doublingCubeImage, 
 		    		BoardCoordinateConstants.COORDS_POINT[26],

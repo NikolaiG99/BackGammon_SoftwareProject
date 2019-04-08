@@ -1,6 +1,7 @@
 package game_controller;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -143,410 +144,165 @@ public class GameMethods{
 	 * Method moves the game forward one turn, updating all necessary parts
 	 */
 	@SuppressWarnings("deprecation")
-	public static void next(BoardPanel boardPanel, GameLogicBoard gameBoard, GameState gameState,
-			InformationPanel infoPanel, LogicDice logicDice, DicePanel dicePanel, JFrame gameFrame) {
-		// Check for the end of the game
-		if (GameMethods.gameIsEndedB(gameBoard)) {
-			if (gameBoard.getNumberOfPipsOnPoint(25) > 0){
-				Game.BScore++;
-				gameFrame.dispose();
-				if (Game.BScore >= Game.endScore){
-					
-					new EndFrame(Game.p1);
+	public static void next(BoardPanel boardPanel, GameLogicBoard gameBoard, GameState gameState, InformationPanel infoPanel, LogicDice logicDice, DicePanel dicePanel, JFrame gameFrame) {
+        //Check for the end of the game
+		if(GameMethods.gameIsEndedB(gameBoard) || GameMethods.gameIsEndedR(gameBoard)){
+			if(GameMethods.gameIsEndedB(gameBoard)) {	
+				if (gameBoard.getNumberOfPipsOnPoint(25) > 0) {
+					Game.BScore += 1*gameState.getDoublingCubeValue();
 				}
-				else{
-					Game game;
-					try {
-						game = new Game();
-					
-					game.titlePanel.start.addActionListener(new ActionListener() {
-						@Override
-						public void actionPerformed(ActionEvent e) {
-
-							// Get player names and inform them of their
-							// colour
-							
-							game.infoPanel.addText(game.p1 + ", you are the black checker.\n");
-							game.infoPanel.addText(game.p2 + ", you are the red checker.\n");
-							game.infoPanel.addText("You are playing to " + game.endScore + "\n");
-							game.infoPanel.addText("Current Score is: " + Game.p1 + " " + Game.BScore + " - " + Game.RScore + " " + Game.p2 + "\n");
-							
-							// display match length
-							game.matchLength = new JLabel("                                   Match Length: " + Game.endScore + "                    Current Score: " + Game.BScore +" - " + Game.RScore);
-							game.matchLength.setBounds(100, 610, 300, 40);
-							game.matchLength.setForeground(Color.black);
-							game.dicePanel.add(game.matchLength);
-
-							// Display initial positions of all checkers
-							GameMethods.drawAllPips(game.boardPanel, game.gameBoard);
-
-							// Roll dice to see who starts and initialize
-							// game state
-							if (game.rollInitialThrows().isBlack()) {
-								game.gameState = new GameState(true, game.logicDice); // Set
-																						// black
-																						// has
-																						// first
-																						// move
-								game.infoPanel.addText(game.p1 + " starts.\n");
-							} else {
-								game.gameState = new GameState(false, game.logicDice); // Set
-																						// red
-																						// has
-																						// first
-																						// move
-								game.infoPanel.addText(game.p2 + " starts.\n");
-							}
-							game.commandPanel.initializeGameState(game.gameState);
-
-							// Display initial pip numbering according to
-							// whose turn in it
-							game.boardPanel.displayPipEnumeration(game.gameState.isBlackTurn());
-
-							// List initial possible moves for the starting
-							// player
-							game.gameState.currentTurnPlays = new AvailablePlayAnalyser(game.gameBoard,
-									game.gameState);
-							List<String> moves = game.gameState.currentTurnPlays.getAvailablePlays();
-							game.infoPanel.addText("The legal moves are:\n");
-							for (String s : moves) {
-								game.infoPanel.addText(s + "\n");
-							}
-						}
-
-					});
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+				else {
+					boolean isBackGammon = false;
+					if(gameBoard.getNumberOfPipsOnPoint(27) > 0)
+						isBackGammon = true;
+					for(int i = 1; i <= 6; i++){
+						if(gameBoard.getNumberOfPipsOnPoint(i) > 0)
+							isBackGammon = true;
 					}
-				}
-			}
-			
-			else{
-				Game.BScore +=2;
-				gameFrame.dispose();
-				if (Game.BScore >= Game.endScore){
-					
-					new EndFrame(Game.p1);
-				}
-				else{
-					Game game;
-					System.out.println("new Game() once.\\");
-					try {
-						game = new Game();
-					
-					game.titlePanel.start.addActionListener(new ActionListener() {
-						@Override
-						public void actionPerformed(ActionEvent e) {
-
-							// Get player names and inform them of their
-							// colour
-							
-							game.infoPanel.addText(game.p1 + ", you are the black checker.\n");
-							game.infoPanel.addText(game.p2 + ", you are the red checker.\n");
-							game.infoPanel.addText("You are playing to " + game.endScore + "\n");
-							game.infoPanel.addText("Current Score is: " + Game.p1 + " " + Game.BScore + " - " + Game.RScore + " " + Game.p2 + "\n");
-							
-							
-							// display match length
-							game.matchLength = new JLabel("                                   Match Length: " + Game.endScore + "                    Current Score: " + Game.BScore +" - " + Game.RScore);
-							game.matchLength.setBounds(100, 610, 300, 40);
-							game.matchLength.setForeground(Color.black);
-							game.dicePanel.add(game.matchLength);
-
-							// Display initial positions of all checkers
-							GameMethods.drawAllPips(game.boardPanel, game.gameBoard);
-
-							// Roll dice to see who starts and initialize
-							// game state
-							if (game.rollInitialThrows().isBlack()) {
-								game.gameState = new GameState(true, game.logicDice); // Set
-																						// black
-																						// has
-																						// first
-																						// move
-								game.infoPanel.addText(game.p1 + " starts.\n");
-							} else {
-								game.gameState = new GameState(false, game.logicDice); // Set
-																						// red
-																						// has
-																						// first
-																						// move
-								game.infoPanel.addText(game.p2 + " starts.\n");
-							}
-							game.commandPanel.initializeGameState(game.gameState);
-
-							// Display initial pip numbering according to
-							// whose turn in it
-							game.boardPanel.displayPipEnumeration(game.gameState.isBlackTurn());
-
-							// List initial possible moves for the starting
-							// player
-							game.gameState.currentTurnPlays = new AvailablePlayAnalyser(game.gameBoard,
-									game.gameState);
-							List<String> moves = game.gameState.currentTurnPlays.getAvailablePlays();
-							game.infoPanel.addText("The legal moves are:\n");
-							for (String s : moves) {
-								game.infoPanel.addText(s + "\n");
-							}
-						}
-
-					});
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				}
-			}
-		}
-			
-		
 				
-		    	
-			
-			//gameFrame.dispose();
-			
-			//new EndFrame(Game.p1);
-
+					if(isBackGammon)
+						Game.BScore += 3*gameState.getDoublingCubeValue();
+					else
+						Game.BScore += 2*gameState.getDoublingCubeValue();
+				}
+			}
+			else if(GameMethods.gameIsEndedR(gameBoard)) {
+				if (gameBoard.getNumberOfPipsOnPoint(0) > 0) {
+					Game.RScore += 1*gameState.getDoublingCubeValue();
+				}
+				else {
+					boolean isBackGammon = false;
+					if(gameBoard.getNumberOfPipsOnPoint(26) > 0)
+						isBackGammon = true;
+					for(int i = 24; i <= 19; i--){
+						if(gameBoard.getNumberOfPipsOnPoint(i) > 0)
+							isBackGammon = true;
+					}
+				
+					if(isBackGammon)
+						Game.BScore += 3*gameState.getDoublingCubeValue();
+					else
+						Game.BScore += 2*gameState.getDoublingCubeValue();
+				}
+			}
 		
-
-		else if (GameMethods.gameIsEndedR(gameBoard)) {
-			if (gameBoard.getNumberOfPipsOnPoint(0) > 0){
-				Game.RScore++;
-				gameFrame.dispose();
-				if (Game.RScore >= Game.endScore){
-					
-					new EndFrame(Game.p2);
-				}
-				else{
-					Game game;
-					try {
-						game = new Game();
-					
-					game.titlePanel.start.addActionListener(new ActionListener() {
-						@Override
-						public void actionPerformed(ActionEvent e) {
-
-							// Get player names and inform them of their
-							// colour
-							
-							game.infoPanel.addText(game.p1 + ", you are the black checker.\n");
-							game.infoPanel.addText(game.p2 + ", you are the red checker.\n");
-							game.infoPanel.addText("You are playing to " + game.endScore + "\n");
-							game.infoPanel.addText("Current Score is: " + Game.p1 + " " + Game.BScore + " - " + Game.RScore + " " + Game.p2 + "\n");
-							
-							
-							// display match length
-							game.matchLength = new JLabel("                                   Match Length: " + Game.endScore + "                    Current Score: " + Game.BScore +" - " + Game.RScore);
-							game.matchLength.setBounds(100, 610, 300, 40);
-							game.matchLength.setForeground(Color.black);
-							game.dicePanel.add(game.matchLength);
-
-							// Display initial positions of all checkers
-							GameMethods.drawAllPips(game.boardPanel, game.gameBoard);
-
-							// Roll dice to see who starts and initialize
-							// game state
-							if (game.rollInitialThrows().isBlack()) {
-								game.gameState = new GameState(true, game.logicDice); // Set
-																						// black
-																						// has
-																						// first
-																						// move
-								game.infoPanel.addText(game.p1 + " starts.\n");
-							} else {
-								game.gameState = new GameState(false, game.logicDice); // Set
-																						// red
-																						// has
-																						// first
-																						// move
-								game.infoPanel.addText(game.p2 + " starts.\n");
-							}
-							game.commandPanel.initializeGameState(game.gameState);
-
-							// Display initial pip numbering according to
-							// whose turn in it
-							game.boardPanel.displayPipEnumeration(game.gameState.isBlackTurn());
-
-							// List initial possible moves for the starting
-							// player
-							game.gameState.currentTurnPlays = new AvailablePlayAnalyser(game.gameBoard,
-									game.gameState);
-							List<String> moves = game.gameState.currentTurnPlays.getAvailablePlays();
-							game.infoPanel.addText("The legal moves are:\n");
-							for (String s : moves) {
-								game.infoPanel.addText(s + "\n");
-							}
-						}
-
-					});
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				}
+			//Reset the game board(logic & graphical), clear the information panel
+			gameBoard.setStartingPositions();
+			GameMethods.drawAllPips(boardPanel, gameBoard);
+			infoPanel.clearText();
+			
+			infoPanel.addText(Game.p1 + ", you are the black checker.\n");
+			infoPanel.addText(Game.p2 + ", you are the red checker.\n");
+			infoPanel.addText("You are playing to " + Game.endScore + "\n");
+		
+			//Set the match score label to reflect changes
+			JLabel label = (JLabel) dicePanel.getComponent(3);
+			label.setText("                                   Match Length: " + Game.endScore + "                    Current Score: " + Game.BScore +" - " + Game.RScore);
+			dicePanel.repaint();
+			
+			//Roll dice to see who starts and reset the GameState
+			if(GameMethods.rollInitialThrows(infoPanel, logicDice, dicePanel).isBlack()) {
+				gameState.resetGameState(true, logicDice); //Set black has first move
+				infoPanel.addText(Game.p1 + " starts.\n");
+			}
+			else {
+				gameState.resetGameState(false, logicDice); //Set red has first move
+				infoPanel.addText(Game.p2 + " starts.\n");
 			}
 			
-			else{
-				Game.RScore +=2;
-				gameFrame.dispose();
-				if (Game.RScore >= Game.endScore){
-					
-					new EndFrame(Game.p2);
-				}
-				else{
-					Game game;
-					try {
-						game = new Game();
-					
-					game.titlePanel.start.addActionListener(new ActionListener() {
-						@Override
-						public void actionPerformed(ActionEvent e) {
-
-							// Get player names and inform them of their
-							// colour
-							
-							game.infoPanel.addText(game.p1 + ", you are the black checker.\n");
-							game.infoPanel.addText(game.p2 + ", you are the red checker.\n");
-							game.infoPanel.addText("You are playing to " + game.endScore + "\n");
-							game.infoPanel.addText("Current Score is: " + Game.p1 + " " + Game.BScore + " - " + Game.RScore + " " + Game.p2 + "\n");
-							
-							
-							// display match length
-							game.matchLength = new JLabel("                                   Match Length: " + Game.endScore + "                    Current Score: " + Game.BScore +" - " + Game.RScore);
-							game.matchLength.setBounds(100, 610, 300, 40);
-							game.matchLength.setForeground(Color.black);
-							game.dicePanel.add(game.matchLength);
-
-							// Display initial positions of all checkers
-							GameMethods.drawAllPips(game.boardPanel, game.gameBoard);
-
-							// Roll dice to see who starts and initialize
-							// game state
-							if (game.rollInitialThrows().isBlack()) {
-								game.gameState = new GameState(true, game.logicDice); // Set
-																						// black
-																						// has
-																						// first
-																						// move
-								game.infoPanel.addText(game.p1 + " starts.\n");
-							} else {
-								game.gameState = new GameState(false, game.logicDice); // Set
-																						// red
-																						// has
-																						// first
-																						// move
-								game.infoPanel.addText(game.p2 + " starts.\n");
-							}
-							game.commandPanel.initializeGameState(game.gameState);
-
-							// Display initial pip numbering according to
-							// whose turn in it
-							game.boardPanel.displayPipEnumeration(game.gameState.isBlackTurn());
-
-							// List initial possible moves for the starting
-							// player
-							game.gameState.currentTurnPlays = new AvailablePlayAnalyser(game.gameBoard,
-									game.gameState);
-							List<String> moves = game.gameState.currentTurnPlays.getAvailablePlays();
-							game.infoPanel.addText("The legal moves are:\n");
-							for (String s : moves) {
-								game.infoPanel.addText(s + "\n");
-							}
-						}
-
-					});
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				}
-			}
-
-		}
-
-		else {
-			logicDice.roll();
-
-			dicePanel.update(logicDice);
-
-			gameState.nextTurn(logicDice);
-			boardPanel.displayPipEnumeration(gameState.isBlackTurn());
-
-			dicePanel.repaint();
+			//Reset the doubling cube(graphical)
+			boardPanel.doublingCubePosition = boardPanel.MIDDLE;
+			boardPanel.doublingCubeValue = 1;
 			boardPanel.repaint();
+			
+			//Display initial pip numbering according to whose turn in it
+			boardPanel.displayPipEnumeration(gameState.isBlackTurn());
+			
+			//List initial possible moves for the starting player
+	        gameState.currentTurnPlays = new AvailablePlayAnalyser(gameBoard, gameState);
+	        List<String> moves = gameState.currentTurnPlays.getAvailablePlays();
+	        infoPanel.addText("The legal moves are:\n");
+	        for(String s : moves) {
+	        		infoPanel.addText(s + "\n");
+	        	}
+			
+			return;
+		}	
+		
+		logicDice.roll();
+		dicePanel.update(logicDice);
+		
+		gameState.nextTurn(logicDice);
+		boardPanel.displayPipEnumeration(gameState.isBlackTurn());
+		
+		dicePanel.repaint();
+		boardPanel.repaint();
+		
+		infoPanel.addText("Next turn.\nRolling.\n");
+		String msg = gameState.isBlackTurn() ? "Black rolled " : "Red rolled ";
+		msg += gameState.getCurrentRoll();
+		infoPanel.addText(msg + "\n");
+		
+        gameState.currentTurnPlays = new AvailablePlayAnalyser(gameBoard, gameState);
+        List<String> moves = gameState.currentTurnPlays.getAvailablePlays();
+        infoPanel.addText("The legal moves are:\n");
+        for(String s : moves) {
+        	infoPanel.addText(s + "\n");
+        }
+        
+        //If there's only one legal move, execute it, inform user, do next turn
+        if(gameState.currentTurnPlays.availablePlays.size() == 1) {
+        	Timer timer = new Timer();
+        	
+        	TimerTask informUser = new TimerTask(){
+        		public void run() {
+        			infoPanel.addText("There is only one possible move, it will be executed automatically.\n");
+        		}
+        	};
+        	
 
-			infoPanel.addText("Next turn.\nRolling.\n");
-			String msg = gameState.isBlackTurn() ? "Black rolled " : "Red rolled ";
-			msg += gameState.getCurrentRoll();
-			infoPanel.addText(msg + "\n");
+        	TimerTask executeMove = new TimerTask() {
+        		public void run() {
+        			try{AvailablePlayAnalyser.executePlay("A" , boardPanel, gameBoard, gameState);}
+        			catch(Exception e){	Game.cl.show(Game.screenContainer, "end screen");}
+        		}
+        	};
+        	
 
-			gameState.currentTurnPlays = new AvailablePlayAnalyser(gameBoard, gameState);
-			List<String> moves = gameState.currentTurnPlays.getAvailablePlays();
-			infoPanel.addText("The legal moves are:\n");
-			for (String s : moves) {
-				infoPanel.addText(s + "\n");
-			}
+        	TimerTask nextTurn = new TimerTask() {
+        		public void run() {
+        			try{next(boardPanel, gameBoard, gameState, infoPanel, logicDice, dicePanel, gameFrame);}
+        			catch(Exception e) {Game.cl.show(Game.screenContainer, "end screen");}
+        		}
+        	};
 
-			// If there's only one legal move, execute it, inform user, do next
-			// turn
-			if (gameState.currentTurnPlays.availablePlays.size() == 1) {
-				Timer timer = new Timer();
+        	timer.schedule(informUser, 400);
+        	timer.schedule(executeMove, 1000);
+        	timer.schedule(nextTurn, 1600);
+        }
 
-				TimerTask informUser = new TimerTask() {
-					public void run() {
-						infoPanel.addText("There is only one possible move, it will be executed automatically.\n");
-					}
-				};
+        //If there are no legal moves, inform user, do next turn
+        if(gameState.currentTurnPlays.availablePlays.size() == 0) {
 
-				TimerTask executeMove = new TimerTask() {
-					public void run() {
-						try {
-							AvailablePlayAnalyser.executePlay("A", boardPanel, gameBoard, gameState);
-						} catch (Exception e) { // Game.cl.show(Game.screenContainer,
-												// "end screen");
-						}
-					}
+        	Timer timer = new Timer();
 
-				};
+        	TimerTask informUser = new TimerTask(){
+        		public void run() {
+        			infoPanel.addText("There are no possible moves. Next turn.\n");
+        		}
+        	};
 
-				TimerTask nextTurn = new TimerTask() {
-					public void run() {
-						try {
-							next(boardPanel, gameBoard, gameState, infoPanel, logicDice, dicePanel, gameFrame);
-						} catch (Exception e) { // Game.cl.show(Game.screenContainer,
-												// "end screen");
-						}
-					}
-
-				};
-
-				timer.schedule(informUser, 400);
-				timer.schedule(executeMove, 1000);
-				timer.schedule(nextTurn, 1600);
-			}
-
-			// If there are no legal moves, inform user, do next turn
-			if (gameState.currentTurnPlays.availablePlays.size() == 0) {
-				Timer timer = new Timer();
-
-				TimerTask informUser = new TimerTask() {
-					public void run() {
-						infoPanel.addText("There are no possible moves. Next turn.\n");
-					}
-				};
-
-				TimerTask nextTurn = new TimerTask() {
-					public void run() {
-						next(boardPanel, gameBoard, gameState, infoPanel, logicDice, dicePanel, gameFrame);
-					}
-				};
-
-				timer.schedule(informUser, 400);
-				timer.schedule(nextTurn, 1200);
-			}
-		}
+        	
+        	TimerTask nextTurn = new TimerTask() {
+        		public void run() {
+        			next(boardPanel, gameBoard, gameState, infoPanel, logicDice, dicePanel, gameFrame);
+        		}
+        	};
+        	timer.schedule(informUser, 400);
+        	timer.schedule(nextTurn, 1200);
+        }
 	}
+
 	
 	/**
 	 * Method moves a pip on a given point by a given number of spots,
@@ -664,6 +420,58 @@ public class GameMethods{
 				movePipFromPointByNPoints(pointNum-i, 1, boardPanel, gameBoard);
 			}
 		}
+	}
+	
+	/**
+	 * Method which rolls the dice initially to see who goes first and carries out associated tasks
+	 * 
+	 * Returns a Black pip if the first roll is larger(black to start), and a red pip otherwise
+	 */
+	public static GameLogicPip rollInitialThrows(InformationPanel infoPanel, LogicDice logicDice, DicePanel dicePanel) {
+			int firstRoll = 0;
+			int secondRoll = 0;
+			int initialNumRolls = logicDice.getNumberOfTimesDiceRolled();
+					
+			// Wait until first roll finished and take result
+			while (logicDice.getNumberOfTimesDiceRolled() != initialNumRolls + 1) {
+				logicDice.roll();
+				
+				try {
+					Thread.sleep(20);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+				firstRoll = logicDice.getFirstDieRoll() + logicDice.getSecondDieRoll();
+			}
+			
+			dicePanel.update(logicDice);
+			infoPanel.addText("Black rolled " + firstRoll + ".\n");
+
+			// Wait until second roll finished and take result
+			while (logicDice.getNumberOfTimesDiceRolled() != initialNumRolls + 2) {
+				logicDice.roll();
+				
+				try {
+					Thread.sleep(20);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+				secondRoll = logicDice.getFirstDieRoll() + logicDice.getSecondDieRoll();
+			}
+			dicePanel.update(logicDice);
+			infoPanel.addText("Red rolled " + secondRoll + ".\n");
+
+			// If the rolls were the same, print a message and redo the procedure
+			if (firstRoll == secondRoll) {
+				infoPanel.addText("Same result for intial rolls. Rerolling.\n");
+				return rollInitialThrows(infoPanel, logicDice, dicePanel);
+			}
+			else if(firstRoll > secondRoll)
+				return new GameLogicPip(true, -1);
+			else
+				return new GameLogicPip(false, -1);
 	}
 	
 	/**

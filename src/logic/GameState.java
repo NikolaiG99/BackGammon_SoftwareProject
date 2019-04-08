@@ -38,6 +38,20 @@ public class GameState{
 		}
 		
 		/**
+		 * Method which resets the GameState to the starting position
+		 */
+		public void resetGameState(boolean isBlackTurn, LogicDice logicDice) {
+			this.isBlackTurn = isBlackTurn;
+			turnNumber = 1;
+			initialNumberOfTimesDiceRolled = logicDice.numberOfTimesDiceRolled;
+			updateRoll(logicDice);
+			
+			doublingCubeValue = 1;
+			blackHasDoublingCube = false;
+			redHasDoublingCube = false;
+		}
+		
+		/**
 		 * Method which updates GameState appropriately when a double is accepted
 		 */
 		public void acceptDouble(){

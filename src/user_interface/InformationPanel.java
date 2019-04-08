@@ -28,6 +28,10 @@ public class InformationPanel extends JPanel{
 		return;
 	}
 	
+	public void clearText() {
+		text.setText("");
+	}
+	
     @Override
     public Dimension getPreferredSize() {
         return new Dimension(200, 370);

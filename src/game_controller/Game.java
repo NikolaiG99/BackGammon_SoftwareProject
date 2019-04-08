@@ -142,7 +142,7 @@ public class Game {
 					GameMethods.drawAllPips(game.boardPanel, game.gameBoard);
 					
 					//Roll dice to see who starts and initialize game state
-					if(game.rollInitialThrows().isBlack()) {
+					if(GameMethods.rollInitialThrows(game.infoPanel, game.logicDice, game.dicePanel).isBlack()) {
 						game.gameState = new GameState(true, game.logicDice); //Set black has first move
 						game.infoPanel.addText(game.p1 + " starts.\n");
 					}
@@ -164,57 +164,5 @@ public class Game {
 			        	}
 				 	}
 		});
-	}
-	
-	/*
-	 * Method which rolls the dice initially to see who goes first and carries out associated tasks
-	 * 
-	 * Returns a Black pip if the first roll is larger(black to start), and a red pip otherwise
-	 */
-	public GameLogicPip rollInitialThrows() {
-			int firstRoll = 0;
-			int secondRoll = 0;
-			int initialNumRolls = logicDice.getNumberOfTimesDiceRolled();
-					
-			// Wait until first roll finished and take result
-			while (logicDice.getNumberOfTimesDiceRolled() != initialNumRolls + 1) {
-				logicDice.roll();
-				
-				try {
-					Thread.sleep(20);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				
-				firstRoll = logicDice.getFirstDieRoll() + logicDice.getSecondDieRoll();
-			}
-			
-			dicePanel.update(logicDice);
-			infoPanel.addText("Black rolled " + firstRoll + ".\n");
-
-			// Wait until second roll finished and take result
-			while (logicDice.getNumberOfTimesDiceRolled() != initialNumRolls + 2) {
-				logicDice.roll();
-				
-				try {
-					Thread.sleep(20);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				
-				secondRoll = logicDice.getFirstDieRoll() + logicDice.getSecondDieRoll();
-			}
-			dicePanel.update(logicDice);
-			infoPanel.addText("Red rolled " + secondRoll + ".\n");
-
-			// If the rolls were the same, print a message and redo the procedure
-			if (firstRoll == secondRoll) {
-				infoPanel.addText("Same result for intial rolls. Rerolling.\n");
-				return rollInitialThrows();
-			}
-			else if(firstRoll > secondRoll)
-				return new GameLogicPip(true, -1);
-			else
-				return new GameLogicPip(false, -1);
 	}
 }

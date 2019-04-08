@@ -109,6 +109,7 @@ public class CommandPanel extends JPanel{
 			return new UserCommand(CommandType.OFFERDOUBLE, "");
 		}
 		else if(commandIsResponse) {
+			commandIsResponse = false;
 			if(input.toLowerCase().equals("yes") || input.toLowerCase().equals("y")){
 				return new UserCommand(CommandType.ACCEPTDOUBLE, "y");
 			} else if(input.toLowerCase().equals("no") || input.toLowerCase().equals("n")) {
