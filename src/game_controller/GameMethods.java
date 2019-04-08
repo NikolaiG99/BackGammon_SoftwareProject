@@ -118,6 +118,20 @@ public class GameMethods{
 	}
 	
 	/**
+	 * Method which doubles the cube, and carries out the associated necessary tasks
+	 */
+	public static void acceptDouble() {
+		return;
+	}
+	
+	/**
+	 * Method which ends the game and updates match score when a double is rejected
+	 */
+	public static void rejectDouble() {
+		return;
+	}
+	
+	/**
 	 * Method moves the game forward one turn, updating all necessary parts
 	 */
 	@SuppressWarnings("deprecation")

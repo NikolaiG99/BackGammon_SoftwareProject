@@ -43,6 +43,8 @@ public class CommandPanel extends JPanel{
 	private LogicDice logicDice;
 	private GameState gameState = null;
 	
+	private boolean commandIsResponse;
+	
 	public CommandPanel(GameLogicBoard gameBoard, LogicDice logicDice, BoardPanel boardPanel, InformationPanel infoPanel, DicePanel dicePanel, JFrame gameFrame){
 		this.gameBoard = gameBoard;
 		this.boardPanel = boardPanel;
@@ -50,6 +52,8 @@ public class CommandPanel extends JPanel{
 		this.dicePanel = dicePanel;
 		this.logicDice = logicDice;
 		this.gameFrame = gameFrame;
+		
+		commandIsResponse = false;
 		
 		label = new JLabel("Enter Command: ");
 		this.add(label);
@@ -77,7 +81,7 @@ public class CommandPanel extends JPanel{
 	}
 	
 	enum CommandType{
-		ECHO, QUIT, MOVE, UNKNOWN, NEXT, CHEAT, DOUBLE;
+		ECHO, QUIT, MOVE, UNKNOWN, NEXT, CHEAT, OFFERDOUBLE, ACCEPTDOUBLE;
 	}
 	
 	class UserCommand{
@@ -102,7 +106,16 @@ public class CommandPanel extends JPanel{
 			return new UserCommand(CommandType.CHEAT, "");
 		}
 		else if(input.toLowerCase().equals("double")){
-			return new UserCommand(CommandType.DOUBLE, "");
+			return new UserCommand(CommandType.OFFERDOUBLE, "");
+		}
+		else if(commandIsResponse) {
+			if(input.toLowerCase().equals("yes") || input.toLowerCase().equals("y")){
+				return new UserCommand(CommandType.ACCEPTDOUBLE, "y");
+			} else if(input.toLowerCase().equals("no") || input.toLowerCase().equals("n")) {
+				return new UserCommand(CommandType.ACCEPTDOUBLE, "n");
+			} else {
+				return new UserCommand(CommandType.ACCEPTDOUBLE, "e");
+			}
 		}
 		else if(input.trim().matches("[a-z|A-Z]+")){
 			return new UserCommand(CommandType.MOVE, input);
@@ -137,7 +150,24 @@ public class CommandPanel extends JPanel{
 		case QUIT:	 	System.exit(0);
 						break;
 
-		case DOUBLE: 	
+		case OFFERDOUBLE: 	if(!gameState.doublingIsAllowed()) {
+						infoPanel.addText("Error: Doubling is not allowed at the moment.\n");
+						break;
+						}
+						else {
+						infoPanel.addText("Double has been offered. Does the opponent accept the double? (yes)/(no)\n");
+						commandIsResponse = true;
+						break;
+						}
+		
+		case ACCEPTDOUBLE: if(u.input.equals("e")) {
+						infoPanel.addText("Error: Invalid response. Try again.\n Does the opponent accept the double? (yes)/(no)\n");
+						} else if(u.input.equals("y")) {
+							GameMethods.acceptDouble();
+						} else if(u.input.equals("n")){
+							GameMethods.rejectDouble();
+						}
+						break;
 						
 		case UNKNOWN:	infoPanel.addText("Invalid command, try again.\n");
 						break;
