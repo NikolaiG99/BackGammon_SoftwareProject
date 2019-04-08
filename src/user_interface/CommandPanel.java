@@ -77,7 +77,7 @@ public class CommandPanel extends JPanel{
 	}
 	
 	enum CommandType{
-		ECHO, QUIT, MOVE, UNKNOWN, NEXT, CHEAT;
+		ECHO, QUIT, MOVE, UNKNOWN, NEXT, CHEAT, DOUBLE;
 	}
 	
 	class UserCommand{
@@ -100,6 +100,9 @@ public class CommandPanel extends JPanel{
 		}
 		else if(input.toLowerCase().equals("cheat")) {
 			return new UserCommand(CommandType.CHEAT, "");
+		}
+		else if(input.toLowerCase().equals("double")){
+			return new UserCommand(CommandType.DOUBLE, "");
 		}
 		else if(input.trim().matches("[a-z|A-Z]+")){
 			return new UserCommand(CommandType.MOVE, input);
@@ -133,6 +136,8 @@ public class CommandPanel extends JPanel{
 		                
 		case QUIT:	 	System.exit(0);
 						break;
+
+		case DOUBLE: 	
 						
 		case UNKNOWN:	infoPanel.addText("Invalid command, try again.\n");
 						break;

@@ -1,5 +1,7 @@
 package logic;
 
+import game_controller.Game;
+
 /**
  * Class which keeps track of some necessary information as the game goes on
  */
@@ -14,6 +16,7 @@ public class GameState{
 		private boolean blackHasDoublingCube;
 		private boolean redHasDoublingCube;
 		private int doublingCubeValue;
+		private boolean crawfordRuleInEffect;
 		
 		public AvailablePlayAnalyser currentTurnPlays; 
 		
@@ -22,6 +25,10 @@ public class GameState{
 			turnNumber = 1;
 			initialNumberOfTimesDiceRolled = logicDice.numberOfTimesDiceRolled;
 			updateRoll(logicDice);
+			
+			doublingCubeValue = 1;
+			blackHasDoublingCube = false;
+			redHasDoublingCube = false;
 		}
 
 		private void updateRoll(LogicDice logicDice) {
@@ -79,5 +86,28 @@ public class GameState{
 			turnNumber++;
 			isBlackTurn = !isBlackTurn;
 			
+		}
+		
+		/**
+		 * Method which determines whether the player's whose move it is, is allowed to offer a double
+		 */
+		public boolean doublingIsAllowed() {
+			//Check that the current player owns the cube, or that the cube is in the middle of the board
+			if(isBlackTurn & redHasDoublingCube)
+				return false;
+			else if(!isBlackTurn & blackHasDoublingCube)
+				return false;
+			
+			//Check the Crawford Rule
+			if(crawfordRuleInEffect)
+				return false;
+			
+			//Check for a dead cube
+			if(isBlackTurn && (Game.BScore + doublingCubeValue*2 > Integer.parseInt(Game.endScore)))
+				return false;
+			else if(!isBlackTurn && (Game.RScore + doublingCubeValue*2 > Integer.parseInt(Game.endScore)))
+				return false;
+			
+			return true;
 		}
 }
