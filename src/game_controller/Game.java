@@ -51,7 +51,7 @@ public class Game {
 	public IntroPanel titlePanel;
 	private EndPanel endPanel;
 	public static CardLayout cl;
-	static JLabel matchLength;
+	public static JLabel matchLength;
 	
 	public Game() throws IOException {
 		// Initialize data and logic

@@ -144,8 +144,8 @@ public class GameMethods{
 	 * Method moves the game forward one turn, updating all necessary parts
 	 */
 	@SuppressWarnings("deprecation")
-	public static void next(BoardPanel boardPanel, GameLogicBoard gameBoard, GameState gameState, InformationPanel infoPanel, LogicDice logicDice, DicePanel dicePanel, JFrame gameFrame) {
-        //Check for the end of the game
+	public static void next(BoardPanel boardPanel, GameLogicBoard gameBoard, GameState gameState, InformationPanel infoPanel, LogicDice logicDice, DicePanel dicePanel, JFrame gameFrame) {	
+		//If the game is ended calculate appropriate score reset the game and the score to the current match score
 		if(GameMethods.gameIsEndedB(gameBoard) || GameMethods.gameIsEndedR(gameBoard)){
 			if(GameMethods.gameIsEndedB(gameBoard)) {	
 				if (gameBoard.getNumberOfPipsOnPoint(25) > 0) {
@@ -184,6 +184,16 @@ public class GameMethods{
 					else
 						Game.BScore += 2*gameState.getDoublingCubeValue();
 				}
+			}
+			
+			//If the match is over, announce the winner
+			if(Game.BScore >= Game.endScore){
+				gameFrame.dispose();
+				new EndFrame(Game.p1);
+			}
+			if(Game.RScore >= Game.endScore){
+				gameFrame.dispose();
+				new EndFrame(Game.p2);
 			}
 		
 			//Reset the game board(logic & graphical), clear the information panel
