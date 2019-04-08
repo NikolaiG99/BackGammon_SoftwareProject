@@ -163,7 +163,7 @@ public class CommandPanel extends JPanel{
 		case ACCEPTDOUBLE: if(u.input.equals("e")) {
 						infoPanel.addText("Error: Invalid response. Try again.\n Does the opponent accept the double? (yes)/(no)\n");
 						} else if(u.input.equals("y")) {
-							GameMethods.acceptDouble();
+							GameMethods.acceptDouble(boardPanel, gameState);
 						} else if(u.input.equals("n")){
 							GameMethods.rejectDouble();
 						}

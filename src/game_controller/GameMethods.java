@@ -122,7 +122,13 @@ public class GameMethods{
 	 */
 	public static void acceptDouble(BoardPanel boardPanel, GameState gameState) {
 		gameState.acceptDouble();
-		if(gameState.)
+		boardPanel.doublingCubeValue = gameState.getDoublingCubeValue();
+		if(gameState.BlackHasDoublingCube()) {
+			boardPanel.doublingCubePosition = boardPanel.BOTTOM;
+		} else {
+			boardPanel.doublingCubePosition = boardPanel.TOP;
+		}
+		boardPanel.repaint();
 		return;
 	}
 	

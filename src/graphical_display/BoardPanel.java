@@ -30,9 +30,9 @@ public class BoardPanel extends JPanel {
 	String numbersAtBottom[];
 	public int doublingCubePosition;
 	public int doublingCubeValue;
-	final int TOP = 0;
-	final int MIDDLE = 1;
-	final int BOTTOM = 2;
+	public final int TOP = 0;
+	public final int MIDDLE = 1;
+	public final int BOTTOM = 2;
 	
 	private Image backgroundImage;
 
