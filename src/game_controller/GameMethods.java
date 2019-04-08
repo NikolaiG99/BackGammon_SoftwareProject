@@ -120,7 +120,9 @@ public class GameMethods{
 	/**
 	 * Method which doubles the cube, and carries out the associated necessary tasks
 	 */
-	public static void acceptDouble() {
+	public static void acceptDouble(BoardPanel boardPanel, GameState gameState) {
+		gameState.acceptDouble();
+		if(gameState.)
 		return;
 	}
 	

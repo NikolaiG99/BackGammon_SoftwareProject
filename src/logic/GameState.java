@@ -16,7 +16,7 @@ public class GameState{
 		private boolean blackHasDoublingCube;
 		private boolean redHasDoublingCube;
 		private int doublingCubeValue;
-		private boolean crawfordRuleInEffect;
+		public boolean crawfordRuleInEffect;
 		
 		public AvailablePlayAnalyser currentTurnPlays; 
 		
@@ -35,6 +35,33 @@ public class GameState{
 			currentRollDie1 = logicDice.firstDieRoll;
 			currentRollDie2 = logicDice.secondDieRoll;
 			currentRollTotal = currentRollDie1 + currentRollDie2;
+		}
+		
+		/**
+		 * Method which updates GameState appropriately when a double is accepted
+		 */
+		public void acceptDouble(){
+			if(isBlackTurn) {
+				redHasDoublingCube = true;
+				blackHasDoublingCube = false;
+			}
+			else {
+				redHasDoublingCube = false;
+				blackHasDoublingCube = true;
+			}
+			
+			doublingCubeValue *= 2;
+		}
+		
+		//Getter methods for doubling cube information
+		public boolean BlackHasDoublingCube() {
+			return blackHasDoublingCube;
+		}
+		public boolean RedHasDoublingCube() {
+			return redHasDoublingCube;
+		}
+		public int getDoublingCubeValue() {
+			return doublingCubeValue;
 		}
 		
 		/**
