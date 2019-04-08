@@ -103,9 +103,9 @@ public class GameState{
 				return false;
 			
 			//Check for a dead cube
-			if(isBlackTurn && (Game.BScore + doublingCubeValue*2 > Integer.parseInt(Game.endScore)))
+			if(isBlackTurn && (Game.BScore + doublingCubeValue*2 > Game.endScore))
 				return false;
-			else if(!isBlackTurn && (Game.RScore + doublingCubeValue*2 > Integer.parseInt(Game.endScore)))
+			else if(!isBlackTurn && (Game.RScore + doublingCubeValue*2 > Game.endScore))
 				return false;
 			
 			return true;
