@@ -12,3 +12,10 @@ The source files are divided into 4 packages:
 * **logic**: contains the classes which deal with the game data, and control and track all the gameplay logic(with an abstract data structures)
 * **graphical_display**: handles and displays the graphical elements of the game(by reading the state of the game data in logic package)
 * **user_interface**: contains the classes which deal with user input, also contains some graphical elements.
+
+
+Additionally, there is a folder **bots** which contains a different BackGammon application, which allows two bots to play against each other. The "BackGammon" class contains the main class for the application, and the classes "Bot0" and "Bot1" contain the implementation of a Bot API(where the API was given). The "Bot1" class chooses its moves at random, while "Bot0" operates in the following way:
+* It scores every possible move according to 6 criteria. The score for each criterium is multiplied by a weight stored in "Bot0_scoreFunctionValues.txt". 
+* It takes the sum of those scores selects the move with the highest total.
+* For every possible move, it computes the proportion of the total sum that each of the criteria were responsible for. Every turn it compares the proportions of the selected move with the average proportions of all the non-selected moves. It saves this information.
+* When the game is over, the bot will alter the weights according to whether it won or lost, so that the most important criteria of the selected moves are made either more important or less important in future decision making.
