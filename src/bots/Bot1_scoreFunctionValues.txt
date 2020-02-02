@@ -1,0 +1,100 @@
+Early Game !*!
+Advantage !~!
+_Pip Difference 100    
+_Blot Difference 80    
+_Num Home Board Blocks 500    
+_Prime Length 800    
+_#Check HomeBoardVsOpp 120    
+_Anchor location 400    
+
+Even !~!
+_Pip Difference 98    
+_Blot Difference 455    
+_Num Home Board Blocks 537    
+_Prime Length 8476    
+_#Check HomeBoardVsOpp 25    
+_Anchor location 968    
+
+Disadvantage !~!
+_Pip Difference 100    
+_Blot Difference 80    
+_Num Home Board Blocks 500    
+_Prime Length 800    
+_#Check HomeBoardVsOpp 120    
+_Anchor location 400    
+
+Middle Game !*!
+Advantage !~!
+_Pip Difference 100    
+_Blot Difference 90    
+_Num Home Board Blocks 500    
+_Prime Length 800    
+_#Check HomeBoardVsOpp 120    
+_Anchor location 400    
+
+Even !~!
+_Pip Difference 675    
+_Blot Difference 77    
+_Num Home Board Blocks 747    
+_Prime Length 2200    
+_#Check HomeBoardVsOpp 67    
+_Anchor location 1393    
+
+Disadvantage !~!
+_Pip Difference 100    
+_Blot Difference 90    
+_Num Home Board Blocks 500    
+_Prime Length 800    
+_#Check HomeBoardVsOpp 120    
+_Anchor location 400    
+
+End Game !*!
+Advantage !~!
+_Pip Difference 100    
+_Blot Difference 90    
+_Num Home Board Blocks 500    
+_Prime Length 800    
+_#Check HomeBoardVsOpp 120    
+_Anchor location 400    
+
+Even !~!
+_Pip Difference 362    
+_Blot Difference 178    
+_Num Home Board Blocks 1467    
+_Prime Length 1516    
+_#Check HomeBoardVsOpp 144    
+_Anchor location 2671    
+
+Disadvantage !~!
+_Pip Difference 100    
+_Blot Difference 90    
+_Num Home Board Blocks 500    
+_Prime Length 800    
+_#Check HomeBoardVsOpp 120    
+_Anchor location 400    
+
+Race Game !*!
+Advantage !~!
+_Pip Difference 100    
+_Blot Difference 0    
+_Num Home Board Blocks 0    
+_Prime Length 0    
+_#Check HomeBoardVsOpp 50    
+_Anchor location 0    
+
+Even !~!
+_Pip Difference 182    
+_Blot Difference 0    
+_Num Home Board Blocks 0    
+_Prime Length 0    
+_#Check HomeBoardVsOpp 92    
+_Anchor location 0    
+
+Disadvantage !~!
+_Pip Difference 100    
+_Blot Difference 0    
+_Num Home Board Blocks 0    
+_Prime Length 0    
+_#Check HomeBoardVsOpp 50    
+_Anchor location 0    
+
